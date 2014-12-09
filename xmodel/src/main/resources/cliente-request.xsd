@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="cliente" type="clienteTypeRequest"/>
+
+  <xs:complexType name="clienteTypeRequest">
+    <xs:sequence>
+      <xs:element type="xs:long" name="contribuinte" minOccurs="1" maxOccurs="1"/>
+      <xs:element type="xs:string" name="nome" minOccurs="1" maxOccurs="1"/>
+      <xs:element type="xs:int" name="role" minOccurs="1" maxOccurs="1"/>
+      <xs:element type="xs:string" name="morada" minOccurs="1" maxOccurs="1"/>
+      <xs:element type="xs:int" name="porta" minOccurs="1" maxOccurs="1"/>
+      <xs:element type="xs:date" name="data-nascimento" minOccurs="1" maxOccurs="1"/>
+      <xs:element type="xs:string" name="email" minOccurs="1" maxOccurs="1"/>
+      <xs:element type="xs:string" name="contacto" minOccurs="1" maxOccurs="1"/>
+      <xs:element type="xs:int" name="localidade" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
