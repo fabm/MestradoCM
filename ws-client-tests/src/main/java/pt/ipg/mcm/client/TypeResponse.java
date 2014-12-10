@@ -1,5 +1,5 @@
 
-package pt.ipg.mcm.wct.client;
+package pt.ipg.mcm.client;
 
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlType;

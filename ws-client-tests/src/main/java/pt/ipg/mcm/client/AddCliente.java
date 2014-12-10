@@ -1,5 +1,5 @@
 
-package pt.ipg.mcm.wct.client;
+package pt.ipg.mcm.client;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="arg0" type="{http://services.mcm.ipg.pt/}clienteTypeRequest" minOccurs="0"/>
+ *         &lt;element name="arg0" type="{http://services.mcm.ipg.pt/}reqAddCliente" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -31,17 +31,17 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class AddCliente {
 
-    protected ClienteTypeRequest arg0;
+    protected ReqAddCliente arg0;
 
     /**
      * Gets the value of the arg0 property.
      * 
      * @return
      *     possible object is
-     *     {@link ClienteTypeRequest }
+     *     {@link ReqAddCliente }
      *     
      */
-    public ClienteTypeRequest getArg0() {
+    public ReqAddCliente getArg0() {
         return arg0;
     }
 
@@ -50,10 +50,10 @@ public class AddCliente {
      * 
      * @param value
      *     allowed object is
-     *     {@link ClienteTypeRequest }
+     *     {@link ReqAddCliente }
      *     
      */
-    public void setArg0(ClienteTypeRequest value) {
+    public void setArg0(ReqAddCliente value) {
         this.arg0 = value;
     }
 

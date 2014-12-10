@@ -1,5 +1,5 @@
 
-package pt.ipg.mcm.wct.client;
+package pt.ipg.mcm.xmodel.cliente.response;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -8,17 +8,17 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for clienteTypeResponse complex type.
+ * <p>Java class for resAddCliente complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="clienteTypeResponse">
+ * &lt;complexType name="resAddCliente">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="type-response" type="{http://services.mcm.ipg.pt/}type-response"/>
+ *         &lt;element name="type-response" type="{}type-response"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -28,15 +28,15 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "clienteTypeResponse", propOrder = {
+@XmlType(name = "resAddCliente", propOrder = {
     "id",
     "typeResponse"
 })
-public class ClienteTypeResponse {
+public class ResAddCliente {
 
-    protected long id;
+    private long id;
     @XmlElement(name = "type-response", required = true)
-    protected TypeResponse typeResponse;
+    private TypeResponse typeResponse;
 
     /**
      * Gets the value of the id property.

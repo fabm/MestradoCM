@@ -1,5 +1,5 @@
 
-package pt.ipg.mcm.xmodel.cliente.request;
+package pt.ipg.mcm.client;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -10,12 +10,12 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>Java class for clienteTypeRequest complex type.
+ * <p>Java class for resGetCliente complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="clienteTypeRequest">
+ * &lt;complexType name="resGetCliente">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
@@ -37,7 +37,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "clienteTypeRequest", propOrder = {
+@XmlType(name = "resGetCliente", propOrder = {
     "contribuinte",
     "nome",
     "role",
@@ -48,7 +48,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "contacto",
     "localidade"
 })
-public class ClienteTypeRequest {
+public class ResGetCliente {
 
     protected long contribuinte;
     @XmlElement(required = true)
@@ -167,7 +167,7 @@ public class ClienteTypeRequest {
      * 
      * @return
      *     possible object is
-     *     {@link javax.xml.datatype.XMLGregorianCalendar }
+     *     {@link XMLGregorianCalendar }
      *     
      */
     public XMLGregorianCalendar getDataNascimento() {
@@ -179,7 +179,7 @@ public class ClienteTypeRequest {
      * 
      * @param value
      *     allowed object is
-     *     {@link javax.xml.datatype.XMLGregorianCalendar }
+     *     {@link XMLGregorianCalendar }
      *     
      */
     public void setDataNascimento(XMLGregorianCalendar value) {

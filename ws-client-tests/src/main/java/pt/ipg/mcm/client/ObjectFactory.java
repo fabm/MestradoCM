@@ -1,5 +1,5 @@
 
-package pt.ipg.mcm.wct.client;
+package pt.ipg.mcm.client;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlElementDecl;
@@ -10,7 +10,7 @@ import javax.xml.namespace.QName;
 /**
  * This object contains factory methods for each 
  * Java content interface and Java element interface 
- * generated in the pt.ipg.mcm.wct.client package. 
+ * generated in the pt.ipg.mcm.client package. 
  * <p>An ObjectFactory allows you to programatically 
  * construct new instances of the Java representation 
  * for XML content. The Java representation of XML 
@@ -25,10 +25,12 @@ import javax.xml.namespace.QName;
 public class ObjectFactory {
 
     private final static QName _AddCliente_QNAME = new QName("http://services.mcm.ipg.pt/", "addCliente");
+    private final static QName _GetCliente_QNAME = new QName("http://services.mcm.ipg.pt/", "getCliente");
+    private final static QName _GetClienteResponse_QNAME = new QName("http://services.mcm.ipg.pt/", "getClienteResponse");
     private final static QName _AddClienteResponse_QNAME = new QName("http://services.mcm.ipg.pt/", "addClienteResponse");
 
     /**
-     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: pt.ipg.mcm.wct.client
+     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: pt.ipg.mcm.client
      * 
      */
     public ObjectFactory() {
@@ -43,6 +45,22 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link GetClienteResponse }
+     * 
+     */
+    public GetClienteResponse createGetClienteResponse() {
+        return new GetClienteResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetCliente }
+     * 
+     */
+    public GetCliente createGetCliente() {
+        return new GetCliente();
+    }
+
+    /**
      * Create an instance of {@link AddClienteResponse }
      * 
      */
@@ -51,19 +69,35 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ClienteTypeResponse }
+     * Create an instance of {@link ReqGetCliente }
      * 
      */
-    public ClienteTypeResponse createClienteTypeResponse() {
-        return new ClienteTypeResponse();
+    public ReqGetCliente createReqGetCliente() {
+        return new ReqGetCliente();
     }
 
     /**
-     * Create an instance of {@link ClienteTypeRequest }
+     * Create an instance of {@link ReqAddCliente }
      * 
      */
-    public ClienteTypeRequest createClienteTypeRequest() {
-        return new ClienteTypeRequest();
+    public ReqAddCliente createReqAddCliente() {
+        return new ReqAddCliente();
+    }
+
+    /**
+     * Create an instance of {@link ResAddCliente }
+     * 
+     */
+    public ResAddCliente createResAddCliente() {
+        return new ResAddCliente();
+    }
+
+    /**
+     * Create an instance of {@link ResGetCliente }
+     * 
+     */
+    public ResGetCliente createResGetCliente() {
+        return new ResGetCliente();
     }
 
     /**
@@ -73,6 +107,24 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://services.mcm.ipg.pt/", name = "addCliente")
     public JAXBElement<AddCliente> createAddCliente(AddCliente value) {
         return new JAXBElement<AddCliente>(_AddCliente_QNAME, AddCliente.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetCliente }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://services.mcm.ipg.pt/", name = "getCliente")
+    public JAXBElement<GetCliente> createGetCliente(GetCliente value) {
+        return new JAXBElement<GetCliente>(_GetCliente_QNAME, GetCliente.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetClienteResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://services.mcm.ipg.pt/", name = "getClienteResponse")
+    public JAXBElement<GetClienteResponse> createGetClienteResponse(GetClienteResponse value) {
+        return new JAXBElement<GetClienteResponse>(_GetClienteResponse_QNAME, GetClienteResponse.class, null, value);
     }
 
     /**

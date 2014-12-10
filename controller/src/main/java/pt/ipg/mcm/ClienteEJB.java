@@ -1,9 +1,10 @@
 package pt.ipg.mcm;
 
-import pt.ipg.mcm.xmodel.cliente.request.AddClienteRequest;
-import pt.ipg.mcm.xmodel.cliente.request.ClienteTypeRequest;
-import pt.ipg.mcm.xmodel.cliente.response.AddClienteResponse;
-import pt.ipg.mcm.xmodel.cliente.response.ClienteTypeResponse;
+import pt.ipg.mcm.entities.ClienteEntity;
+import pt.ipg.mcm.xmodel.cliente.request.ReqAddCliente;
+import pt.ipg.mcm.xmodel.cliente.request.ReqGetCliente;
+import pt.ipg.mcm.xmodel.cliente.response.ResAddCliente;
+import pt.ipg.mcm.xmodel.cliente.response.ResGetCliente;
 import pt.ipg.mcm.xmodel.cliente.response.TypeResponse;
 
 import javax.annotation.Resource;
@@ -11,7 +12,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
-import javax.swing.text.html.parser.Entity;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
@@ -27,22 +27,22 @@ public class ClienteEJB {
   @PersistenceContext(unitName = "mestrado")
   private EntityManager entityManager;
 
-  public AddClienteResponse addClient(AddClienteRequest addClienteRequest) {
-    ClienteTypeResponse clienteResponseType = new ClienteTypeResponse();
+  public ResAddCliente addClient(ReqAddCliente reqAddCliente) {
+    ResAddCliente clienteResponseType = new ResAddCliente();
     Connection connection;
     try {
       connection = dataSource.getConnection();
 
       CallableStatement call = connection.prepareCall("{call P_NOVO_CLIENTE(?,?,?,?,?,?,?,?,?)");
-      call.setLong(1, addClienteRequest.getContribuinte());
-      call.setString(2, addClienteRequest.getNome());
-      call.setInt(3, addClienteRequest.getRole());
-      call.setString(4, addClienteRequest.getMorada());
-      call.setInt(5, addClienteRequest.getPorta());
-      call.setDate(6, new Date(addClienteRequest.getDataNascimento().toGregorianCalendar().getTimeInMillis()));
-      call.setString(7, addClienteRequest.getEmail());
-      call.setString(8, addClienteRequest.getContacto());
-      call.setLong(9, addClienteRequest.getLocalidade());
+      call.setLong(1, reqAddCliente.getContribuinte());
+      call.setString(2, reqAddCliente.getNome());
+      call.setInt(3, reqAddCliente.getRole());
+      call.setString(4, reqAddCliente.getMorada());
+      call.setInt(5, reqAddCliente.getPorta());
+      call.setDate(6, new Date(reqAddCliente.getDataNascimento().toGregorianCalendar().getTimeInMillis()));
+      call.setString(7, reqAddCliente.getEmail());
+      call.setString(8, reqAddCliente.getContacto());
+      call.setLong(9, reqAddCliente.getLocalidade());
       call.registerOutParameter(10, Types.NUMERIC);
       call.execute();
 
@@ -57,5 +57,10 @@ public class ClienteEJB {
   }
 
 
-
+  public ResGetCliente getCliente(ReqGetCliente reqGetCliente) {
+    ClienteEntity clienteEntity = entityManager.find(ClienteEntity.class, reqGetCliente.getId());
+    ResGetCliente resGetCliente = new ResGetCliente();
+    resGetCliente.setNome(clienteEntity.getNome());
+    return resGetCliente;
+  }
 }

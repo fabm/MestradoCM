@@ -3,6 +3,7 @@ package pt.ipg.mcm.entities;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -17,6 +18,7 @@ public class AdministradorEntity {
 
   @Basic
   @Column(name = "IDADMINISTRADOR", nullable = false, insertable = true, updatable = true, precision = 0)
+  @Id
   public long getIdadministrador() {
     return idadministrador;
   }

@@ -1,5 +1,5 @@
 
-package pt.ipg.mcm.xmodel.cliente.request;
+package pt.ipg.mcm.client;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -10,12 +10,12 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>Java class for addClienteRequest complex type.
+ * <p>Java class for reqAddCliente complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="addClienteRequest">
+ * &lt;complexType name="reqAddCliente">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
@@ -37,7 +37,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "addClienteRequest", propOrder = {
+@XmlType(name = "reqAddCliente", propOrder = {
     "contribuinte",
     "nome",
     "role",
@@ -48,7 +48,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "contacto",
     "localidade"
 })
-public class AddClienteRequest {
+public class ReqAddCliente {
 
     protected long contribuinte;
     @XmlElement(required = true)

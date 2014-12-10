@@ -1,5 +1,5 @@
 
-package pt.ipg.mcm.xmodel.cliente.response;
+package pt.ipg.mcm.client;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -17,8 +17,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="type-response" type="{}type-response"/>
+ *         &lt;element name="return" type="{http://services.mcm.ipg.pt/}resAddCliente" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -29,53 +28,35 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "addClienteResponse", propOrder = {
-    "id",
-    "typeResponse"
+    "_return"
 })
 public class AddClienteResponse {
 
-    protected long id;
-    @XmlElement(name = "type-response", required = true)
-    protected TypeResponse typeResponse;
+    @XmlElement(name = "return")
+    protected ResAddCliente _return;
 
     /**
-     * Gets the value of the id property.
-     * 
-     */
-    public long getId() {
-        return id;
-    }
-
-    /**
-     * Sets the value of the id property.
-     * 
-     */
-    public void setId(long value) {
-        this.id = value;
-    }
-
-    /**
-     * Gets the value of the typeResponse property.
+     * Gets the value of the return property.
      * 
      * @return
      *     possible object is
-     *     {@link TypeResponse }
+     *     {@link ResAddCliente }
      *     
      */
-    public TypeResponse getTypeResponse() {
-        return typeResponse;
+    public ResAddCliente getReturn() {
+        return _return;
     }
 
     /**
-     * Sets the value of the typeResponse property.
+     * Sets the value of the return property.
      * 
      * @param value
      *     allowed object is
-     *     {@link TypeResponse }
+     *     {@link ResAddCliente }
      *     
      */
-    public void setTypeResponse(TypeResponse value) {
-        this.typeResponse = value;
+    public void setReturn(ResAddCliente value) {
+        this._return = value;
     }
 
 }

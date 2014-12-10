@@ -3,11 +3,11 @@ package pt.ipg.mcm.client.tests;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
-import pt.ipg.mcm.wct.client.Cliente;
-import pt.ipg.mcm.wct.client.ClienteService;
-import pt.ipg.mcm.wct.client.ClienteTypeRequest;
-import pt.ipg.mcm.wct.client.ClienteTypeResponse;
-import pt.ipg.mcm.wct.client.TypeResponse;
+import pt.ipg.mcm.client.Cliente;
+import pt.ipg.mcm.client.ClienteService;
+import pt.ipg.mcm.client.ReqAddCliente;
+import pt.ipg.mcm.client.ResAddCliente;
+import pt.ipg.mcm.client.TypeResponse;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -20,8 +20,8 @@ public class ClientTest {
   private ClienteService clienteService;
 
   public ClienteService getClienteService() {
-    if(clienteService == null){
-        clienteService = new Cliente().getClientePort();
+    if (clienteService == null) {
+      clienteService = new Cliente().getClientePort();
     }
     return clienteService;
   }
@@ -29,7 +29,7 @@ public class ClientTest {
   @Test
   public void testAddClient() throws Exception {
     ClienteService cliente = getClienteService();
-    ClienteTypeRequest clientTypeRequest = new ClienteTypeRequest();
+    ReqAddCliente clientTypeRequest = new ReqAddCliente();
     clientTypeRequest.setContacto("999999999");
     clientTypeRequest.setContribuinte(1111111111);
     XMLGregorianCalendar xmlGregorianCalendar = DatatypeFactory
@@ -42,9 +42,9 @@ public class ClientTest {
     clientTypeRequest.setNome("Francisco Monteiro");
     clientTypeRequest.setPorta(99);
     clientTypeRequest.setRole(1);
-    ClienteTypeResponse response = cliente.addCliente(clientTypeRequest);
+    ResAddCliente response = cliente.addCliente(clientTypeRequest);
 
-    Assert.assertEquals(TypeResponse.OK,response.getTypeResponse());
+    Assert.assertEquals(TypeResponse.OK, response.getTypeResponse());
     Assert.assertTrue(response.getId()>=0);
   }
 }

@@ -1,46 +1,82 @@
 <?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is Metro/2.3.1-b419 (branches/2.3.1.x-7937; 2014-08-04T08:11:03+0000) JAXWS-RI/2.2.10-b140803.1500 JAXWS-API/2.2.11 JAXB-RI/2.2.10-b140802.1033 JAXB-API/2.2.12-b140109.1041 svn-revision#unknown. --><xs:schema xmlns:tns="http://services.mcm.ipg.pt/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://services.mcm.ipg.pt/">
 
-    <xs:element name="addCliente" type="tns:addCliente"/>
+<xs:element name="addCliente" type="tns:addCliente"/>
 
-    <xs:element name="addClienteResponse" type="tns:addClienteResponse"/>
+<xs:element name="addClienteResponse" type="tns:addClienteResponse"/>
 
-    <xs:complexType name="addCliente">
-        <xs:sequence>
-            <xs:element name="arg0" type="tns:clienteTypeRequest" minOccurs="0"/>
-        </xs:sequence>
-    </xs:complexType>
+<xs:element name="getCliente" type="tns:getCliente"/>
 
-    <xs:complexType name="clienteTypeRequest">
-        <xs:sequence>
-            <xs:element name="contribuinte" type="xs:long"/>
-            <xs:element name="nome" type="xs:string"/>
-            <xs:element name="role" type="xs:int"/>
-            <xs:element name="morada" type="xs:string"/>
-            <xs:element name="porta" type="xs:int"/>
-            <xs:element name="data-nascimento" type="xs:date"/>
-            <xs:element name="email" type="xs:string"/>
-            <xs:element name="contacto" type="xs:string"/>
-            <xs:element name="localidade" type="xs:int"/>
-        </xs:sequence>
-    </xs:complexType>
+<xs:element name="getClienteResponse" type="tns:getClienteResponse"/>
 
-    <xs:complexType name="addClienteResponse">
-        <xs:sequence>
-            <xs:element name="return" type="tns:clienteTypeResponse" minOccurs="0"/>
-        </xs:sequence>
-    </xs:complexType>
+<xs:complexType name="getCliente">
+<xs:sequence>
+<xs:element name="arg0" type="tns:reqGetCliente" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
 
-    <xs:complexType name="clienteTypeResponse">
-        <xs:sequence>
-            <xs:element name="id" type="xs:long"/>
-            <xs:element name="type-response" type="tns:type-response"/>
-        </xs:sequence>
-    </xs:complexType>
+<xs:complexType name="reqGetCliente">
+<xs:sequence>
+<xs:element name="id" type="xs:long"/>
+</xs:sequence>
+</xs:complexType>
 
-    <xs:simpleType name="type-response">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="OK"/>
-            <xs:enumeration value="ERRO"/>
-        </xs:restriction>
-    </xs:simpleType>
+<xs:complexType name="getClienteResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:resGetCliente" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="resGetCliente">
+<xs:sequence>
+<xs:element name="contribuinte" type="xs:long"/>
+<xs:element name="nome" type="xs:string"/>
+<xs:element name="role" type="xs:int"/>
+<xs:element name="morada" type="xs:string"/>
+<xs:element name="porta" type="xs:int"/>
+<xs:element name="data-nascimento" type="xs:date"/>
+<xs:element name="email" type="xs:string"/>
+<xs:element name="contacto" type="xs:string"/>
+<xs:element name="localidade" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="addCliente">
+<xs:sequence>
+<xs:element name="arg0" type="tns:reqAddCliente" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="reqAddCliente">
+<xs:sequence>
+<xs:element name="contribuinte" type="xs:long"/>
+<xs:element name="nome" type="xs:string"/>
+<xs:element name="role" type="xs:int"/>
+<xs:element name="morada" type="xs:string"/>
+<xs:element name="porta" type="xs:int"/>
+<xs:element name="data-nascimento" type="xs:date"/>
+<xs:element name="email" type="xs:string"/>
+<xs:element name="contacto" type="xs:string"/>
+<xs:element name="localidade" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="addClienteResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:resAddCliente" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="resAddCliente">
+<xs:sequence>
+<xs:element name="id" type="xs:long"/>
+<xs:element name="type-response" type="tns:type-response"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:simpleType name="type-response">
+<xs:restriction base="xs:string">
+<xs:enumeration value="OK"/>
+<xs:enumeration value="ERRO"/>
+</xs:restriction>
+</xs:simpleType>
 </xs:schema>
