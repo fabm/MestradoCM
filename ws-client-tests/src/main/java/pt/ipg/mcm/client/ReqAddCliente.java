@@ -10,12 +10,12 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>Java class for reqAddCliente complex type.
+ * <p>Java class for req-add-cliente complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="reqAddCliente">
+ * &lt;complexType name="req-add-cliente">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
@@ -37,7 +37,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "reqAddCliente", propOrder = {
+@XmlType(name = "req-add-cliente", propOrder = {
     "contribuinte",
     "nome",
     "role",

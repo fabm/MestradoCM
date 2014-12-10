@@ -7,16 +7,16 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for getCliente complex type.
+ * <p>Java class for get-cliente complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="getCliente">
+ * &lt;complexType name="get-cliente">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="arg0" type="{http://services.mcm.ipg.pt/}reqGetCliente" minOccurs="0"/>
+ *         &lt;element name="request" type="{http://services.mcm.ipg.pt/}req-get-cliente" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -26,35 +26,35 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "getCliente", propOrder = {
-    "arg0"
+@XmlType(name = "get-cliente", propOrder = {
+    "request"
 })
 public class GetCliente {
 
-    protected ReqGetCliente arg0;
+    protected ReqGetCliente request;
 
     /**
-     * Gets the value of the arg0 property.
+     * Gets the value of the request property.
      * 
      * @return
      *     possible object is
      *     {@link ReqGetCliente }
      *     
      */
-    public ReqGetCliente getArg0() {
-        return arg0;
+    public ReqGetCliente getRequest() {
+        return request;
     }
 
     /**
-     * Sets the value of the arg0 property.
+     * Sets the value of the request property.
      * 
      * @param value
      *     allowed object is
      *     {@link ReqGetCliente }
      *     
      */
-    public void setArg0(ReqGetCliente value) {
-        this.arg0 = value;
+    public void setRequest(ReqGetCliente value) {
+        this.request = value;
     }
 
 }

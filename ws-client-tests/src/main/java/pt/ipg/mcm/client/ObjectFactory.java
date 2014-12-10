@@ -24,10 +24,10 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _AddCliente_QNAME = new QName("http://services.mcm.ipg.pt/", "addCliente");
-    private final static QName _GetCliente_QNAME = new QName("http://services.mcm.ipg.pt/", "getCliente");
-    private final static QName _GetClienteResponse_QNAME = new QName("http://services.mcm.ipg.pt/", "getClienteResponse");
-    private final static QName _AddClienteResponse_QNAME = new QName("http://services.mcm.ipg.pt/", "addClienteResponse");
+    private final static QName _Get_QNAME = new QName("http://services.mcm.ipg.pt/", "get");
+    private final static QName _GetCliente_QNAME = new QName("http://services.mcm.ipg.pt/", "get-cliente");
+    private final static QName _AddCliente_QNAME = new QName("http://services.mcm.ipg.pt/", "add-cliente");
+    private final static QName _Add_QNAME = new QName("http://services.mcm.ipg.pt/", "add");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: pt.ipg.mcm.client
@@ -37,19 +37,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link AddCliente }
+     * Create an instance of {@link Get }
      * 
      */
-    public AddCliente createAddCliente() {
-        return new AddCliente();
-    }
-
-    /**
-     * Create an instance of {@link GetClienteResponse }
-     * 
-     */
-    public GetClienteResponse createGetClienteResponse() {
-        return new GetClienteResponse();
+    public Get createGet() {
+        return new Get();
     }
 
     /**
@@ -61,11 +53,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link AddClienteResponse }
+     * Create an instance of {@link AddCliente }
      * 
      */
-    public AddClienteResponse createAddClienteResponse() {
-        return new AddClienteResponse();
+    public AddCliente createAddCliente() {
+        return new AddCliente();
+    }
+
+    /**
+     * Create an instance of {@link Add }
+     * 
+     */
+    public Add createAdd() {
+        return new Add();
     }
 
     /**
@@ -77,11 +77,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ReqAddCliente }
+     * Create an instance of {@link ResGetCliente }
      * 
      */
-    public ReqAddCliente createReqAddCliente() {
-        return new ReqAddCliente();
+    public ResGetCliente createResGetCliente() {
+        return new ResGetCliente();
     }
 
     /**
@@ -93,47 +93,47 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ResGetCliente }
+     * Create an instance of {@link ReqAddCliente }
      * 
      */
-    public ResGetCliente createResGetCliente() {
-        return new ResGetCliente();
+    public ReqAddCliente createReqAddCliente() {
+        return new ReqAddCliente();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link AddCliente }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link Get }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://services.mcm.ipg.pt/", name = "addCliente")
-    public JAXBElement<AddCliente> createAddCliente(AddCliente value) {
-        return new JAXBElement<AddCliente>(_AddCliente_QNAME, AddCliente.class, null, value);
+    @XmlElementDecl(namespace = "http://services.mcm.ipg.pt/", name = "get")
+    public JAXBElement<Get> createGet(Get value) {
+        return new JAXBElement<Get>(_Get_QNAME, Get.class, null, value);
     }
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetCliente }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://services.mcm.ipg.pt/", name = "getCliente")
+    @XmlElementDecl(namespace = "http://services.mcm.ipg.pt/", name = "get-cliente")
     public JAXBElement<GetCliente> createGetCliente(GetCliente value) {
         return new JAXBElement<GetCliente>(_GetCliente_QNAME, GetCliente.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetClienteResponse }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link AddCliente }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://services.mcm.ipg.pt/", name = "getClienteResponse")
-    public JAXBElement<GetClienteResponse> createGetClienteResponse(GetClienteResponse value) {
-        return new JAXBElement<GetClienteResponse>(_GetClienteResponse_QNAME, GetClienteResponse.class, null, value);
+    @XmlElementDecl(namespace = "http://services.mcm.ipg.pt/", name = "add-cliente")
+    public JAXBElement<AddCliente> createAddCliente(AddCliente value) {
+        return new JAXBElement<AddCliente>(_AddCliente_QNAME, AddCliente.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link AddClienteResponse }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link Add }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://services.mcm.ipg.pt/", name = "addClienteResponse")
-    public JAXBElement<AddClienteResponse> createAddClienteResponse(AddClienteResponse value) {
-        return new JAXBElement<AddClienteResponse>(_AddClienteResponse_QNAME, AddClienteResponse.class, null, value);
+    @XmlElementDecl(namespace = "http://services.mcm.ipg.pt/", name = "add")
+    public JAXBElement<Add> createAdd(Add value) {
+        return new JAXBElement<Add>(_Add_QNAME, Add.class, null, value);
     }
 
 }

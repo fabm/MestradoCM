@@ -1,5 +1,5 @@
 
-package pt.ipg.mcm.xmodel.cliente.response;
+package pt.ipg.mcm.xmodel;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -8,12 +8,12 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for resAddCliente complex type.
+ * <p>Java class for res-add-cliente complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="resAddCliente">
+ * &lt;complexType name="res-add-cliente">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
@@ -28,15 +28,15 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "resAddCliente", propOrder = {
+@XmlType(name = "res-add-cliente", propOrder = {
     "id",
     "typeResponse"
 })
 public class ResAddCliente {
 
-    private long id;
+    protected long id;
     @XmlElement(name = "type-response", required = true)
-    private TypeResponse typeResponse;
+    protected TypeResponse typeResponse;
 
     /**
      * Gets the value of the id property.

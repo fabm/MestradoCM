@@ -1,5 +1,5 @@
 
-package pt.ipg.mcm.xmodel.cliente.request;
+package pt.ipg.mcm.xmodel;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -7,12 +7,12 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for reqGetCliente complex type.
+ * <p>Java class for req-get-cliente complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="reqGetCliente">
+ * &lt;complexType name="req-get-cliente">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
@@ -26,12 +26,12 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "reqGetCliente", propOrder = {
+@XmlType(name = "req-get-cliente", propOrder = {
     "id"
 })
 public class ReqGetCliente {
 
-    private long id;
+    protected long id;
 
     /**
      * Gets the value of the id property.

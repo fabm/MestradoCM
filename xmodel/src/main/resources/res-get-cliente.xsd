@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:element name="reqAddCliente" type="reqAddCliente"/>
+  <xs:element name="res-get-cliente" type="res-get-cliente"/>
 
-  <xs:complexType name="reqAddCliente">
+  <xs:complexType name="res-get-cliente">
     <xs:sequence>
       <xs:element type="xs:long" name="contribuinte" minOccurs="1" maxOccurs="1"/>
       <xs:element type="xs:string" name="nome" minOccurs="1" maxOccurs="1"/>
@@ -15,4 +15,12 @@
       <xs:element type="xs:int" name="localidade" minOccurs="1" maxOccurs="1"/>
     </xs:sequence>
   </xs:complexType>
+
+  <xs:simpleType name="type-response">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OK"/>
+      <xs:enumeration value="ERRO"/>
+    </xs:restriction>
+  </xs:simpleType>
+
 </xs:schema>

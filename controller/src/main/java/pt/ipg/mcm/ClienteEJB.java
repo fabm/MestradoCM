@@ -1,11 +1,11 @@
 package pt.ipg.mcm;
 
 import pt.ipg.mcm.entities.ClienteEntity;
-import pt.ipg.mcm.xmodel.cliente.request.ReqAddCliente;
-import pt.ipg.mcm.xmodel.cliente.request.ReqGetCliente;
-import pt.ipg.mcm.xmodel.cliente.response.ResAddCliente;
-import pt.ipg.mcm.xmodel.cliente.response.ResGetCliente;
-import pt.ipg.mcm.xmodel.cliente.response.TypeResponse;
+import pt.ipg.mcm.xmodel.ReqAddCliente;
+import pt.ipg.mcm.xmodel.ReqGetCliente;
+import pt.ipg.mcm.xmodel.ResAddCliente;
+import pt.ipg.mcm.xmodel.ResGetCliente;
+import pt.ipg.mcm.xmodel.TypeResponse;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
@@ -60,6 +60,9 @@ public class ClienteEJB {
   public ResGetCliente getCliente(ReqGetCliente reqGetCliente) {
     ClienteEntity clienteEntity = entityManager.find(ClienteEntity.class, reqGetCliente.getId());
     ResGetCliente resGetCliente = new ResGetCliente();
+    resGetCliente.setContribuinte(clienteEntity.getContribuinte().longValue());
+    resGetCliente.setMorada(clienteEntity.getMorada());
+    resGetCliente.setRole(clienteEntity.getProle().intValue());
     resGetCliente.setNome(clienteEntity.getNome());
     return resGetCliente;
   }

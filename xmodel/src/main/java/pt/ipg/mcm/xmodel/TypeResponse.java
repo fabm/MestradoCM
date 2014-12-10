@@ -1,5 +1,5 @@
 
-package pt.ipg.mcm.xmodel.cliente.response;
+package pt.ipg.mcm.xmodel;
 
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlType;

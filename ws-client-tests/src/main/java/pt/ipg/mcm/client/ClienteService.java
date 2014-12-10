@@ -26,32 +26,32 @@ public interface ClienteService {
 
     /**
      * 
-     * @param arg0
+     * @param request
      * @return
      *     returns pt.ipg.mcm.client.ResGetCliente
      */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getCliente", targetNamespace = "http://services.mcm.ipg.pt/", className = "pt.ipg.mcm.client.GetCliente")
-    @ResponseWrapper(localName = "getClienteResponse", targetNamespace = "http://services.mcm.ipg.pt/", className = "pt.ipg.mcm.client.GetClienteResponse")
-    @Action(input = "http://services.mcm.ipg.pt/ClienteService/getClienteRequest", output = "http://services.mcm.ipg.pt/ClienteService/getClienteResponse")
+    @WebMethod(operationName = "get-cliente")
+    @WebResult(name = "response", targetNamespace = "")
+    @RequestWrapper(localName = "get-cliente", targetNamespace = "http://services.mcm.ipg.pt/", className = "pt.ipg.mcm.client.GetCliente")
+    @ResponseWrapper(localName = "get", targetNamespace = "http://services.mcm.ipg.pt/", className = "pt.ipg.mcm.client.Get")
+    @Action(input = "http://services.mcm.ipg.pt/ClienteService/get-clienteRequest", output = "http://services.mcm.ipg.pt/ClienteService/get-clienteResponse")
     public ResGetCliente getCliente(
-        @WebParam(name = "arg0", targetNamespace = "")
-        ReqGetCliente arg0);
+        @WebParam(name = "request", targetNamespace = "")
+        ReqGetCliente request);
 
     /**
      * 
-     * @param arg0
+     * @param request
      * @return
      *     returns pt.ipg.mcm.client.ResAddCliente
      */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "addCliente", targetNamespace = "http://services.mcm.ipg.pt/", className = "pt.ipg.mcm.client.AddCliente")
-    @ResponseWrapper(localName = "addClienteResponse", targetNamespace = "http://services.mcm.ipg.pt/", className = "pt.ipg.mcm.client.AddClienteResponse")
-    @Action(input = "http://services.mcm.ipg.pt/ClienteService/addClienteRequest", output = "http://services.mcm.ipg.pt/ClienteService/addClienteResponse")
+    @WebMethod(operationName = "add-cliente")
+    @WebResult(name = "response", targetNamespace = "")
+    @RequestWrapper(localName = "add-cliente", targetNamespace = "http://services.mcm.ipg.pt/", className = "pt.ipg.mcm.client.AddCliente")
+    @ResponseWrapper(localName = "add", targetNamespace = "http://services.mcm.ipg.pt/", className = "pt.ipg.mcm.client.Add")
+    @Action(input = "http://services.mcm.ipg.pt/ClienteService/add-clienteRequest", output = "http://services.mcm.ipg.pt/ClienteService/add-clienteResponse")
     public ResAddCliente addCliente(
-        @WebParam(name = "arg0", targetNamespace = "")
-        ReqAddCliente arg0);
+        @WebParam(name = "request", targetNamespace = "")
+        ReqAddCliente request);
 
 }

@@ -17,6 +17,7 @@ public class ClientTest {
 
   @Rule
   public ClientRule clientRule = new ClientRule();
+
   private ClienteService clienteService;
 
   public ClienteService getClienteService() {
@@ -26,8 +27,10 @@ public class ClientTest {
     return clienteService;
   }
 
+
   @Test
   public void testAddClient() throws Exception {
+
     ClienteService cliente = getClienteService();
     ReqAddCliente clientTypeRequest = new ReqAddCliente();
     clientTypeRequest.setContacto("999999999");
@@ -46,5 +49,6 @@ public class ClientTest {
 
     Assert.assertEquals(TypeResponse.OK, response.getTypeResponse());
     Assert.assertTrue(response.getId()>=0);
+
   }
 }

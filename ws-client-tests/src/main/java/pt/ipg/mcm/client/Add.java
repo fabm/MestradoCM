@@ -3,21 +3,20 @@ package pt.ipg.mcm.client;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for addClienteResponse complex type.
+ * <p>Java class for add complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="addClienteResponse">
+ * &lt;complexType name="add">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="return" type="{http://services.mcm.ipg.pt/}resAddCliente" minOccurs="0"/>
+ *         &lt;element name="response" type="{http://services.mcm.ipg.pt/}res-add-cliente" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -27,36 +26,35 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "addClienteResponse", propOrder = {
-    "_return"
+@XmlType(name = "add", propOrder = {
+    "response"
 })
-public class AddClienteResponse {
+public class Add {
 
-    @XmlElement(name = "return")
-    protected ResAddCliente _return;
+    protected ResAddCliente response;
 
     /**
-     * Gets the value of the return property.
+     * Gets the value of the response property.
      * 
      * @return
      *     possible object is
      *     {@link ResAddCliente }
      *     
      */
-    public ResAddCliente getReturn() {
-        return _return;
+    public ResAddCliente getResponse() {
+        return response;
     }
 
     /**
-     * Sets the value of the return property.
+     * Sets the value of the response property.
      * 
      * @param value
      *     allowed object is
      *     {@link ResAddCliente }
      *     
      */
-    public void setReturn(ResAddCliente value) {
-        this._return = value;
+    public void setResponse(ResAddCliente value) {
+        this.response = value;
     }
 
 }
