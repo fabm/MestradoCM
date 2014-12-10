@@ -8,12 +8,12 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for clienteTypeResponse complex type.
+ * <p>Java class for addClienteResponse complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="clienteTypeResponse">
+ * &lt;complexType name="addClienteResponse">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
@@ -28,11 +28,11 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "clienteTypeResponse", propOrder = {
+@XmlType(name = "addClienteResponse", propOrder = {
     "id",
     "typeResponse"
 })
-public class ClienteTypeResponse extends AddClienteResponse {
+public class AddClienteResponse {
 
     protected long id;
     @XmlElement(name = "type-response", required = true)
@@ -59,7 +59,7 @@ public class ClienteTypeResponse extends AddClienteResponse {
      * 
      * @return
      *     possible object is
-     *     {@link pt.ipg.mcm.xmodel.cliente.response.TypeResponse }
+     *     {@link TypeResponse }
      *     
      */
     public TypeResponse getTypeResponse() {
@@ -71,7 +71,7 @@ public class ClienteTypeResponse extends AddClienteResponse {
      * 
      * @param value
      *     allowed object is
-     *     {@link pt.ipg.mcm.xmodel.cliente.response.TypeResponse }
+     *     {@link TypeResponse }
      *     
      */
     public void setTypeResponse(TypeResponse value) {
