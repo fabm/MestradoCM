@@ -1,54 +1,36 @@
 package pt.ipg.mcm.client.tests;
 
-import org.junit.Assert;
+import org.apache.commons.io.FileUtils;
+import org.custommonkey.xmlunit.XMLAssert;
+import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.Rule;
 import org.junit.Test;
-import pt.ipg.mcm.client.Cliente;
-import pt.ipg.mcm.client.ClienteService;
-import pt.ipg.mcm.client.ReqAddCliente;
-import pt.ipg.mcm.client.ResAddCliente;
-import pt.ipg.mcm.client.TypeResponse;
+import pt.ipg.mcm.wct.utils.webservice.WsSoapClientDispatcherHelper;
 
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.util.GregorianCalendar;
+import java.io.File;
 
 public class ClientTest {
 
   @Rule
   public ClientRule clientRule = new ClientRule();
 
-  private ClienteService clienteService;
-
-  public ClienteService getClienteService() {
-    if (clienteService == null) {
-      clienteService = new Cliente().getClientePort();
-    }
-    return clienteService;
-  }
-
-
   @Test
-  public void testAddClient() throws Exception {
+  public void testGetClient() throws Exception {
+    String strPath = "/soap-messages/req1.xml";
 
-    ClienteService cliente = getClienteService();
-    ReqAddCliente clientTypeRequest = new ReqAddCliente();
-    clientTypeRequest.setContacto("999999999");
-    clientTypeRequest.setContribuinte(1111111111);
-    XMLGregorianCalendar xmlGregorianCalendar = DatatypeFactory
-        .newInstance()
-        .newXMLGregorianCalendar(new GregorianCalendar());
-    clientTypeRequest.setDataNascimento(xmlGregorianCalendar);
-    clientTypeRequest.setEmail("francisco@sapo.com");
-    clientTypeRequest.setLocalidade(6300559);
-    clientTypeRequest.setMorada("uma avenida na Guarda");
-    clientTypeRequest.setNome("Francisco Monteiro");
-    clientTypeRequest.setPorta(99);
-    clientTypeRequest.setRole(1);
-    ResAddCliente response = cliente.addCliente(clientTypeRequest);
+    WsSoapClientDispatcherHelper wsSoapClientDispatcherHelper = new WsSoapClientDispatcherHelper();
+    wsSoapClientDispatcherHelper.setWsdlUrl("http://192.168.1.104:8080/services/cliente?wsdl");
+    wsSoapClientDispatcherHelper.setNs("http://services.mcm.ipg.pt/");
+    wsSoapClientDispatcherHelper.setServiceName("cliente");
+    wsSoapClientDispatcherHelper.setPortName("clientePort");
+    wsSoapClientDispatcherHelper.createService();
+    String resWs = wsSoapClientDispatcherHelper.dispatchRequest(getClass().getResourceAsStream(strPath));
 
-    Assert.assertEquals(TypeResponse.OK, response.getTypeResponse());
-    Assert.assertTrue(response.getId()>=0);
+    String pathToRes = "/soap-messages/res1.xml";
 
+    String resFile = FileUtils.readFileToString(new File(getClass().getResource(pathToRes).toURI()));
+
+    XMLUnit.setIgnoreWhitespace(true);
+    XMLAssert.assertXMLEqual(resFile, resWs);
   }
 }
