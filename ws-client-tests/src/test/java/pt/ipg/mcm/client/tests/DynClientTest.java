@@ -4,6 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 import pt.ipg.mcm.wct.utils.webservice.UnmarshallerHelper;
@@ -24,35 +25,15 @@ import java.net.URLConnection;
 
 public class DynClientTest {
 
-  private URL wsdlUrl = null;
-
-  public DynClientTest() throws MalformedURLException {
-    wsdlUrl = new URL("http://192.168.1.104:8080/services/cliente?wsdl");
-  }
-
-  @Test
-  public void testReadUrl() throws Exception {
-    URLConnection connection = wsdlUrl.openConnection();
-    BufferedReader in = new BufferedReader(
-        new InputStreamReader(
-            connection.getInputStream()));
-
-    StringBuilder response = new StringBuilder();
-    String inputLine;
-
-    while ((inputLine = in.readLine()) != null) {
-      response.append(inputLine);
-    }
-
-    in.close();
-  }
+  @Rule
+  public ClientRule clientRule = new ClientRule();
 
   @Test
   public void dynamicSoapTest() throws IOException, SOAPException, URISyntaxException, JAXBException, XMLStreamException, SAXException {
     String strPath = "/soap-messages/req1.xml";
 
     WsSoapClientDispatcherHelper wsSoapClientDispatcherHelper = new WsSoapClientDispatcherHelper();
-    wsSoapClientDispatcherHelper.setWsdlUrl("http://192.168.1.104:8080/services/cliente?wsdl");
+    wsSoapClientDispatcherHelper.setWsdlUrl("http://localhost:8081/services/cliente?wsdl");
     wsSoapClientDispatcherHelper.setNs("http://services.mcm.ipg.pt/");
     wsSoapClientDispatcherHelper.setServiceName("cliente");
     wsSoapClientDispatcherHelper.setPortName("clientePort");

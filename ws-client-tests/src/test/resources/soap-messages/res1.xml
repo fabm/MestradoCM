@@ -1,6 +1,7 @@
 <S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
     <S:Header/>
-    <S:Body><ns2:get xmlns:ns2="http://services.mcm.ipg.pt/">
+    <S:Body>
+        <ns2:get xmlns:ns2="http://services.mcm.ipg.pt/">
             <response>
                 <contribuinte>111</contribuinte>
                 <nome>usercliente</nome>
@@ -9,5 +10,6 @@
                 <porta>0</porta>
                 <localidade>0</localidade>
             </response>
-        </ns2:get></S:Body>
+        </ns2:get>
+    </S:Body>
 </S:Envelope>
