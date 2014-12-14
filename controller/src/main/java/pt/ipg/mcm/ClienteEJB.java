@@ -17,11 +17,13 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Stateless
 public class ClienteEJB {
 
-  @Resource(name = "jdbc/mestrado")
+  @Resource(lookup = "jdbc/mestrado")
   private DataSource dataSource;
 
   @PersistenceContext(unitName = "mestrado")
@@ -33,7 +35,7 @@ public class ClienteEJB {
     try {
       connection = dataSource.getConnection();
 
-      CallableStatement call = connection.prepareCall("{call P_NOVO_CLIENTE(?,?,?,?,?,?,?,?,?)");
+      CallableStatement call = connection.prepareCall("{call P_NOVO_CLIENTE(?,?,?,?,?,?,?,?,?,?)");
       call.setLong(1, reqAddCliente.getContribuinte());
       call.setString(2, reqAddCliente.getNome());
       call.setInt(3, reqAddCliente.getRole());
@@ -50,6 +52,7 @@ public class ClienteEJB {
       clienteResponseType.setTypeResponse(TypeResponse.OK);
       return clienteResponseType;
     } catch (SQLException e) {
+      Logger.getLogger(ClienteEJB.class.getName()).log(Level.SEVERE,"sql problem",e);
       clienteResponseType.setTypeResponse(TypeResponse.ERRO);
       return clienteResponseType;
     }

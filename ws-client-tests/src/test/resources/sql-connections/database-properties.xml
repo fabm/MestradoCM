@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <database>
     <connections>
-        <connection name="ipg-francisco-in" key="ipg" active="true">
+        <connection name="ipg-bruno-out" key="ipg" >
             <url>jdbc:oracle:thin:@//193.137.232.45:1521/test</url>
+            <login>bda_1010136</login>
+            <password>bda.1010136.password</password>
+        </connection>
+        <connection name="ipg-bruno-in" key="ipg" active="true">
+            <url>jdbc:oracle:thin:@//192.168.23.32:1521/test</url>
             <login>bda_1010136</login>
             <password>bda.1010136.password</password>
         </connection>

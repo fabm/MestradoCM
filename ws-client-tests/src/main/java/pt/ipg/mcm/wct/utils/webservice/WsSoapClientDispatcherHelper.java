@@ -6,6 +6,7 @@ import javax.xml.namespace.QName;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
+import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Dispatch;
 import javax.xml.ws.Service;
 import java.io.ByteArrayInputStream;
@@ -15,6 +16,7 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Map;
 
 public class WsSoapClientDispatcherHelper {
   private String ns;
@@ -53,6 +55,10 @@ public class WsSoapClientDispatcherHelper {
 
     MessageFactory factory = MessageFactory.newInstance();
     SOAPMessage msgObject = factory.createMessage(null, inputStream);
+
+    Map<String, Object> rc = dispatch.getRequestContext();
+    rc.put(BindingProvider.USERNAME_PROPERTY,"user");
+    rc.put(BindingProvider.PASSWORD_PROPERTY,"user");
 
     SOAPMessage response = dispatch.invoke(msgObject);
 

@@ -1,0 +1,59 @@
+package pt.ipg.mcm;
+
+import pt.ipg.mcm.xmodel.ReqAddCategoria;
+import pt.ipg.mcm.xmodel.ResAddCategoria;
+import pt.ipg.mcm.xmodel.TypeResponse;
+
+import javax.annotation.Resource;
+import javax.ejb.Stateless;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+@Stateless
+public class CategoriaEJB {
+
+  private static Logger LOGGER = Logger.getLogger(CategoriaEJB.class.getName());
+
+  @Resource(lookup = "jdbc/mestrado")
+  private DataSource dataSource;
+
+
+  public ResAddCategoria addCategoria(ReqAddCategoria reqAddCategoria) {
+    Connection connection;
+    ResAddCategoria resAddCategoria = new ResAddCategoria();
+    try {
+      connection = dataSource.getConnection();
+
+      CallableStatement call = connection.prepareCall("SELECT NOME,DESCRICAO from CATEGORIA");
+      ResultSet rs = call.executeQuery();
+      while (rs.next()) {
+        LOGGER.log(Level.INFO, "nome:" + rs.getString(1) + " descrição:" + rs.getString(2));
+      }
+      rs.close();
+
+      call = connection.prepareCall("{call P_NOVA_CATEGORIA(?,?,?)");
+      call.setString(1, reqAddCategoria.getNome());
+      call.setString(2, reqAddCategoria.getDescricao());
+      call.registerOutParameter(3, Types.NUMERIC);
+      call.execute();
+
+      resAddCategoria.setId(call.getLong(3));
+      resAddCategoria.setTypeResponse(TypeResponse.OK);
+      return resAddCategoria;
+    } catch (SQLException e) {
+      LOGGER.log(Level.SEVERE, "sql problem", e);
+      resAddCategoria.setTypeResponse(TypeResponse.ERRO);
+      return resAddCategoria;
+    }
+
+  }
+}
