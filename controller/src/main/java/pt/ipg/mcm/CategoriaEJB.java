@@ -2,6 +2,7 @@ package pt.ipg.mcm;
 
 import pt.ipg.mcm.xmodel.ReqAddCategoria;
 import pt.ipg.mcm.xmodel.ResAddCategoria;
+import pt.ipg.mcm.xmodel.TypeEnumResponse;
 import pt.ipg.mcm.xmodel.TypeResponse;
 
 import javax.annotation.Resource;
@@ -30,6 +31,8 @@ public class CategoriaEJB {
   public ResAddCategoria addCategoria(ReqAddCategoria reqAddCategoria) {
     Connection connection;
     ResAddCategoria resAddCategoria = new ResAddCategoria();
+    TypeResponse typeResponse = new TypeResponse();
+    resAddCategoria.setTypeResponse(typeResponse);
     try {
       connection = dataSource.getConnection();
 
@@ -47,11 +50,12 @@ public class CategoriaEJB {
       call.execute();
 
       resAddCategoria.setId(call.getLong(3));
-      resAddCategoria.setTypeResponse(TypeResponse.OK);
+      typeResponse.setMensagem("Categoria inserida com sucesso");
+      typeResponse.setTipoResposta(TypeEnumResponse.OK);
       return resAddCategoria;
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, "sql problem", e);
-      resAddCategoria.setTypeResponse(TypeResponse.ERRO);
+      typeResponse.setMensagem("problema na inserção da categoria");
       return resAddCategoria;
     }
 

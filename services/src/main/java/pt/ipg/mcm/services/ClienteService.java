@@ -44,7 +44,7 @@ public class ClienteService {
   @WebMethod(operationName = "get-cliente")
   @ResponseWrapper(localName = "get")
   public ResGetCliente getCliente(@WebParam(name = "request") ReqGetCliente reqGetCliente) throws LoginException {
-    rolesAuthorized.checkAuthorization(Role.ADMINISTRADOR,Role.CLIENTE);
+    rolesAuthorized.checkAuthorization(Role.ADMINISTRADOR, Role.CLIENTE);
     return clienteEJB.getCliente(reqGetCliente);
   }
 
@@ -52,7 +52,7 @@ public class ClienteService {
   @WebMethod(operationName = "add-cliente")
   @ResponseWrapper(localName = "add")
   public ResAddCliente addCliente(@WebParam(name = "request") ReqAddCliente reqAddCliente) throws LoginException {
-    rolesAuthorized.checkAuthorization(Role.CLIENTE);
+    rolesAuthorized.checkAuthorization(Role.ADMINISTRADOR, Role.CLIENTE);
     return clienteEJB.addClient(reqAddCliente);
   }
 

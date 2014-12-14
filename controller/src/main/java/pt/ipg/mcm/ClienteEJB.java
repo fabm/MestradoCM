@@ -5,6 +5,7 @@ import pt.ipg.mcm.xmodel.ReqAddCliente;
 import pt.ipg.mcm.xmodel.ReqGetCliente;
 import pt.ipg.mcm.xmodel.ResAddCliente;
 import pt.ipg.mcm.xmodel.ResGetCliente;
+import pt.ipg.mcm.xmodel.TypeEnumResponse;
 import pt.ipg.mcm.xmodel.TypeResponse;
 
 import javax.annotation.Resource;
@@ -31,6 +32,8 @@ public class ClienteEJB {
 
   public ResAddCliente addClient(ReqAddCliente reqAddCliente) {
     ResAddCliente clienteResponseType = new ResAddCliente();
+    TypeResponse type = new TypeResponse();
+    clienteResponseType.setTypeResponse(type);
     Connection connection;
     try {
       connection = dataSource.getConnection();
@@ -49,11 +52,13 @@ public class ClienteEJB {
       call.execute();
 
       clienteResponseType.setId(call.getLong(10));
-      clienteResponseType.setTypeResponse(TypeResponse.OK);
+      type.setMensagem("cliente inserido com sucesso");
+      type.setTipoResposta(TypeEnumResponse.OK);
       return clienteResponseType;
     } catch (SQLException e) {
-      Logger.getLogger(ClienteEJB.class.getName()).log(Level.SEVERE,"sql problem",e);
-      clienteResponseType.setTypeResponse(TypeResponse.ERRO);
+      Logger.getLogger(ClienteEJB.class.getName()).log(Level.SEVERE, "sql problem", e);
+      type.setMensagem("Houve um erro ao tentar inserir o cliente consulte o administrador");
+      type.setTipoResposta(TypeEnumResponse.ERRO);
       return clienteResponseType;
     }
 
@@ -63,6 +68,9 @@ public class ClienteEJB {
   public ResGetCliente getCliente(ReqGetCliente reqGetCliente) {
     ClienteEntity clienteEntity = entityManager.find(ClienteEntity.class, reqGetCliente.getId());
     ResGetCliente resGetCliente = new ResGetCliente();
+    if (clienteEntity == null) {
+      return resGetCliente;
+    }
     resGetCliente.setContribuinte(clienteEntity.getContribuinte().longValue());
     resGetCliente.setMorada(clienteEntity.getMorada());
     resGetCliente.setRole(clienteEntity.getProle().intValue());
