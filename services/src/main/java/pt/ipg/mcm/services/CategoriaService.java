@@ -1,13 +1,8 @@
 package pt.ipg.mcm.services;
 
 import pt.ipg.mcm.CategoriaEJB;
-import pt.ipg.mcm.ClienteEJB;
 import pt.ipg.mcm.xmodel.ReqAddCategoria;
-import pt.ipg.mcm.xmodel.ReqAddCliente;
-import pt.ipg.mcm.xmodel.ReqGetCliente;
 import pt.ipg.mcm.xmodel.ResAddCategoria;
-import pt.ipg.mcm.xmodel.ResAddCliente;
-import pt.ipg.mcm.xmodel.ResGetCliente;
 
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
@@ -25,7 +20,7 @@ public class CategoriaService {
   @WebResult(name = "response")
   @WebMethod(operationName = "add-categoria")
   @ResponseWrapper(localName = "add")
-  public ResAddCategoria addCategoria(@WebParam(name = "request")ReqAddCategoria reqAddCategoria) {
+  public ResAddCategoria addCategoria(@WebParam(name = "request") ReqAddCategoria reqAddCategoria) {
     return categoriaEJB.addCategoria(reqAddCategoria);
   }
 
