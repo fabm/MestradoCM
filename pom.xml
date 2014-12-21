@@ -15,6 +15,7 @@
         <module>app</module>
         <module>ws-client-tests</module>
         <module>pmodel</module>
+        <module>common</module>
     </modules>
 
     <properties>

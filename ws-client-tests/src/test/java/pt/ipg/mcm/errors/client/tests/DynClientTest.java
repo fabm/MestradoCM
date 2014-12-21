@@ -1,0 +1,61 @@
+package pt.ipg.mcm.errors.client.tests;
+
+import org.apache.commons.io.FileUtils;
+import org.custommonkey.xmlunit.XMLAssert;
+import org.custommonkey.xmlunit.XMLUnit;
+import org.junit.Assert;
+import org.junit.Rule;
+import org.junit.Test;
+import org.xml.sax.SAXException;
+import pt.ipg.mcm.errors.wct.utils.webservice.UnmarshallerHelper;
+import pt.ipg.mcm.errors.wct.utils.webservice.WsSoapClientDispatcherHelper;
+import pt.ipg.mcm.xmodel.ResGetCliente;
+
+import javax.xml.bind.JAXBException;
+import javax.xml.soap.SOAPException;
+import javax.xml.stream.XMLStreamException;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+public class DynClientTest {
+
+  @Rule
+  public ClientRule clientRule = new ClientRule();
+
+  @Test
+  public void dynamicSoapTest() throws IOException, SOAPException, URISyntaxException, JAXBException, XMLStreamException, SAXException {
+    String strPath = "/soap-messages/req1.xml";
+
+    WsSoapClientDispatcherHelper wsSoapClientDispatcherHelper = new WsSoapClientDispatcherHelper();
+    wsSoapClientDispatcherHelper.setWsdlUrl("http://localhost:8081/services/cliente?wsdl");
+    wsSoapClientDispatcherHelper.setNs("http://services.mcm.ipg.pt/");
+    wsSoapClientDispatcherHelper.setServiceName("cliente");
+    wsSoapClientDispatcherHelper.setPortName("clientePort");
+    wsSoapClientDispatcherHelper.createService();
+    String resWs = wsSoapClientDispatcherHelper.dispatchRequest(getClass().getResourceAsStream(strPath));
+
+    String pathToRes = "/soap-messages/res1.xml";
+
+    String resFile = FileUtils.readFileToString(new File(getClass().getResource(pathToRes).toURI()));
+
+
+    System.out.println("Xml carregado do cliente:");
+    System.out.println(resWs);
+    System.out.println("Xml carregado do ficheiro para comparação:");
+    System.out.println(resFile);
+
+    XMLUnit.setIgnoreWhitespace(true);
+    XMLAssert.assertXMLEqual(resFile, resWs);
+
+    System.out.println("Unmarshall da resposta para o xmodel:");
+    UnmarshallerHelper unmarshallerHelper = new UnmarshallerHelper(resWs);
+    ResGetCliente resGetCliente = unmarshallerHelper.unMarshallAfterTag(ResGetCliente.class, "response");
+
+
+    Assert.assertEquals("usercliente", resGetCliente.getNome());
+
+
+  }
+
+}
