@@ -1,4 +1,4 @@
-package pt.ipg.mcm.errors.services;
+package pt.ipg.mcm.services;
 
 import pt.ipg.mcm.errors.ExceptionToTypeResponse;
 import pt.ipg.mcm.errors.MestradoException;

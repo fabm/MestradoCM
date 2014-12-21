@@ -1,11 +1,11 @@
-package pt.ipg.mcm.errors.services;
+package pt.ipg.mcm.services;
 
 import pt.ipg.mcm.controller.ClienteDao;
-import pt.ipg.mcm.errors.services.authorization.Role;
+import pt.ipg.mcm.services.authorization.Role;
 import pt.ipg.mcm.xmodel.ReqAddCliente;
 import pt.ipg.mcm.xmodel.ReqGetCliente;
 import pt.ipg.mcm.xmodel.ResGetCliente;
-import pt.ipg.mcm.errors.services.authorization.RolesAuthorized;
+import pt.ipg.mcm.services.authorization.RolesAuthorized;
 import pt.ipg.mcm.xmodel.ResAddCliente;
 
 import javax.annotation.PostConstruct;

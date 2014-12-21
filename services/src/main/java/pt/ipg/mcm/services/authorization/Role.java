@@ -1,4 +1,4 @@
-package pt.ipg.mcm.errors.services.authorization;
+package pt.ipg.mcm.services.authorization;
 
 public enum Role {
   ADMINISTRADOR("administrador"),

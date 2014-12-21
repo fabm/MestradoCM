@@ -1,4 +1,4 @@
-package pt.ipg.mcm.errors.services;
+package pt.ipg.mcm.services;
 
 import pt.ipg.mcm.controller.CategoriaDao;
 import pt.ipg.mcm.xmodel.ReqAddCategoria;

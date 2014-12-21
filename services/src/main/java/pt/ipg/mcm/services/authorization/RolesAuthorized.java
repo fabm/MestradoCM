@@ -1,4 +1,4 @@
-package pt.ipg.mcm.errors.services.authorization;
+package pt.ipg.mcm.services.authorization;
 
 import javax.security.auth.login.LoginException;
 import javax.xml.ws.WebServiceContext;
