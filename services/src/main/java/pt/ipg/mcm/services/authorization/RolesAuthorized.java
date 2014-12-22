@@ -2,6 +2,7 @@ package pt.ipg.mcm.services.authorization;
 
 import javax.security.auth.login.LoginException;
 import javax.xml.ws.WebServiceContext;
+import java.security.Principal;
 
 public class RolesAuthorized {
 
@@ -18,6 +19,11 @@ public class RolesAuthorized {
         return;
       }
     }
-    throw new LoginException("Login " + webServiceContext.getUserPrincipal().getName() + " not authorized for this context");
+    Principal principal = webServiceContext.getUserPrincipal();
+    String name = null;
+    if(principal!=null){
+      name = principal.getName();
+    }
+    throw new LoginException("Login " + name + " not authorized for this context");
   }
 }

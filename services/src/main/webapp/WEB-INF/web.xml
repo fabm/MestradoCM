@@ -7,7 +7,7 @@
 
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>secure ws</web-resource-name>
+            <web-resource-name>cliente-ws</web-resource-name>
             <url-pattern>/cliente/*</url-pattern>
             <http-method>POST</http-method>
         </web-resource-collection>
@@ -15,6 +15,32 @@
         <auth-constraint>
             <role-name>cliente</role-name>
             <role-name>administrador</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>login-ws</web-resource-name>
+            <url-pattern>/AuthenticationServiceService/*</url-pattern>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+
+        <auth-constraint>
+            <role-name>cliente</role-name>
+            <role-name>administrador</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>login-ws</web-resource-name>
+            <url-pattern>/ProdutoServiceService/*</url-pattern>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>cliente</role-name>
+            <role-name>administrador</role-name>
+            <role-name>convidado</role-name>
         </auth-constraint>
     </security-constraint>
 
@@ -29,6 +55,10 @@
 
     <security-role>
         <role-name>administrador</role-name>
+    </security-role>
+
+    <security-role>
+        <role-name>convidado</role-name>
     </security-role>
 
 </web-app>

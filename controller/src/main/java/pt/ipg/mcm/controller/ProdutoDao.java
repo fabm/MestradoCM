@@ -13,6 +13,9 @@ import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.sql.DataSource;
 import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -31,22 +34,31 @@ public class ProdutoDao {
     TypeResponse responseOK;
     try {
       Connection connection = mestradoDataSource.getConnection();
-      CallableStatement call = connection.prepareCall("call {P_ADD_PRODUTO(?,?,?,?,?)}");
+      CallableStatement call = connection.prepareCall("INSERT INTO PRODUTO (ID_PRODUTO,NOME,PRECO_ATUAL,CATEGORIAS_ID_CATEGORIA,FOTO)VALUES(SEQ_PRODUTO.nextval,?,?,?,?)");
 
       call.setString(1, reqAddProduto.getNome());
       call.setBigDecimal(2, reqAddProduto.getPrecoUnitario());
       call.setLong(3, reqAddProduto.getCategoria());
-      call.setBinaryStream(4, new ByteArrayInputStream(reqAddProduto.getFoto()));
+      InputStream in = new FileInputStream("/Users/francisco/Pictures/bebe3.jpg");
+      //InputStream in = new ByteArrayInputStream(reqAddProduto.getFoto());
+
+
+      call.setBinaryStream(4, in);
 
 
       responseOK = new TypeResponse();
       responseOK.setTipoResposta(TypeEnumResponse.OK);
       responseOK.setMensagem("Produto inserido com sucesso");
 
-      call.registerOutParameter(5, Types.NUMERIC);
-      resAddProduto.setId(call.getLong(5));
+      //call.registerOutParameter(5, Types.NUMERIC);
+
+      call.executeUpdate();
+
+      //resAddProduto.setId(call.getLong(5));
     } catch (SQLException e) {
       throw new MestradoException(GlobalErrors.SQL_EXCEPTION);
+    } catch (FileNotFoundException e) {
+      throw new IllegalStateException("");
     }
 
     resAddProduto.setTypeResponse(responseOK);

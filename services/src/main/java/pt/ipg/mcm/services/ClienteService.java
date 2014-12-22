@@ -28,7 +28,6 @@ public class ClienteService {
   @EJB
   private ClienteDao clienteDao;
 
-  @Inject
   private RolesAuthorized rolesAuthorized;
 
   @Resource
