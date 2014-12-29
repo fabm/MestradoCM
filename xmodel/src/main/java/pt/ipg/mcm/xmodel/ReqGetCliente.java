@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "req-get-cliente", propOrder = {
+@XmlType(name = "Req-get-cliente", propOrder = {
     "id"
 })
 public class ReqGetCliente {

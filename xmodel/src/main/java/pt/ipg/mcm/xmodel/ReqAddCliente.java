@@ -37,7 +37,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "req-add-cliente", propOrder = {
+@XmlType(name = "Req-add-cliente", propOrder = {
     "contribuinte",
     "nome",
     "role",

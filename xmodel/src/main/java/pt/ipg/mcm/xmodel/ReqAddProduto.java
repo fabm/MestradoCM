@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "req-add-produto", propOrder = {
+@XmlType(name = "Req-add-produto", propOrder = {
     "nome",
     "precoUnitario",
     "categoria",
