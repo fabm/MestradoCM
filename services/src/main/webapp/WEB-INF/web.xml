@@ -26,6 +26,7 @@
         </web-resource-collection>
 
         <auth-constraint>
+            <role-name>convidado</role-name>
             <role-name>cliente</role-name>
             <role-name>administrador</role-name>
         </auth-constraint>
