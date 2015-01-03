@@ -1,6 +1,5 @@
 package pt.ipg.mcm.controller;
 
-import pt.ipg.mcm.entities.ProdutoEntity;
 import pt.ipg.mcm.entities.VProdutoCategoriaEntity;
 import pt.ipg.mcm.errors.GlobalErrors;
 import pt.ipg.mcm.errors.MestradoException;
@@ -19,7 +18,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -161,24 +159,54 @@ public class ProdutoDao {
 
   }
 
-  public List<VProdutoCategoriaEntity> getAllProdutos() throws MestradoException {
+  private ResultSet getResultProdutos(String strSql, long idCategoria) throws SQLException {
+    Connection connection = mestradoDataSource.getConnection();
+    PreparedStatement call = connection.prepareStatement(strSql.concat("\nWHERE ID_CATEGORIA = ?"));
+    call.setLong(1, idCategoria);
+    return call.executeQuery();
+  }
+
+  private ResultSet getResultProdutos(String strSql) throws SQLException {
+    Connection connection = mestradoDataSource.getConnection();
+    Statement call = connection.createStatement();
+    return call.executeQuery(strSql);
+  }
+
+  public List<VProdutoCategoriaEntity> getProdutos(boolean withFoto, Long idCategoria) throws MestradoException {
 
     try {
       Connection connection = mestradoDataSource.getConnection();
       Statement call = connection.createStatement();
-      ResultSet rs = call.executeQuery("SELECT NOME_CATEGORIA, DESCRICAO,PRECO_ATUAL,FOTO,NOME_PRODUTO from V_PRODUTO_CATEGORIA");
+      String sqlStr;
+      if (withFoto) {
+        sqlStr = ",FOTO";
+      } else {
+        sqlStr = "";
+      }
+
+      sqlStr = String.format("SELECT NOME_CATEGORIA, DESCRICAO,PRECO_ATUAL,NOME_PRODUTO%s from V_PRODUTO_CATEGORIA", sqlStr);
+
+      ResultSet rs;
+      if (idCategoria != null) {
+        rs = getResultProdutos(sqlStr, idCategoria);
+      } else {
+        rs = getResultProdutos(sqlStr);
+      }
+
       List<VProdutoCategoriaEntity> vProdutoCategoriaEntities = new ArrayList<VProdutoCategoriaEntity>();
 
-      while (rs.next()){
+      while (rs.next()) {
         VProdutoCategoriaEntity vProdutoCategoriaEntity = new VProdutoCategoriaEntity();
         vProdutoCategoriaEntity.setNomeCategoria(rs.getString(1));
         vProdutoCategoriaEntity.setDescricao(rs.getString(2));
         vProdutoCategoriaEntity.setPrecoAtual(rs.getBigDecimal(3));
-        vProdutoCategoriaEntity.setFoto(rs.getBytes(4));
-        vProdutoCategoriaEntity.setNomeProduto(rs.getString(5));
+        vProdutoCategoriaEntity.setNomeProduto(rs.getString(4));
+        if (withFoto) {
+          vProdutoCategoriaEntity.setFoto(rs.getBytes(5));
+        }
         vProdutoCategoriaEntities.add(vProdutoCategoriaEntity);
       }
-     return vProdutoCategoriaEntities;
+      return vProdutoCategoriaEntities;
     } catch (SQLException e) {
       throw new MestradoException(-1, "Problemas técnicos");
     }

@@ -9,6 +9,7 @@ import pt.ipg.mcm.services.authorization.RolesAuthorized;
 import pt.ipg.mcm.xmodel.ProdutoCategoria;
 import pt.ipg.mcm.xmodel.ReqAddProduto;
 import pt.ipg.mcm.xmodel.ReqGetProduto;
+import pt.ipg.mcm.xmodel.ReqGetProdutosCategorias;
 import pt.ipg.mcm.xmodel.ResAddProduto;
 import pt.ipg.mcm.xmodel.ResGetProduto;
 import pt.ipg.mcm.xmodel.ResGetProdutosCategorias;
@@ -64,13 +65,12 @@ public class ProdutoService {
   }
 
   @WebMethod
-  public ResGetProdutosCategorias getProdutosCategorias() {
+  public ResGetProdutosCategorias getProdutosCategorias(@WebParam(name = "req-get-produtos-categorias") ReqGetProdutosCategorias reqGetProdutosCategorias) {
     ResGetProdutosCategorias resGetProdutosCategorias = new ResGetProdutosCategorias();
-
 
     try {
       List<ProdutoCategoria> produtosCategorias = resGetProdutosCategorias.getProdutoCategoriaList();
-      List<VProdutoCategoriaEntity> allProdutos = produtoDao.getAllProdutos();
+      List<VProdutoCategoriaEntity> allProdutos = produtoDao.getProdutos(reqGetProdutosCategorias.isComFoto(), reqGetProdutosCategorias.getIdCategoria());
       for (VProdutoCategoriaEntity vProdutoCategoriaEntity:allProdutos){
         ProdutoCategoria produtoCategoria = new ProdutoCategoria();
         produtoCategoria.setNomeCategoria(vProdutoCategoriaEntity.getNomeCategoria());
