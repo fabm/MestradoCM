@@ -1,4 +1,4 @@
-package pt.ipg.mcm.errors.entities;
+package pt.ipg.mcm.entities;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;

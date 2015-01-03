@@ -1,14 +1,17 @@
 package pt.ipg.mcm.services;
 
+import pt.ipg.mcm.controller.ProdutoDao;
+import pt.ipg.mcm.entities.VProdutoCategoriaEntity;
 import pt.ipg.mcm.errors.ExceptionToTypeResponse;
 import pt.ipg.mcm.errors.MestradoException;
-import pt.ipg.mcm.controller.ProdutoDao;
 import pt.ipg.mcm.services.authorization.Role;
 import pt.ipg.mcm.services.authorization.RolesAuthorized;
+import pt.ipg.mcm.xmodel.ProdutoCategoria;
 import pt.ipg.mcm.xmodel.ReqAddProduto;
 import pt.ipg.mcm.xmodel.ReqGetProduto;
 import pt.ipg.mcm.xmodel.ResAddProduto;
 import pt.ipg.mcm.xmodel.ResGetProduto;
+import pt.ipg.mcm.xmodel.ResGetProdutosCategorias;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -18,6 +21,7 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.security.auth.login.LoginException;
 import javax.xml.ws.WebServiceContext;
+import java.util.List;
 
 @WebService
 public class ProdutoService {
@@ -57,6 +61,30 @@ public class ProdutoService {
       resGetProduto.setTypeResponse(new ExceptionToTypeResponse(e).getTypeResponse());
       return resGetProduto;
     }
+  }
+
+  @WebMethod
+  public ResGetProdutosCategorias getProdutosCategorias() {
+    ResGetProdutosCategorias resGetProdutosCategorias = new ResGetProdutosCategorias();
+
+
+    try {
+      List<ProdutoCategoria> produtosCategorias = resGetProdutosCategorias.getProdutoCategoriaList();
+      List<VProdutoCategoriaEntity> allProdutos = produtoDao.getAllProdutos();
+      for (VProdutoCategoriaEntity vProdutoCategoriaEntity:allProdutos){
+        ProdutoCategoria produtoCategoria = new ProdutoCategoria();
+        produtoCategoria.setNomeCategoria(vProdutoCategoriaEntity.getNomeCategoria());
+        produtoCategoria.setNomeProduto(vProdutoCategoriaEntity.getNomeProduto());
+        produtoCategoria.setPrecoActual(vProdutoCategoriaEntity.getPrecoAtual());
+        produtoCategoria.setFoto(vProdutoCategoriaEntity.getFoto());
+        produtoCategoria.setNomeProduto(vProdutoCategoriaEntity.getNomeProduto());
+        produtosCategorias.add(produtoCategoria);
+      }
+    } catch (MestradoException e) {
+      //TODO adicionar excepcao
+    }
+
+    return resGetProdutosCategorias;
   }
 
 

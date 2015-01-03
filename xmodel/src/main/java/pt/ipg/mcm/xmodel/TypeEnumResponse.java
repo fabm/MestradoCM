@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlType;
  * </pre>
  * 
  */
-@XmlType(name = "Type-enum-response")
+@XmlType(name = "type-enum-response")
 @XmlEnum
 public enum TypeEnumResponse {
 

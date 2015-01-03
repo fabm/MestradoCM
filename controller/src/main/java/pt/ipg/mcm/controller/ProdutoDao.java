@@ -1,5 +1,7 @@
 package pt.ipg.mcm.controller;
 
+import pt.ipg.mcm.entities.ProdutoEntity;
+import pt.ipg.mcm.entities.VProdutoCategoriaEntity;
 import pt.ipg.mcm.errors.GlobalErrors;
 import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.xmodel.ReqAddProduto;
@@ -13,15 +15,19 @@ import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.sql.DataSource;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 
 @Stateless
 public class ProdutoDao {
@@ -34,31 +40,29 @@ public class ProdutoDao {
     TypeResponse responseOK;
     try {
       Connection connection = mestradoDataSource.getConnection();
-      CallableStatement call = connection.prepareCall("INSERT INTO PRODUTO (ID_PRODUTO,NOME,PRECO_ATUAL,CATEGORIAS_ID_CATEGORIA,FOTO)VALUES(SEQ_PRODUTO.nextval,?,?,?,?)");
+      ResultSet rs = connection.createStatement().executeQuery("SELECT SEQ_PRODUTO.NEXTVAL FROM DUAL");
 
-      call.setString(1, reqAddProduto.getNome());
-      call.setBigDecimal(2, reqAddProduto.getPrecoUnitario());
-      call.setLong(3, reqAddProduto.getCategoria());
-      InputStream in = new FileInputStream("/Users/francisco/Pictures/bebe3.jpg");
-      //InputStream in = new ByteArrayInputStream(reqAddProduto.getFoto());
+      long idProduto = rs.getLong(1);
 
+      CallableStatement call = connection.prepareCall("INSERT INTO PRODUTO (ID_PRODUTO,NOME,PRECO_ATUAL,ID_CATEGORIA,FOTO)VALUES(?,?,?,?,?)");
+
+      call.setLong(1, idProduto);
+      call.setString(2, reqAddProduto.getNome());
+      call.setBigDecimal(3, reqAddProduto.getPrecoUnitario());
+      call.setLong(4, reqAddProduto.getCategoria());
+      InputStream in = new ByteArrayInputStream(reqAddProduto.getFoto());
 
       call.setBinaryStream(4, in);
-
 
       responseOK = new TypeResponse();
       responseOK.setTipoResposta(TypeEnumResponse.OK);
       responseOK.setMensagem("Produto inserido com sucesso");
 
-      //call.registerOutParameter(5, Types.NUMERIC);
-
       call.executeUpdate();
 
-      //resAddProduto.setId(call.getLong(5));
+      resAddProduto.setId(idProduto);
     } catch (SQLException e) {
-      throw new MestradoException(GlobalErrors.SQL_EXCEPTION);
-    } catch (FileNotFoundException e) {
-      throw new IllegalStateException("");
+      throw new MestradoException(-1, GlobalErrors.SQL_EXCEPTION);
     }
 
     resAddProduto.setTypeResponse(responseOK);
@@ -72,18 +76,18 @@ public class ProdutoDao {
     try {
       String sqlString = "SELECT PRODUTO.NOME,\n" +
           "  PRODUTO.PRECO_ATUAL,\n" +
-          "  PRODUTO.CATEGORIAS_ID_CATEGORIA,\n" +
-          "  PRODUTO.FOTO\n" +
+          "  PRODUTO.ID_CATEGORIA,\n" +
           "FROM PRODUTO\n" +
-          "WHERE PRODUTO.ID_PRODUTO = 1";
+          "WHERE PRODUTO.ID_PRODUTO = ?";
 
       Connection connection = mestradoDataSource.getConnection();
 
-      Statement call = connection.createStatement();
-      ResultSet rs = call.executeQuery(sqlString);
+      PreparedStatement call = connection.prepareStatement(sqlString);
+      call.setLong(1, reqGetProduto.getId());
+      ResultSet rs = call.executeQuery();
 
       if (!rs.next()) {
-        throw new MestradoException("produto %d não encontrado", reqGetProduto.getId());
+        throw new MestradoException(-1, "produto %d não encontrado", reqGetProduto.getId());
       }
 
       resGetProduto.setNome(rs.getString(1));
@@ -92,10 +96,93 @@ public class ProdutoDao {
       resGetProduto.setFoto(rs.getBytes(4));
 
     } catch (SQLException e) {
-      throw new MestradoException(GlobalErrors.SQL_EXCEPTION);
+      throw new MestradoException(-2, GlobalErrors.SQL_EXCEPTION);
     }
 
     return resGetProduto;
   }
+
+  public void saveFoto(long id, InputStream inputStream) throws MestradoException {
+    try {
+      String sqlString = "UPDATE PRODUTO\n" +
+          "SET FOTO = ?\n" +
+          "WHERE ID_PRODUTO = ?";
+      Connection connection = mestradoDataSource.getConnection();
+      CallableStatement call = connection.prepareCall(sqlString);
+
+      String strFile = "/Users/francisco/Pictures/bebe2.jpeg";
+
+      try {
+        File f = new File(strFile);
+        FileInputStream fis = new FileInputStream(f);
+        call.setBinaryStream(1, fis, f.length());
+      } catch (FileNotFoundException e) {
+        throw new MestradoException(-3, e.getMessage());
+      }
+
+      call.setLong(2, id);
+
+      int qt = call.executeUpdate();
+
+      if (qt == 0) {
+        throw new MestradoException(-1, "Não foi possivel atualizar a foto do produto");
+      }
+    } catch (SQLException e) {
+      throw new MestradoException(-2, "Problema técnico");
+    }
+  }
+
+  public InputStream getFoto(Long id) throws MestradoException {
+    String sqlString = "SELECT PRODUTO.FOTO\n" +
+        "FROM PRODUTO\n" +
+        "WHERE PRODUTO.ID_PRODUTO = ?";
+
+    try {
+      Connection connection = mestradoDataSource.getConnection();
+
+      CallableStatement call = connection.prepareCall(sqlString);
+
+      call.setLong(1, id);
+      ResultSet rs = call.executeQuery();
+
+      if (!rs.next()) {
+        throw new MestradoException(-1, "Produto não encontrado");
+      }
+
+      InputStream is = rs.getBinaryStream(1);
+      if (is == null) {
+        throw new MestradoException(-2, "Produto sem foto");
+      }
+
+      return rs.getBinaryStream(1);
+    } catch (SQLException e) {
+      throw new MestradoException(-3, "Problema técnico");
+    }
+
+  }
+
+  public List<VProdutoCategoriaEntity> getAllProdutos() throws MestradoException {
+
+    try {
+      Connection connection = mestradoDataSource.getConnection();
+      Statement call = connection.createStatement();
+      ResultSet rs = call.executeQuery("SELECT NOME_CATEGORIA, DESCRICAO,PRECO_ATUAL,FOTO,NOME_PRODUTO from V_PRODUTO_CATEGORIA");
+      List<VProdutoCategoriaEntity> vProdutoCategoriaEntities = new ArrayList<VProdutoCategoriaEntity>();
+
+      while (rs.next()){
+        VProdutoCategoriaEntity vProdutoCategoriaEntity = new VProdutoCategoriaEntity();
+        vProdutoCategoriaEntity.setNomeCategoria(rs.getString(1));
+        vProdutoCategoriaEntity.setDescricao(rs.getString(2));
+        vProdutoCategoriaEntity.setPrecoAtual(rs.getBigDecimal(3));
+        vProdutoCategoriaEntity.setFoto(rs.getBytes(4));
+        vProdutoCategoriaEntity.setNomeProduto(rs.getString(5));
+        vProdutoCategoriaEntities.add(vProdutoCategoriaEntity);
+      }
+     return vProdutoCategoriaEntities;
+    } catch (SQLException e) {
+      throw new MestradoException(-1, "Problemas técnicos");
+    }
+  }
+
 
 }

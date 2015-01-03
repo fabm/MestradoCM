@@ -1,6 +1,6 @@
 package pt.ipg.mcm.controller;
 
-import pt.ipg.mcm.errors.entities.ClienteEntity;
+import pt.ipg.mcm.entities.ClienteEntity;
 import pt.ipg.mcm.xmodel.ReqAddCliente;
 import pt.ipg.mcm.xmodel.ReqGetCliente;
 import pt.ipg.mcm.xmodel.ResAddCliente;
@@ -10,7 +10,6 @@ import pt.ipg.mcm.xmodel.TypeResponse;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
