@@ -18,13 +18,6 @@ public class MestradoException extends Exception {
     return messageFormat.format(params);
   }
 
-  private static String format(String msg, Object... objects) {
-    if (objects.length == 0) {
-      return msg;
-    }
-    return String.format(msg, objects);
-  }
-
   public int getCodigo() {
     return codigo;
   }
