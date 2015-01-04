@@ -1,9 +1,11 @@
 package pt.ipg.mcm.controller;
 
+import pt.ipg.mcm.entities.CategoriaEntity;
+import pt.ipg.mcm.errors.Erro;
+import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.xmodel.ReqAddCategoria;
 import pt.ipg.mcm.xmodel.ResAddCategoria;
-import pt.ipg.mcm.xmodel.TypeEnumResponse;
-import pt.ipg.mcm.xmodel.TypeResponse;
+import pt.ipg.mcm.xmodel.Retorno;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
@@ -12,7 +14,10 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,8 +33,6 @@ public class CategoriaDao {
   public ResAddCategoria addCategoria(ReqAddCategoria reqAddCategoria) {
     Connection connection;
     ResAddCategoria resAddCategoria = new ResAddCategoria();
-    TypeResponse typeResponse = new TypeResponse();
-    resAddCategoria.setTypeResponse(typeResponse);
     try {
       connection = mestradoDataSource.getConnection();
 
@@ -47,14 +50,34 @@ public class CategoriaDao {
       call.execute();
 
       resAddCategoria.setId(call.getLong(3));
-      typeResponse.setMensagem("Categoria inserida com sucesso");
-      typeResponse.setTipoResposta(TypeEnumResponse.OK);
+      resAddCategoria.setRetorno(new Retorno(1, "Categoria inserida com sucesso"));
       return resAddCategoria;
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, "sql problem", e);
-      typeResponse.setMensagem("problema na inserção da categoria");
+      resAddCategoria.setRetorno(new Retorno(new MestradoException(Erro.TECNICO)));
       return resAddCategoria;
     }
 
+  }
+
+
+  public List<CategoriaEntity> getAll() throws MestradoException {
+
+    try {
+      Statement call = mestradoDataSource.getConnection().createStatement();
+      String sql = "SELECT NOME, DESCRICAO FROM CATEGORIA";
+      ResultSet rs = call.executeQuery(sql);
+
+      List<CategoriaEntity> lista = new ArrayList<CategoriaEntity>();
+      while (rs.next()) {
+        CategoriaEntity categoriaEntity = new CategoriaEntity();
+        categoriaEntity.setNome(rs.getString(1));
+        categoriaEntity.setDescricao(rs.getString(2));
+        lista.add(categoriaEntity);
+      }
+      return lista;
+    } catch (SQLException e) {
+      throw new MestradoException(Erro.TECNICO);
+    }
   }
 }

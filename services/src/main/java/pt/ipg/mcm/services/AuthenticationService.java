@@ -1,8 +1,7 @@
 package pt.ipg.mcm.services;
 
 import pt.ipg.mcm.xmodel.ResLogin;
-import pt.ipg.mcm.xmodel.TypeEnumResponse;
-import pt.ipg.mcm.xmodel.TypeResponse;
+import pt.ipg.mcm.xmodel.Retorno;
 
 import javax.jws.WebService;
 
@@ -10,10 +9,7 @@ import javax.jws.WebService;
 public class AuthenticationService {
   public ResLogin login() {
     ResLogin resLogin = new ResLogin();
-    TypeResponse response = new TypeResponse();
-    response.setMensagem("sucesso");
-    response.setTipoResposta(TypeEnumResponse.OK);
-    resLogin.setTypeResponse(response);
+    resLogin.setRetorno(new Retorno(1, "Login efetuado com sucesso"));
     return resLogin;
   }
 }

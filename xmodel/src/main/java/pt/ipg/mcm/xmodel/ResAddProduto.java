@@ -1,4 +1,3 @@
-
 package pt.ipg.mcm.xmodel;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -6,76 +5,29 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
-/**
- * <p>Java class for res-add-produto complex type.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
- * 
- * <pre>
- * &lt;complexType name="res-add-produto">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="type-response" type="{}type-response"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
- */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Res-add-produto", propOrder = {
-    "id",
-    "typeResponse"
-})
+@XmlType(name = "Res-add-produto")
 public class ResAddProduto {
 
-    protected long id;
-    @XmlElement(name = "type-response", required = true)
-    protected TypeResponse typeResponse;
+  @XmlElement(required = true)
+  private long id;
 
-    /**
-     * Gets the value of the id property.
-     * 
-     */
-    public long getId() {
-        return id;
-    }
+  @XmlElement(required = false)
+  private Retorno retorno;
 
-    /**
-     * Sets the value of the id property.
-     * 
-     */
-    public void setId(long value) {
-        this.id = value;
-    }
+  public long getId() {
+    return id;
+  }
 
-    /**
-     * Gets the value of the typeResponse property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link TypeResponse }
-     *     
-     */
-    public TypeResponse getTypeResponse() {
-        return typeResponse;
-    }
+  public void setId(long value) {
+    this.id = value;
+  }
 
-    /**
-     * Sets the value of the typeResponse property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link TypeResponse }
-     *     
-     */
-    public void setTypeResponse(TypeResponse value) {
-        this.typeResponse = value;
-    }
+  public Retorno getRetorno() {
+    return retorno;
+  }
 
+  public void setRetorno(Retorno retorno) {
+    this.retorno = retorno;
+  }
 }

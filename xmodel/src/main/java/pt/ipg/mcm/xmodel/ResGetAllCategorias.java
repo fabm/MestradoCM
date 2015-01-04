@@ -9,19 +9,19 @@ import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Res-get-produtos-categorias")
-public class ResGetProdutosCategorias {
-
-  @XmlElement(name = "produto-categoria", required = true)
-  private List<ProdutoCategoria> produtoCategoriaList;
+public class ResGetAllCategorias {
 
   @XmlElement(required = false)
+  private List<Categoria> categorias;
+
+  @XmlElement(required = true)
   private Retorno retorno;
 
-  public List<ProdutoCategoria> getProdutoCategoriaList() {
-    if (produtoCategoriaList == null) {
-      produtoCategoriaList = new ArrayList<ProdutoCategoria>();
+  public List<Categoria> getCategorias() {
+    if(categorias == null){
+        categorias = new ArrayList<Categoria>();
     }
-    return this.produtoCategoriaList;
+    return categorias;
   }
 
   public Retorno getRetorno() {

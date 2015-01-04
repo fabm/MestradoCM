@@ -6,6 +6,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import pt.ipg.mcm.controller.ProdutoDao;
+import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
 
 import javax.ejb.EJB;
@@ -39,7 +40,7 @@ public class UploadProductImage extends HttpServlet {
 
     try {
       if (!isMultipart) {
-        throw new MestradoException(-1, "Nenhum ficheiro para fazer upload");
+        throw new MestradoException(Erro.SEM_FICHEIROS);
       }
 
       DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -55,7 +56,7 @@ public class UploadProductImage extends HttpServlet {
       try {
         List<FileItem> fileItems = upload.parseRequest(req);
         if (fileItems.size() > 1) {
-          throw new MestradoException(-2, "Apenas um ficheiro deve ser carragado para o servidor e não %d", fileItems.size());
+          throw new MestradoException(Erro.APENAS_UM_FICHEIRO);
         }
         FileItem fileItem = fileItems.get(0);
         InputStream is = fileItem.getInputStream();
@@ -63,20 +64,20 @@ public class UploadProductImage extends HttpServlet {
         String idStr = req.getParameter("id-foto");
 
         if (idStr == null) {
-          throw new MestradoException(-1, "Falta definir o id do produto");
+          throw new MestradoException(Erro.CAMPO_VAZIO, "id");
         }
 
         long id;
         try {
           id = Long.parseLong(idStr);
         } catch (NumberFormatException e) {
-          throw new MestradoException(-2, "O id %s é inválido", idStr);
+          throw new MestradoException(Erro.FORMATO_INVALIDO, "id", idStr);
         }
 
         produtoDao.saveFoto(id, is);
 
       } catch (FileUploadException e) {
-        throw new MestradoException(-3, "Problema ao tentar fazer o upload para o servidor");
+        throw new MestradoException(Erro.TECNICO);
       }
 
     } catch (MestradoException e) {

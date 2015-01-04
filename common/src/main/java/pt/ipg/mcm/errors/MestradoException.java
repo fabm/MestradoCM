@@ -1,5 +1,6 @@
 package pt.ipg.mcm.errors;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,9 +8,14 @@ public class MestradoException extends Exception {
 
   private final int codigo;
 
-  public MestradoException(int codigo, String msg, Object... objects) {
-    super(MestradoException.format(msg, objects));
-    this.codigo = codigo;
+  public MestradoException(Erro erro,Object...params){
+    super(MestradoException.msgFormat(erro.getMensagem(),params));
+    codigo = erro.getCodigo();
+  }
+
+  private static String msgFormat(String mensagem, Object[] params) {
+    MessageFormat messageFormat = new MessageFormat(mensagem);
+    return messageFormat.format(params);
   }
 
   private static String format(String msg, Object... objects) {
@@ -29,4 +35,5 @@ public class MestradoException extends Exception {
     returnMap.put("mensagem",this.getMessage());
     return returnMap;
   }
+
 }

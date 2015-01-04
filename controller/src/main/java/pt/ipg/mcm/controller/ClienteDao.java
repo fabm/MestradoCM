@@ -1,12 +1,13 @@
 package pt.ipg.mcm.controller;
 
 import pt.ipg.mcm.entities.ClienteEntity;
+import pt.ipg.mcm.errors.Erro;
+import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.xmodel.ReqAddCliente;
 import pt.ipg.mcm.xmodel.ReqGetCliente;
 import pt.ipg.mcm.xmodel.ResAddCliente;
 import pt.ipg.mcm.xmodel.ResGetCliente;
-import pt.ipg.mcm.xmodel.TypeEnumResponse;
-import pt.ipg.mcm.xmodel.TypeResponse;
+import pt.ipg.mcm.xmodel.Retorno;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
@@ -30,10 +31,8 @@ public class ClienteDao {
   @PersistenceContext(unitName = "mestrado")
   private EntityManager entityManager;
 
-  public ResAddCliente addClient(ReqAddCliente reqAddCliente) {
+  public ResAddCliente addClient(ReqAddCliente reqAddCliente) throws MestradoException {
     ResAddCliente clienteResponseType = new ResAddCliente();
-    TypeResponse type = new TypeResponse();
-    clienteResponseType.setTypeResponse(type);
     Connection connection;
     try {
       connection = mestradoDataSource.getConnection();
@@ -52,14 +51,11 @@ public class ClienteDao {
       call.execute();
 
       clienteResponseType.setId(call.getLong(10));
-      type.setMensagem("cliente inserido com sucesso");
-      type.setTipoResposta(TypeEnumResponse.OK);
+
+      clienteResponseType.setRetorno(new Retorno(1, "Cliente inserido com sucesso"));
       return clienteResponseType;
-    } catch (SQLException e) {
-      Logger.getLogger(ClienteDao.class.getName()).log(Level.SEVERE, "sql problem", e);
-      type.setMensagem("Houve um erro ao tentar inserir o cliente consulte o administrador");
-      type.setTipoResposta(TypeEnumResponse.ERRO);
-      return clienteResponseType;
+    }catch (SQLException e){
+      throw new MestradoException(Erro.TECNICO);
     }
 
   }
