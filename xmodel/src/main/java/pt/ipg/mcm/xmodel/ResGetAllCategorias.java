@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Res-get-produtos-categorias")
+@XmlType(name = "Res-get-all-categorias")
 public class ResGetAllCategorias {
 
   @XmlElement(required = false)
