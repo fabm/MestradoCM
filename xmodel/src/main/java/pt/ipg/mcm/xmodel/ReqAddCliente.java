@@ -31,7 +31,7 @@ public class ReqAddCliente {
 
   @NotNull
   @XmlElement(required = true)
-  private int porta;
+  private String porta;
 
   @NotNull
   @XmlElement(name = "data-nascimento", required = true)
@@ -82,11 +82,11 @@ public class ReqAddCliente {
     this.morada = value;
   }
 
-  public int getPorta() {
+  public String getPorta() {
     return porta;
   }
 
-  public void setPorta(int value) {
+  public void setPorta(String value) {
     this.porta = value;
   }
 

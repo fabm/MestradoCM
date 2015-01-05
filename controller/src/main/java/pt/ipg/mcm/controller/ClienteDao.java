@@ -42,7 +42,7 @@ public class ClienteDao {
       call.setString(2, reqAddCliente.getNome());
       call.setInt(3, reqAddCliente.getRole());
       call.setString(4, reqAddCliente.getMorada());
-      call.setInt(5, reqAddCliente.getPorta());
+      call.setString(5, reqAddCliente.getPorta());
       call.setDate(6, new Date(reqAddCliente.getDataNascimento().toGregorianCalendar().getTimeInMillis()));
       call.setString(7, reqAddCliente.getEmail());
       call.setString(8, reqAddCliente.getContacto());
