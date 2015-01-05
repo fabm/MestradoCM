@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-@WebService(serviceName = "cliente", portName = "clientePort")
+@WebService(serviceName = "Cliente", portName = "ClientePort")
 public class ClienteService {
   Logger LOGGER = Logger.getLogger(ClienteService.class.getName());
 

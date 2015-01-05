@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlElement;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebService(serviceName = "padeiro", portName = "padeiroPort")
+@WebService(serviceName = "Padeiro", portName = "PadeiroPort")
 public class PadeiroService {
 
   @EJB

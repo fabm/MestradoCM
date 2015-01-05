@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebService(serviceName = "categoria", portName = "categoriaPort")
+@WebService(serviceName = "Categoria", portName = "CategoriaPort")
 public class CategoriaService {
   @EJB
   private CategoriaDao categoriaDao;
