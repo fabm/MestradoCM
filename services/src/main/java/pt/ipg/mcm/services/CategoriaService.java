@@ -56,6 +56,7 @@ public class CategoriaService {
         Categoria categoria = new Categoria();
         categoria.setDescricao(categoriaEntity.getDescricao());
         categoria.setNome(categoriaEntity.getNome());
+        categoria.setId(categoriaEntity.getIdCategoria());
         resCategorias.add(categoria);
       }
       return resGetAllCategorias;

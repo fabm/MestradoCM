@@ -22,12 +22,13 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.security.auth.login.LoginException;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.ws.WebServiceContext;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebService
+@WebService(serviceName = "produto", portName = "produtoPort")
 public class ProdutoService {
 
   @Resource
@@ -45,7 +46,7 @@ public class ProdutoService {
 
 
   @WebMethod
-  public ResAddProduto addProduto(@WebParam(name = "req-add-produto") ReqAddProduto reqAddProduto) throws LoginException {
+  public ResAddProduto addProduto(@WebParam(name = "req-add-produto") @XmlElement(required = true) ReqAddProduto reqAddProduto) throws LoginException {
     try {
       Map<String, String> aliasMap = new HashMap<String, String>();
       aliasMap.put("precoUnitario", "preço unitário");
@@ -60,7 +61,7 @@ public class ProdutoService {
   }
 
   @WebMethod
-  public ResGetProduto getProduto(@WebParam(name = "req-get-produto") ReqGetProduto reqGetProduto) {
+  public ResGetProduto getProduto(@WebParam(name = "req-get-produto")@XmlElement(required = true) ReqGetProduto reqGetProduto) {
     try {
       return produtoDao.getProduto(reqGetProduto);
     } catch (MestradoException e) {
@@ -71,7 +72,8 @@ public class ProdutoService {
   }
 
   @WebMethod
-  public ResGetProdutosCategorias getProdutosCategorias(@WebParam(name = "req-get-produtos-categorias") ReqGetProdutosCategorias reqGetProdutosCategorias) {
+  public ResGetProdutosCategorias getProdutosCategorias(@WebParam(name = "req-get-produtos-categorias") @XmlElement(required = true) ReqGetProdutosCategorias
+                                                            reqGetProdutosCategorias) {
 
     ResGetProdutosCategorias resGetProdutosCategorias = new ResGetProdutosCategorias();
     try {

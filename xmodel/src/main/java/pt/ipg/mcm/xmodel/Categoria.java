@@ -12,6 +12,8 @@ public class Categoria {
   private String nome;
   @XmlElement(name = "descricao")
   private String descricao;
+  @XmlElement(name = "id")
+  private Long id;
 
   public String getNome() {
     return nome;
@@ -27,5 +29,13 @@ public class Categoria {
 
   public void setDescricao(String descricao) {
     this.descricao = descricao;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 }

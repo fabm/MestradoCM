@@ -65,14 +65,15 @@ public class CategoriaDao {
 
     try {
       Statement call = mestradoDataSource.getConnection().createStatement();
-      String sql = "SELECT NOME, DESCRICAO FROM CATEGORIA";
+      String sql = "SELECT ID_CATEGORIA,NOME, DESCRICAO FROM CATEGORIA";
       ResultSet rs = call.executeQuery(sql);
 
       List<CategoriaEntity> lista = new ArrayList<CategoriaEntity>();
       while (rs.next()) {
         CategoriaEntity categoriaEntity = new CategoriaEntity();
-        categoriaEntity.setNome(rs.getString(1));
-        categoriaEntity.setDescricao(rs.getString(2));
+        categoriaEntity.setIdCategoria(rs.getLong(1));
+        categoriaEntity.setNome(rs.getString(2));
+        categoriaEntity.setDescricao(rs.getString(3));
         lista.add(categoriaEntity);
       }
       return lista;

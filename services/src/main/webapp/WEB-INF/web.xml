@@ -20,6 +20,45 @@
 
     <security-constraint>
         <web-resource-collection>
+            <web-resource-name>padeiro-ws</web-resource-name>
+            <url-pattern>/padeiro/*</url-pattern>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+
+        <auth-constraint>
+            <role-name>administrador</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>categoria-ws</web-resource-name>
+            <url-pattern>/categoria/*</url-pattern>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+
+        <auth-constraint>
+            <role-name>cliente</role-name>
+            <role-name>administrador</role-name>
+            <role-name>convidado</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>categoria-ws</web-resource-name>
+            <url-pattern>/categoria/*</url-pattern>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+
+        <auth-constraint>
+            <role-name>cliente</role-name>
+            <role-name>administrador</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
             <web-resource-name>login-ws</web-resource-name>
             <url-pattern>/AuthenticationServiceService/*</url-pattern>
             <http-method>POST</http-method>
@@ -29,19 +68,6 @@
             <role-name>convidado</role-name>
             <role-name>cliente</role-name>
             <role-name>administrador</role-name>
-        </auth-constraint>
-    </security-constraint>
-
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>login-ws</web-resource-name>
-            <url-pattern>/ProdutoServiceService/*</url-pattern>
-            <http-method>POST</http-method>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>cliente</role-name>
-            <role-name>administrador</role-name>
-            <role-name>convidado</role-name>
         </auth-constraint>
     </security-constraint>
 

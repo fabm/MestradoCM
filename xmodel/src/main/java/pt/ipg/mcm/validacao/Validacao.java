@@ -8,6 +8,7 @@ import javax.validation.Path;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import javax.validation.constraints.NotNull;
 import java.lang.annotation.Annotation;
 import java.util.Map;
 import java.util.Set;
@@ -45,7 +46,7 @@ public class Validacao {
       ConstraintViolation<Object> cv = cvs.iterator().next();
       Annotation ann = cv.getConstraintDescriptor().getAnnotation();
 
-      if (ann.annotationType() == NotEmpty.class) {
+      if (ann.annotationType() == NotEmpty.class || ann.annotationType() == NotNull.class) {
         Path path = cv.getPropertyPath();
         String name = path.iterator().next().getName();
         name = getAlias(name, aliasMap);
