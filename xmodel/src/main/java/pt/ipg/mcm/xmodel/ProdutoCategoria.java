@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "produto-categoria")
+@XmlType(name = "Produto-categoria")
 public class ProdutoCategoria {
 
     @XmlElement(name = "nome-produto", required = true)
