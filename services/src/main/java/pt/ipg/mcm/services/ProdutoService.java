@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebService(serviceName = "produto", portName = "produtoPort")
+@WebService(serviceName = "Produto", portName = "ProdutoPort")
 public class ProdutoService {
 
   @Resource

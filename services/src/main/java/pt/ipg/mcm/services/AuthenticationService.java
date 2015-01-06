@@ -5,7 +5,7 @@ import pt.ipg.mcm.xmodel.Retorno;
 
 import javax.jws.WebService;
 
-@WebService
+@WebService(serviceName = "Authentication", portName = "AuthenticationPort")
 public class AuthenticationService {
   public ResLogin login() {
     ResLogin resLogin = new ResLogin();
