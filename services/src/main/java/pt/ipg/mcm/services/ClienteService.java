@@ -56,7 +56,7 @@ public class ClienteService {
   @WebMethod(operationName = "add-cliente")
   @ResponseWrapper(localName = "add-cliente-response")
   public ResAddCliente addCliente(@WebParam(name = "request")@XmlElement(required = true) ReqAddCliente reqAddCliente) throws LoginException {
-    rolesAuthorized.checkAuthorization(Role.ADMINISTRADOR, Role.CLIENTE);
+    rolesAuthorized.checkAuthorization(Role.ADMINISTRADOR, Role.CONVIDADO);
     try {
       Map<String, String> aliasMap = new HashMap<String, String>();
       aliasMap.put("dataNascimento","date de nascimento");

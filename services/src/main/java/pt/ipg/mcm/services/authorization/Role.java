@@ -2,7 +2,10 @@ package pt.ipg.mcm.services.authorization;
 
 public enum Role {
   ADMINISTRADOR("administrador"),
-  CLIENTE("CLIENTE");
+  CLIENTE("cliente"),
+  CONVIDADO("convidado"),
+  PADEIRO("padeiro")
+  ;
 
   private String strRole;
 

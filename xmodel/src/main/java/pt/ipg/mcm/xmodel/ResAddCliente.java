@@ -13,16 +13,16 @@ public class ResAddCliente {
 
     @NotNull
     @XmlElement(required = true)
-    private long id;
+    private Long id;
 
     @XmlElement(required = true)
     private Retorno retorno;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long value) {
+    public void setId(Long value) {
         this.id = value;
     }
 
