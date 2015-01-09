@@ -3,6 +3,7 @@ package pt.ipg.mcm.xmodel;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,8 @@ import java.util.List;
 @XmlType(name = "Res-get-all-categorias")
 public class ResGetAllCategorias {
 
-  @XmlElement(required = false)
+  @XmlElementWrapper(name = "categorias",required = true)
+  @XmlElement(name = "categoria",required = false)
   private List<Categoria> categorias;
 
   @XmlElement(required = true)
