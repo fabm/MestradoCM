@@ -81,6 +81,9 @@ public class ProdutoService {
       List<VProdutoCategoriaEntity> allProdutos = produtoDao.getProdutos(reqGetProdutosCategorias.isComFoto(), reqGetProdutosCategorias.getIdCategoria());
       for (VProdutoCategoriaEntity vProdutoCategoriaEntity : allProdutos) {
         ProdutoCategoria produtoCategoria = new ProdutoCategoria();
+
+        produtoCategoria.setIdproduto(vProdutoCategoriaEntity.getIdProduto());
+
         produtoCategoria.setNomeCategoria(vProdutoCategoriaEntity.getNomeCategoria());
         produtoCategoria.setNomeProduto(vProdutoCategoriaEntity.getNomeProduto());
         produtoCategoria.setPrecoActual(vProdutoCategoriaEntity.getPrecoAtual());

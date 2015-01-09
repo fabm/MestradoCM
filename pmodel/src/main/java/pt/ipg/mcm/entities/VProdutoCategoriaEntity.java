@@ -8,11 +8,20 @@ import java.util.Arrays;
 
 @Table(name = "V_PRODUTO_CATEGORIA")
 public class VProdutoCategoriaEntity {
+  private Long idproduto;
   private String nomeCategoria;
   private String descricao;
   private BigDecimal precoAtual;
   private byte[] foto;
   private String nomeProduto;
+
+
+  public Long getIdProduto() {
+    return idproduto;
+  }
+
+  public void setIdproduto(Long idproduto){this.idproduto = idproduto;}
+
 
   @Basic
   @Column(name = "NOME_CATEGORIA", nullable = true, insertable = true, updatable = true, length = 200)

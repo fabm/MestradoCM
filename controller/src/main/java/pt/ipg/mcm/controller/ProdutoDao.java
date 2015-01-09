@@ -45,7 +45,7 @@ public class ProdutoDao {
       call.setLong(4, reqAddProduto.getCategoria());
       InputStream in = new ByteArrayInputStream(reqAddProduto.getFoto());
 
-      call.setBinaryStream(4, in);
+      call.setBinaryStream(5, in);
 
 
       call.executeUpdate();
@@ -66,7 +66,7 @@ public class ProdutoDao {
     try {
       String sqlString = "SELECT PRODUTO.NOME,\n" +
           "  PRODUTO.PRECO_ATUAL,\n" +
-          "  PRODUTO.ID_CATEGORIA,\n" +
+          "  PRODUTO.ID_CATEGORIA\n" +
           "FROM PRODUTO\n" +
           "WHERE PRODUTO.ID_PRODUTO = ?";
 
@@ -83,7 +83,6 @@ public class ProdutoDao {
       resGetProduto.setNome(rs.getString(1));
       resGetProduto.setPrecoUnitario(rs.getBigDecimal(2));
       resGetProduto.setCategoria(rs.getLong(3));
-      resGetProduto.setFoto(rs.getBytes(4));
 
     } catch (SQLException e) {
       throw new MestradoException(Erro.TECNICO);
@@ -161,7 +160,7 @@ public class ProdutoDao {
         sqlStr = "";
       }
 
-      sqlStr = String.format("SELECT NOME_CATEGORIA, DESCRICAO,PRECO_ATUAL,NOME_PRODUTO%s from V_PRODUTO_CATEGORIA", sqlStr);
+      sqlStr = String.format("SELECT NOME_CATEGORIA, DESCRICAO,PRECO_ATUAL,NOME_PRODUTO, ID_PRODUTO%s from V_PRODUTO_CATEGORIA", sqlStr);
 
       ResultSet rs;
       if (idCategoria != null) {
@@ -178,9 +177,12 @@ public class ProdutoDao {
         vProdutoCategoriaEntity.setDescricao(rs.getString(2));
         vProdutoCategoriaEntity.setPrecoAtual(rs.getBigDecimal(3));
         vProdutoCategoriaEntity.setNomeProduto(rs.getString(4));
+        vProdutoCategoriaEntity.setIdproduto(rs.getLong(5));
+
         if (withFoto) {
-          vProdutoCategoriaEntity.setFoto(rs.getBytes(5));
+          vProdutoCategoriaEntity.setFoto(rs.getBytes(6));
         }
+
         vProdutoCategoriaEntities.add(vProdutoCategoriaEntity);
       }
       return vProdutoCategoriaEntities;
