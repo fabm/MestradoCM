@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
     <description>Mestrado CM</description>
     <display-name>Mestrado CM</display-name>
 
+    <servlet>
+        <servlet-name>Jersey Web Application</servlet-name>
+        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>javax.ws.rs.Application</param-name>
+            <param-value>pt.ipg.mcm.rs.McmApplication</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Jersey Web Application</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
+    </servlet-mapping>
 
     <security-constraint>
         <web-resource-collection>
@@ -62,7 +77,7 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>login-ws</web-resource-name>
-            <url-pattern>/AuthenticationServiceService/*</url-pattern>
+            <url-pattern>/Authentication/*</url-pattern>
             <http-method>POST</http-method>
         </web-resource-collection>
 
@@ -93,5 +108,10 @@
     <security-role>
         <role-name>padeiro</role-name>
     </security-role>
+
+
+    <welcome-file-list>
+        <welcome-file>welcome.html</welcome-file>
+    </welcome-file-list>
 
 </web-app>

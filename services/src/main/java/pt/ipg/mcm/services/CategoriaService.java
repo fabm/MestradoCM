@@ -2,13 +2,10 @@ package pt.ipg.mcm.services;
 
 import pt.ipg.mcm.controller.CategoriaDao;
 import pt.ipg.mcm.entities.CategoriaEntity;
+import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.validacao.Validacao;
-import pt.ipg.mcm.xmodel.Categoria;
-import pt.ipg.mcm.xmodel.ReqAddCategoria;
-import pt.ipg.mcm.xmodel.ResAddCategoria;
-import pt.ipg.mcm.xmodel.ResGetAllCategorias;
-import pt.ipg.mcm.xmodel.Retorno;
+import pt.ipg.mcm.xmodel.*;
 
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
@@ -17,6 +14,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.ws.ResponseWrapper;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,16 +28,22 @@ public class CategoriaService {
   @WebResult(name = "response")
   @WebMethod(operationName = "add-categoria")
   public ResAddCategoria addCategoria(@XmlElement(required = true) @WebParam(name = "request") ReqAddCategoria reqAddCategoria) {
+    ResAddCategoria resAddCategoria = new ResAddCategoria();
     try {
       Map<String,String> aliasMap = new HashMap<String, String>();
       aliasMap.put("descricao","descrição");
       Validacao.getInstance().valida(reqAddCategoria,aliasMap);
-      return categoriaDao.addCategoria(reqAddCategoria);
+      CategoriaEntity categoriaEntity = new CategoriaEntity();
+      categoriaEntity.setDescricao(reqAddCategoria.getDescricao());
+      categoriaEntity.setNome(reqAddCategoria.getNome());
+      categoriaDao.addCategoria(categoriaEntity);
+      resAddCategoria.setRetorno(new Retorno(1,"Categoria inserida com sucesso"));
     } catch (MestradoException e) {
-      ResAddCategoria resAddCategoria = new ResAddCategoria();
       resAddCategoria.setRetorno(new Retorno(e));
-      return resAddCategoria;
+    } catch (SQLException e) {
+      resAddCategoria.setRetorno(new Retorno(new MestradoException(Erro.TECNICO)));
     }
+    return resAddCategoria;
   }
 
   @WebResult(name = "response")
@@ -66,4 +70,22 @@ public class CategoriaService {
     }
   }
 
+  public ResCategoriasDesync getCategoriasDeSync(@XmlElement(required = true) @WebParam(name = "versao") Long versao) {
+    ResCategoriasDesync resCategoriasDesync = new ResCategoriasDesync();
+    try {
+      List<CategoriaEntity> categoriaEntities = categoriaDao.getDesync(versao);
+      List<Categoria> categorias = resCategoriasDesync.getCategorias();
+      for (CategoriaEntity categoriaEntity:categoriaEntities){
+        Categoria categoria = new Categoria();
+        categoria.setDescricao(categoriaEntity.getDescricao());
+        categoria.setNome(categoriaEntity.getDescricao());
+        categoria.setId(categoriaEntity.getIdCategoria());
+        categorias.add(categoria);
+      }
+      return resCategoriasDesync;
+    } catch (MestradoException e) {
+      resCategoriasDesync.setRetorno(new Retorno(e));
+    }
+    return resCategoriasDesync;
+  }
 }
