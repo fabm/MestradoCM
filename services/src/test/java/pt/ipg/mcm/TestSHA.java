@@ -1,9 +1,8 @@
-import org.junit.Assert;
+package pt.ipg.mcm;
+
 import org.junit.Test;
 
-import java.io.StringReader;
 import java.security.MessageDigest;
-import java.util.Properties;
 
 public class TestSHA {
   @Test

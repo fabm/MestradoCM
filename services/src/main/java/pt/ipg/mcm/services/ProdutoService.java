@@ -1,17 +1,19 @@
 package pt.ipg.mcm.services;
 
 import pt.ipg.mcm.controller.ProdutoDao;
+import pt.ipg.mcm.entities.ProdutoEntity;
 import pt.ipg.mcm.entities.VProdutoCategoriaEntity;
+import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.services.authorization.Role;
 import pt.ipg.mcm.services.authorization.RolesAuthorized;
 import pt.ipg.mcm.validacao.Validacao;
 import pt.ipg.mcm.xmodel.ProdutoCategoria;
 import pt.ipg.mcm.xmodel.ReqAddProduto;
-import pt.ipg.mcm.xmodel.ReqGetProduto;
 import pt.ipg.mcm.xmodel.ReqGetProdutosCategorias;
 import pt.ipg.mcm.xmodel.ResAddProduto;
 import pt.ipg.mcm.xmodel.ResGetProduto;
+import pt.ipg.mcm.xmodel.ResGetProdutos;
 import pt.ipg.mcm.xmodel.ResGetProdutosCategorias;
 import pt.ipg.mcm.xmodel.Retorno;
 
@@ -24,6 +26,8 @@ import javax.jws.WebService;
 import javax.security.auth.login.LoginException;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.ws.WebServiceContext;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,17 +65,6 @@ public class ProdutoService {
   }
 
   @WebMethod
-  public ResGetProduto getProduto(@WebParam(name = "req-get-produto")@XmlElement(required = true) ReqGetProduto reqGetProduto) {
-    try {
-      return produtoDao.getProduto(reqGetProduto);
-    } catch (MestradoException e) {
-      ResGetProduto resGetProduto = new ResGetProduto();
-      resGetProduto.setRetorno(new Retorno(e));
-      return resGetProduto;
-    }
-  }
-
-  @WebMethod
   public ResGetProdutosCategorias getProdutosCategorias(@WebParam(name = "req-get-produtos-categorias") @XmlElement(required = true) ReqGetProdutosCategorias
                                                             reqGetProdutosCategorias) {
 
@@ -98,5 +91,25 @@ public class ProdutoService {
     return resGetProdutosCategorias;
   }
 
+ @WebMethod
+  public ResGetProdutos getProdutosDeSync(@WebParam(name = "versao") Long versao) {
 
+    ResGetProdutos resGetProdutos = new ResGetProdutos();
+
+    try {
+      List<ProdutoEntity> produtos = produtoDao.getProdutos(versao);
+      List<ResGetProduto> resGetProdutoList = new ArrayList<ResGetProduto>();
+
+      for (ProdutoEntity produtoEntity : produtos) {
+        ResGetProduto resGetProduto = new ResGetProduto();
+        resGetProduto.setNome(produtoEntity.getNome());
+        resGetProduto.setCategoria(produtoEntity.getIdCategoria());
+        resGetProduto.setFoto(produtoEntity.getFoto());
+      }
+      resGetProdutos.setResGetProdutos(resGetProdutoList);
+    } catch (SQLException e) {
+      resGetProdutos.setRetorno(new Retorno(new MestradoException(Erro.TECNICO)));
+    }
+    return resGetProdutos;
+  }
 }

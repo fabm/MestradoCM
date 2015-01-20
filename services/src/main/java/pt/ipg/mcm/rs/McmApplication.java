@@ -1,6 +1,6 @@
 package pt.ipg.mcm.rs;
 
-import pt.ipg.mcm.rs.services.CategoriasRsService;
+import pt.ipg.mcm.rs.services.CategoriaRsService;
 
 import javax.annotation.ManagedBean;
 import javax.ws.rs.core.Application;
@@ -13,7 +13,7 @@ public class McmApplication extends Application {
   @Override
   public Set<Class<?>> getClasses() {
     Set<Class<?>> classes = new HashSet<Class<?>>();
-    classes.add(CategoriasRsService.class);
+    classes.add(CategoriaRsService.class);
     return classes;
   }
 }

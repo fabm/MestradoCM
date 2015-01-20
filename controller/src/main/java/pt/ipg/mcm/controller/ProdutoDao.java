@@ -1,12 +1,11 @@
 package pt.ipg.mcm.controller;
 
+import pt.ipg.mcm.entities.ProdutoEntity;
 import pt.ipg.mcm.entities.VProdutoCategoriaEntity;
 import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.xmodel.ReqAddProduto;
-import pt.ipg.mcm.xmodel.ReqGetProduto;
 import pt.ipg.mcm.xmodel.ResAddProduto;
-import pt.ipg.mcm.xmodel.ResGetProduto;
 import pt.ipg.mcm.xmodel.Retorno;
 
 import javax.annotation.Resource;
@@ -60,9 +59,38 @@ public class ProdutoDao {
     return resAddProduto;
   }
 
-  public ResGetProduto getProduto(ReqGetProduto reqGetProduto) throws MestradoException {
-    ResGetProduto resGetProduto = new ResGetProduto();
+  public List<ProdutoEntity> getProdutos(long versao) throws SQLException {
+    String sqlString = "SELECT PRODUTO.ID_PRODUTO,\n" +
+        "  PRODUTO.NOME,\n" +
+        "  PRODUTO.PRECO_ATUAL,\n" +
+        "  PRODUTO.FOTO,\n" +
+        "  PRODUTO.ID_CATEGORIA\n" +
+        "FROM PRODUTO\n" +
+        "WHERE PRODUTO.SYNC > ?";
 
+    Connection connection = mestradoDataSource.getConnection();
+
+    PreparedStatement call = connection.prepareStatement(sqlString);
+
+    ResultSet rs = call.executeQuery();
+
+    List<ProdutoEntity> produtoEntities = new ArrayList<ProdutoEntity>();
+    while (rs.next()) {
+      ProdutoEntity produtoEntity = new ProdutoEntity();
+      produtoEntity.setIdProduto(rs.getLong(1));
+      produtoEntity.setNome(rs.getString(2));
+      produtoEntity.setPrecoAtual(rs.getBigDecimal(3));
+      produtoEntity.setFoto(rs.getBytes(4));
+      produtoEntity.setIdCategoria(rs.getLong(5));
+      produtoEntities.add(produtoEntity);
+    }
+
+    return produtoEntities;
+  }
+
+  public ProdutoEntity getProduto(long idProduto) throws MestradoException {
+
+    ProdutoEntity produtoEntity = new ProdutoEntity();
     try {
       String sqlString = "SELECT PRODUTO.NOME,\n" +
           "  PRODUTO.PRECO_ATUAL,\n" +
@@ -73,22 +101,23 @@ public class ProdutoDao {
       Connection connection = mestradoDataSource.getConnection();
 
       PreparedStatement call = connection.prepareStatement(sqlString);
-      call.setLong(1, reqGetProduto.getId());
+      call.setLong(1, idProduto);
       ResultSet rs = call.executeQuery();
 
       if (!rs.next()) {
-        throw new MestradoException(Erro.PRODUTO_NAO_ENCONTRADO, reqGetProduto.getId());
+        throw new MestradoException(Erro.PRODUTO_NAO_ENCONTRADO, idProduto);
       }
 
-      resGetProduto.setNome(rs.getString(1));
-      resGetProduto.setPrecoUnitario(rs.getBigDecimal(2));
-      resGetProduto.setCategoria(rs.getLong(3));
+      produtoEntity.setNome(rs.getString(1));
+      produtoEntity.setPrecoAtual(rs.getBigDecimal(2));
+      produtoEntity.setIdCategoria(rs.getLong(3));
+      produtoEntity.setIdProduto(rs.getLong(4));
 
     } catch (SQLException e) {
       throw new MestradoException(Erro.TECNICO);
     }
 
-    return resGetProduto;
+    return produtoEntity;
   }
 
   public void saveFoto(long id, InputStream inputStream) throws MestradoException {

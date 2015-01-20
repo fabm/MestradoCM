@@ -2,22 +2,17 @@ package pt.ipg.mcm.entities;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
-/**
- * Created by francisco on 02/01/15.
- */
-@Entity
-@Table(name = "PRODUTO", schema = "BDA_1010136", catalog = "")
 public class ProdutoEntity {
   private long idProduto;
   private String nome;
   private BigDecimal precoAtual;
   private byte[] foto;
+  private long idCategoria;
+  private long sync;
 
   @Id
   @Column(name = "ID_PRODUTO", nullable = false, insertable = true, updatable = true, precision = 0)
@@ -30,7 +25,7 @@ public class ProdutoEntity {
   }
 
   @Basic
-  @Column(name = "NOME", nullable = true, insertable = true, updatable = true, length = 100)
+  @Column(name = "NOME", nullable = false, insertable = true, updatable = true, length = 100)
   public String getNome() {
     return nome;
   }
@@ -40,7 +35,7 @@ public class ProdutoEntity {
   }
 
   @Basic
-  @Column(name = "PRECO_ATUAL", nullable = true, insertable = true, updatable = true, precision = 2)
+  @Column(name = "PRECO_ATUAL", nullable = false, insertable = true, updatable = true, precision = 2)
   public BigDecimal getPrecoAtual() {
     return precoAtual;
   }
@@ -59,6 +54,26 @@ public class ProdutoEntity {
     this.foto = foto;
   }
 
+  @Basic
+  @Column(name = "ID_CATEGORIA", nullable = false, insertable = true, updatable = true, precision = -127)
+  public long getIdCategoria() {
+    return idCategoria;
+  }
+
+  public void setIdCategoria(long idCategoria) {
+    this.idCategoria = idCategoria;
+  }
+
+  @Basic
+  @Column(name = "SYNC", nullable = false, insertable = true, updatable = true, precision = 0)
+  public long getSync() {
+    return sync;
+  }
+
+  public void setSync(long sync) {
+    this.sync = sync;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -70,7 +85,13 @@ public class ProdutoEntity {
 
     ProdutoEntity that = (ProdutoEntity) o;
 
+    if (idCategoria != that.idCategoria) {
+      return false;
+    }
     if (idProduto != that.idProduto) {
+      return false;
+    }
+    if (sync != that.sync) {
       return false;
     }
     if (!Arrays.equals(foto, that.foto)) {
@@ -92,6 +113,8 @@ public class ProdutoEntity {
     result = 31 * result + (nome != null ? nome.hashCode() : 0);
     result = 31 * result + (precoAtual != null ? precoAtual.hashCode() : 0);
     result = 31 * result + (foto != null ? Arrays.hashCode(foto) : 0);
+    result = 31 * result + (int) (idCategoria ^ (idCategoria >>> 32));
+    result = 31 * result + (int) (sync ^ (sync >>> 32));
     return result;
   }
 }
