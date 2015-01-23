@@ -8,13 +8,12 @@ import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.xmodel.ResAddUtilizador;
 
 import javax.annotation.Resource;
+import javax.ejb.Stateless;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.logging.Logger;
 
-/**
- * Created by BrrF on 19-01-2015.
- */
+@Stateless
 public class UtilizadorDao {
 
     private static Logger LOGGER = Logger.getLogger(UtilizadorDao.class.getName());

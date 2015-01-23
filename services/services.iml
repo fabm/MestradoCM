@@ -23,11 +23,12 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="controller" scope="PROVIDED" />
+    <orderEntry type="module" module-name="dao" scope="PROVIDED" />
     <orderEntry type="module" module-name="xmodel" scope="PROVIDED" />
     <orderEntry type="module" module-name="common" scope="PROVIDED" />
     <orderEntry type="module" module-name="pmodel" scope="PROVIDED" />

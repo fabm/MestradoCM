@@ -4,13 +4,13 @@
     <root id="root">
       <element id="javaee-facet-resources" facet="app/javaeeApplication/JavaEE" />
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="C:\Users\BrrF\Documents\GitHub\MetradoCM\app\target/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/app/target/MANIFEST.MF" />
       </element>
       <element id="archive" name="services-1.0-SNAPSHOT.war">
         <element id="artifact" artifact-name="services:war exploded" />
       </element>
-      <element id="archive" name="controller-1.0-SNAPSHOT.jar">
-        <element id="artifact" artifact-name="controller:ejb exploded" />
+      <element id="archive" name="dao-1.0-SNAPSHOT.jar">
+        <element id="artifact" artifact-name="dao:ejb exploded" />
       </element>
       <element id="directory" name="lib">
         <element id="archive" name="xmodel-1.0-SNAPSHOT.jar">
