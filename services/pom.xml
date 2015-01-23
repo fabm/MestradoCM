@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>MestradoCM</groupId>
-            <artifactId>controller</artifactId>
+            <artifactId>dao</artifactId>
             <version>1.0-SNAPSHOT</version>
             <type>ejb</type>
             <scope>provided</scope>
