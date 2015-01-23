@@ -12,13 +12,13 @@ import javax.xml.ws.WebServiceContext;
 @WebService(serviceName = "Encomenda", portName = "EncomendaPort")
 public class EncomendaService {
   @Resource
-  private WebServiceContext webServiceContext;
+  private WebServiceContext webService;
 
   @EJB
   private EncomendaDao encomendaDao;
 
   @WebMethod
-  public Retorno addEncomenda(){
+  public Retorno getRetorno(){
     return new Retorno(1,"teste");
   }
 
