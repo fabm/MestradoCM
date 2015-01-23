@@ -6,8 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "PADEIRO", schema = "BDA_1010136", catalog = "")
 public class PadeiroEntity {
   private int idPadeiro;
   private String nome;

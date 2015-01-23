@@ -9,7 +9,8 @@ import javax.persistence.Table;
 /**
  * Created by francisco on 09/12/14.
  */
-
+@Entity
+@Table(name = "CATEGORIA")
 public class CategoriaEntity {
   private long idCategoria;
   private String nome;

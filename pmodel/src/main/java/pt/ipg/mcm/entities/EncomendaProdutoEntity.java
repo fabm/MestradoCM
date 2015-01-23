@@ -1,13 +1,9 @@
 package pt.ipg.mcm.entities;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
 public class EncomendaProdutoEntity {
   private long quantidade;
-  private long idEncomenda;
+  private EncomendaEntity encomenda;
+  private ProdutoEntity produto;
 
   public long getQuantidade() {
     return quantidade;
@@ -17,39 +13,19 @@ public class EncomendaProdutoEntity {
     this.quantidade = quantidade;
   }
 
-  public long getIdEncomenda() {
-    return idEncomenda;
+  public EncomendaEntity getEncomenda() {
+    return encomenda;
   }
 
-  public void setIdEncomenda(long idEncomenda) {
-    this.idEncomenda = idEncomenda;
+  public void setEncomenda(EncomendaEntity encomenda) {
+    this.encomenda = encomenda;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    EncomendaProdutoEntity that = (EncomendaProdutoEntity) o;
-
-    if (idEncomenda != that.idEncomenda) {
-      return false;
-    }
-    if (quantidade != that.quantidade) {
-      return false;
-    }
-
-    return true;
+  public ProdutoEntity getProduto() {
+    return produto;
   }
 
-  @Override
-  public int hashCode() {
-    int result = (int) (quantidade ^ (quantidade >>> 32));
-    result = 31 * result + (int) (idEncomenda ^ (idEncomenda >>> 32));
-    return result;
+  public void setProduto(ProdutoEntity produto) {
+    this.produto = produto;
   }
 }

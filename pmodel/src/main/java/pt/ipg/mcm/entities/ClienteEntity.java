@@ -7,11 +7,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 
-/**
- * Created by francisco on 09/12/14.
- */
-@Entity
-@Table(name = "CLIENTE")
 public class ClienteEntity {
   private long idCliente;
   private BigDecimal contribuinte;

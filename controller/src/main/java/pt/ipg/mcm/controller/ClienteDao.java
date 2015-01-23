@@ -37,7 +37,8 @@ public class ClienteDao {
     try {
       connection = mestradoDataSource.getConnection();
 
-      CallableStatement call = connection.prepareCall("{call P_ADD_CLIENTE(?,?,?,?,?,?,?,?,?,?)");
+
+      CallableStatement call = connection.prepareCall("{call P_ADD_CLIENTE(?,?,?,?,?,?,?,?,?,?)}");
       call.setLong(1, reqAddCliente.getContribuinte());
       call.setString(2, reqAddCliente.getNome());
       call.setInt(3, reqAddCliente.getRole());

@@ -1,19 +1,27 @@
 package pt.ipg.mcm.entities;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EncomendaEntity {
   private long idEncomenda;
   private Timestamp dataEntrega;
-  private long encomendaAssociada;
+  private EncomendaEntity encomendaAssociada;
   private long quantidade;
-  private BigDecimal sync;
+  private long sync;
+  private long fatura;
+  private ClienteEntity clienteEntity;
+  private List<EncomendaProdutoEntity> encomendaProdutoEntityList;
+  private List<EncomendaEntity> encomendasAssociadas;
+  private CalendarioviagensEntity calendarioviagensEntity;
+
+  public List<EncomendaProdutoEntity> getEncomendaProdutoEntityList() {
+    if (encomendaProdutoEntityList == null) {
+      encomendaProdutoEntityList = new ArrayList<EncomendaProdutoEntity>();
+    }
+    return encomendaProdutoEntityList;
+  }
 
   public long getIdEncomenda() {
     return idEncomenda;
@@ -31,11 +39,11 @@ public class EncomendaEntity {
     this.dataEntrega = dataEntrega;
   }
 
-  public long getEncomendaAssociada() {
+  public EncomendaEntity getEncomendaAssociada() {
     return encomendaAssociada;
   }
 
-  public void setEncomendaAssociada(long encomendaAssociada) {
+  public void setEncomendaAssociada(EncomendaEntity encomendaAssociada) {
     this.encomendaAssociada = encomendaAssociada;
   }
 
@@ -47,51 +55,42 @@ public class EncomendaEntity {
     this.quantidade = quantidade;
   }
 
-  public BigDecimal getSync() {
+  public long getSync() {
     return sync;
   }
 
-  public void setSync(BigDecimal sync) {
+  public void setSync(long sync) {
     this.sync = sync;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    EncomendaEntity that = (EncomendaEntity) o;
-
-    if (encomendaAssociada != that.encomendaAssociada) {
-      return false;
-    }
-    if (idEncomenda != that.idEncomenda) {
-      return false;
-    }
-    if (quantidade != that.quantidade) {
-      return false;
-    }
-    if (dataEntrega != null ? !dataEntrega.equals(that.dataEntrega) : that.dataEntrega != null) {
-      return false;
-    }
-    if (sync != null ? !sync.equals(that.sync) : that.sync != null) {
-      return false;
-    }
-
-    return true;
+  public long getFatura() {
+    return fatura;
   }
 
-  @Override
-  public int hashCode() {
-    int result = (int) (idEncomenda ^ (idEncomenda >>> 32));
-    result = 31 * result + (dataEntrega != null ? dataEntrega.hashCode() : 0);
-    result = 31 * result + (int) (encomendaAssociada ^ (encomendaAssociada >>> 32));
-    result = 31 * result + (int) (quantidade ^ (quantidade >>> 32));
-    result = 31 * result + (sync != null ? sync.hashCode() : 0);
-    return result;
+  public void setFatura(long fatura) {
+    this.fatura = fatura;
+  }
+
+  public List<EncomendaEntity> getEncomendasAssociadas() {
+    if (encomendasAssociadas == null) {
+      return new ArrayList<EncomendaEntity>();
+    }
+    return encomendasAssociadas;
+  }
+
+  public CalendarioviagensEntity getCalendarioviagensEntity() {
+    return calendarioviagensEntity;
+  }
+
+  public void setCalendarioviagensEntity(CalendarioviagensEntity calendarioviagensEntity) {
+    this.calendarioviagensEntity = calendarioviagensEntity;
+  }
+
+  public ClienteEntity getClienteEntity() {
+    return clienteEntity;
+  }
+
+  public void setClienteEntity(ClienteEntity clienteEntity) {
+    this.clienteEntity = clienteEntity;
   }
 }
