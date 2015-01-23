@@ -12,6 +12,7 @@ public class UtilizadorEntity {
   private String login;
   private String password;
 
+
   @Id
   @Column(name = "ID_UTILIZADOR", nullable = false, insertable = true, updatable = true, precision = -127)
   public BigDecimal getIdUtilizador() {

@@ -6,7 +6,8 @@ public enum Erro {
   PRODUTO_NAO_ENCONTRADO(-3, "Produto não encontrado {0}"),
   FORMATO_INVALIDO(-4, "O Campo {0} é inválido"),
   APENAS_UM_FICHEIRO(-5,"Apenas um ficheiro deve ser carregado"),
-  SEM_FICHEIROS(-6, "Nenhum ficheiro para fazer upload");
+  SEM_FICHEIROS(-6, "Nenhum ficheiro para fazer upload"),
+  PADEIRO_NAO_ENCONTRADO(-7, "Padeiro não Encontrado ");
 
 
   private final int codigo;

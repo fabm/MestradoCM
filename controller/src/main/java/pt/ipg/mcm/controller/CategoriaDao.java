@@ -36,16 +36,9 @@ public class CategoriaDao {
 
 
   public Long addCategoria(CategoriaEntity categoriaEntity) throws SQLException {
-    Connection connection;
-      connection = mestradoDataSource.getConnection();
+    Connection connection = mestradoDataSource.getConnection();
 
-      CallableStatement call = connection.prepareCall("SELECT NOME,DESCRICAO from CATEGORIA");
-      ResultSet rs = call.executeQuery();
-      while (rs.next()) {
-        LOGGER.log(Level.INFO, "nome:" + rs.getString(1) + " descrição:" + rs.getString(2));
-      }
-      rs.close();
-
+      CallableStatement call ;
       call = connection.prepareCall("{call P_ADD_CATEGORIA(?,?,?)");
       call.setString(1, categoriaEntity.getNome());
       call.setString(2, categoriaEntity.getDescricao());
