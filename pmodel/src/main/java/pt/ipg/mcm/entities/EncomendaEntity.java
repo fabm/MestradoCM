@@ -8,13 +8,12 @@ public class EncomendaEntity {
   private long idEncomenda;
   private Timestamp dataEntrega;
   private EncomendaEntity encomendaAssociada;
-  private long quantidade;
   private long sync;
   private long fatura;
   private ClienteEntity clienteEntity;
   private List<EncomendaProdutoEntity> encomendaProdutoEntityList;
   private List<EncomendaEntity> encomendasAssociadas;
-  private CalendarioviagensEntity calendarioviagensEntity;
+  private CalendarioEntity calendarioEntity;
 
   public List<EncomendaProdutoEntity> getEncomendaProdutoEntityList() {
     if (encomendaProdutoEntityList == null) {
@@ -47,14 +46,6 @@ public class EncomendaEntity {
     this.encomendaAssociada = encomendaAssociada;
   }
 
-  public long getQuantidade() {
-    return quantidade;
-  }
-
-  public void setQuantidade(long quantidade) {
-    this.quantidade = quantidade;
-  }
-
   public long getSync() {
     return sync;
   }
@@ -78,12 +69,12 @@ public class EncomendaEntity {
     return encomendasAssociadas;
   }
 
-  public CalendarioviagensEntity getCalendarioviagensEntity() {
-    return calendarioviagensEntity;
+  public CalendarioEntity getCalendarioEntity() {
+    return calendarioEntity;
   }
 
-  public void setCalendarioviagensEntity(CalendarioviagensEntity calendarioviagensEntity) {
-    this.calendarioviagensEntity = calendarioviagensEntity;
+  public void setCalendarioEntity(CalendarioEntity calendarioEntity) {
+    this.calendarioEntity = calendarioEntity;
   }
 
   public ClienteEntity getClienteEntity() {

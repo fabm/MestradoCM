@@ -4,11 +4,12 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CalendarioviagensEntity {
+public class CalendarioEntity {
   private long idCalendario;
   private Timestamp dataprevista;
   private PadeiroEntity padeiroEntity;
   private List<EncomendaEntity> encomendaEntityList;
+  private int confirmacao;
 
   public List<EncomendaEntity> getEncomendaEntityList() {
     if (encomendaEntityList == null) {
@@ -41,4 +42,11 @@ public class CalendarioviagensEntity {
     this.padeiroEntity = padeiroEntity;
   }
 
+  public void setConfirmacao(int confirmacao) {
+    this.confirmacao = confirmacao;
+  }
+
+  public int getConfirmacao() {
+    return confirmacao;
+  }
 }

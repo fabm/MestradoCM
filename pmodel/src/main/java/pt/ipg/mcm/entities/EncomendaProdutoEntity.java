@@ -1,7 +1,7 @@
 package pt.ipg.mcm.entities;
 
 public class EncomendaProdutoEntity {
-  private long quantidade;
+  private int quantidade;
   private EncomendaEntity encomenda;
   private ProdutoEntity produto;
 
@@ -9,7 +9,7 @@ public class EncomendaProdutoEntity {
     return quantidade;
   }
 
-  public void setQuantidade(long quantidade) {
+  public void setQuantidade(int quantidade) {
     this.quantidade = quantidade;
   }
 
