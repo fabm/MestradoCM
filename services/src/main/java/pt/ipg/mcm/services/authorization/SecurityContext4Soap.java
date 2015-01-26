@@ -7,7 +7,7 @@ public class SecurityContext4Soap implements SecurityCommon {
   private WebServiceContext webServiceContext;
 
   public SecurityContext4Soap(WebServiceContext securityContext) {
-    this.webServiceContext = webServiceContext;
+    this.webServiceContext = securityContext;
   }
 
   @Override
