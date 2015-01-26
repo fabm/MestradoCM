@@ -6,7 +6,7 @@ import pt.ipg.mcm.entities.VProdutoCategoriaEntity;
 import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.services.authorization.Role;
-import pt.ipg.mcm.services.authorization.RolesAuthorized;
+import pt.ipg.mcm.services.authorization.SecureService;
 import pt.ipg.mcm.validacao.Validacao;
 import pt.ipg.mcm.xmodel.ProdutoCategoria;
 import pt.ipg.mcm.xmodel.ReqAddProduto;
@@ -17,15 +17,12 @@ import pt.ipg.mcm.xmodel.ResGetProdutos;
 import pt.ipg.mcm.xmodel.ResGetProdutosCategorias;
 import pt.ipg.mcm.xmodel.Retorno;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.security.auth.login.LoginException;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.ws.WebServiceContext;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,20 +30,10 @@ import java.util.List;
 import java.util.Map;
 
 @WebService(serviceName = "Produto", portName = "ProdutoPort")
-public class ProdutoService {
-
-  @Resource
-  private WebServiceContext webServiceContext;
+public class ProdutoService extends SecureService {
 
   @EJB
   private ProdutoDao produtoDao;
-
-  private RolesAuthorized rolesAuthorized;
-
-  @PostConstruct
-  private void init() {
-    rolesAuthorized = new RolesAuthorized(webServiceContext);
-  }
 
 
   @WebMethod
@@ -55,7 +42,7 @@ public class ProdutoService {
       Map<String, String> aliasMap = new HashMap<String, String>();
       aliasMap.put("precoUnitario", "preço unitário");
       Validacao.getInstance().valida(reqAddProduto, aliasMap);
-      rolesAuthorized.checkAuthorization(Role.ADMINISTRADOR);
+      checkAuthorization(Role.ADMINISTRADOR);
       return produtoDao.addProduto(reqAddProduto);
     } catch (MestradoException e) {
       ResAddProduto resAddProduto = new ResAddProduto();
@@ -91,7 +78,7 @@ public class ProdutoService {
     return resGetProdutosCategorias;
   }
 
- @WebMethod
+  @WebMethod
   public ResGetProdutos getProdutosDeSync(@WebParam(name = "versao") Long versao) {
 
     ResGetProdutos resGetProdutos = new ResGetProdutos();

@@ -1,25 +1,35 @@
 package pt.ipg.mcm.services.authorization;
 
+import javax.annotation.Resource;
 import javax.security.auth.login.LoginException;
 import javax.xml.ws.WebServiceContext;
 import java.security.Principal;
 
-public class RolesAuthorized {
+public class SecureService {
 
+  @Resource
   private WebServiceContext webServiceContext;
 
-  public RolesAuthorized(WebServiceContext webServiceContext) {
-    this.webServiceContext = webServiceContext;
+  private SecurityCommon securityCommon;
+
+  protected SecurityCommon getSecurityCommon() {
+    if(securityCommon !=null){
+      return securityCommon;
+    }
+    return new SecurityContext4Soap(webServiceContext);
   }
 
+  public void setSecurityCommon(SecurityCommon securityCommon) {
+    this.securityCommon = securityCommon;
+  }
 
   public void checkAuthorization(Role... roles) throws LoginException {
     for (Role role : roles) {
-      if (webServiceContext.isUserInRole(role.getRoleName())) {
+      if (getSecurityCommon().isUserInRole(role.getRoleName())) {
         return;
       }
     }
-    Principal principal = webServiceContext.getUserPrincipal();
+    Principal principal = getSecurityCommon().getUserPrincipal();
     String name = null;
     if(principal!=null){
       name = principal.getName();

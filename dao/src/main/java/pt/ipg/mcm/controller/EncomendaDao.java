@@ -12,14 +12,14 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.Map;
+import java.util.Date;
 
 @Stateless
 public class EncomendaDao {
   @Resource(lookup = "jdbc/mestrado")
   private DataSource mestradoDataSource;
 
-  public void inserirEncomenda(EncomendaEntity encomendaEntity,String login) throws MestradoException {
+  public void inserirEncomenda(EncomendaEntity encomendaEntity, String login) throws MestradoException {
 
     try {
       Connection connection = mestradoDataSource.getConnection();
@@ -38,8 +38,7 @@ public class EncomendaDao {
 
       call.execute();
 
-      encomendaEntity.getCalendarioEntity().setIdCalendario(call.getLong(4));
-      encomendaEntity.setIdEncomenda(call.getLong(5));
+      encomendaEntity.setIdEncomenda(call.getLong(4));
 
       for (EncomendaProdutoEntity produtoEntity : encomendaEntity.getEncomendaProdutoEntityList()) {
         call = connection.prepareCall("{CALL P_ADD_PRODUTO_ENCOMENDA(?,?,?)}");

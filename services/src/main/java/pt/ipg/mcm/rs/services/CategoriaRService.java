@@ -14,7 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/categoria")
-public class CategoriaRsService {
+public class CategoriaRService {
 
   @Inject
   private CategoriaService categoriaService;
