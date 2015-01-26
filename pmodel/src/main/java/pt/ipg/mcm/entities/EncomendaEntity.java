@@ -10,6 +10,7 @@ public class EncomendaEntity {
   private EncomendaEntity encomendaAssociada;
   private long sync;
   private long fatura;
+  private int estado;
   private ClienteEntity clienteEntity;
   private List<EncomendaProdutoEntity> encomendaProdutoEntityList;
   private List<EncomendaEntity> encomendasAssociadas;
@@ -83,5 +84,18 @@ public class EncomendaEntity {
 
   public void setClienteEntity(ClienteEntity clienteEntity) {
     this.clienteEntity = clienteEntity;
+  }
+
+  static enum Estado{
+    A_ESPERA_PADEIRO(1),
+    TEMPO_ESGOTADO_UTILIZADOR(2),
+    A_ESPERA_UTILIZADOR(3)
+    ;
+
+    int nEstado;
+
+    Estado(int nEstado) {
+      this.nEstado = nEstado;
+    }
   }
 }

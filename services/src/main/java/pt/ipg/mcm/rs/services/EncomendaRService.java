@@ -25,7 +25,7 @@ public class EncomendaRService {
   @Produces(MediaType.APPLICATION_JSON)
   public Response addEncomenda(ReqAddEncomenda reqAddEncomenda,@Context SecurityContext securityContext){
     try {
-      encomendaService.setSecurityCommon(new SecurityContext4Rest(securityContext));
+      encomendaService.setRc(securityContext);
       return Response.ok(encomendaService.addEncomenda(reqAddEncomenda)).build();
     } catch (LoginException e) {
       return Response.status(Response.Status.UNAUTHORIZED).build();

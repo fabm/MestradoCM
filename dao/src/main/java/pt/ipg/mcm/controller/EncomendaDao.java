@@ -10,9 +10,12 @@ import javax.ejb.Stateless;
 import javax.sql.DataSource;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Stateless
 public class EncomendaDao {
@@ -54,4 +57,34 @@ public class EncomendaDao {
       throw new MestradoException(Erro.TECNICO);
     }
   }
+
+  public List<EncomendaEntity> getMinhasEncomendas(String login) throws MestradoException {
+    List<EncomendaEntity> encomendaEntities = new ArrayList<EncomendaEntity>();
+    try {
+      Connection connection = mestradoDataSource.getConnection();
+
+      CallableStatement call = connection.prepareCall("SELECT V_ENCOMENDAS_CLIENTE.ESTADO,\n" +
+          "  V_ENCOMENDAS_CLIENTE.ENCOMENDA_ASSOCIADA,\n" +
+          "  V_ENCOMENDAS_CLIENTE.DATA_PREVISTA,\n" +
+          "  V_ENCOMENDAS_CLIENTE.CALENDARIO,\n" +
+          "  V_ENCOMENDAS_CLIENTE.DATA_CRIACAO,\n" +
+          "  V_ENCOMENDAS_CLIENTE.ID_ENCOMENDA,\n" +
+          "  V_ENCOMENDAS_CLIENTE.\"DATA_ENTREGA\",\n" +
+          "  V_ENCOMENDAS_CLIENTE.OBSERVACOES\n" +
+          "FROM V_ENCOMENDAS_CLIENTE\n" +
+          "WHERE V_ENCOMENDAS_CLIENTE.LOGIN = ?");
+
+      call.setString(1, login);
+      ResultSet rs = call.executeQuery();
+
+      while (rs.next()){
+        EncomendaEntity encomendaEntity = new EncomendaEntity();
+
+      }
+    } catch (SQLException e) {
+      throw new MestradoException(Erro.TECNICO);
+    }
+    return encomendaEntities;
+  }
+
 }

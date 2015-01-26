@@ -11,6 +11,7 @@ import pt.ipg.mcm.xmodel.ResAddCliente;
 import pt.ipg.mcm.xmodel.ResGetCliente;
 import pt.ipg.mcm.xmodel.Retorno;
 
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -19,22 +20,24 @@ import javax.jws.WebService;
 import javax.security.auth.login.LoginException;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.ws.ResponseWrapper;
+import javax.xml.ws.WebServiceContext;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 @WebService(serviceName = "Cliente", portName = "ClientePort")
 public class ClienteService extends SecureService {
-  Logger LOGGER = Logger.getLogger(ClienteService.class.getName());
 
   @EJB
   private ClienteDao clienteDao;
 
+  @Resource
+  private WebServiceContext webServiceContext;
 
   @WebResult(name = "response")
   @WebMethod(operationName = "get-cliente")
   @ResponseWrapper(localName = "get-cliente-response")
   public ResGetCliente getCliente(@WebParam(name = "request") @XmlElement(required = true) ReqGetCliente reqGetCliente) throws LoginException {
+    setWsc(webServiceContext);
     checkAuthorization(Role.ADMINISTRADOR, Role.CLIENTE);
     return clienteDao.getCliente(reqGetCliente);
   }
@@ -43,6 +46,7 @@ public class ClienteService extends SecureService {
   @WebMethod(operationName = "add-cliente")
   @ResponseWrapper(localName = "add-cliente-response")
   public ResAddCliente addCliente(@WebParam(name = "request") @XmlElement(required = true) ReqAddCliente reqAddCliente) throws LoginException {
+    setWsc(webServiceContext);
     checkAuthorization(Role.ADMINISTRADOR, Role.CONVIDADO);
     try {
       Map<String, String> aliasMap = new HashMap<String, String>();
