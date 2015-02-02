@@ -6,6 +6,7 @@ import pt.ipg.mcm.xmodel.ReqAddEncomenda;
 
 import javax.inject.Inject;
 import javax.security.auth.login.LoginException;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -31,4 +32,18 @@ public class EncomendaRService {
       return Response.status(Response.Status.UNAUTHORIZED).build();
     }
   }
+
+  @GET
+  @Path("/minhas")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response addEncomenda(@Context SecurityContext securityContext){
+    try {
+      encomendaService.setRc(securityContext);
+      return Response.ok(encomendaService.getMinhasEncomendas()).build();
+    } catch (LoginException e) {
+      return Response.status(Response.Status.UNAUTHORIZED).build();
+    }
+  }
+
+
 }
