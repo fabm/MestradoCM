@@ -2,11 +2,12 @@ package pt.ipg.mcm.entities;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CalendarioEntity {
   private long idCalendario;
-  private Timestamp dataprevista;
+  private Date dataprevista;
   private PadeiroEntity padeiroEntity;
   private List<EncomendaEntity> encomendaEntityList;
   private int confirmacao;
@@ -26,11 +27,11 @@ public class CalendarioEntity {
     this.idCalendario = idCalendario;
   }
 
-  public Timestamp getDataprevista() {
+  public Date getDataprevista() {
     return dataprevista;
   }
 
-  public void setDataprevista(Timestamp dataprevista) {
+  public void setDataprevista(Date dataprevista) {
     this.dataprevista = dataprevista;
   }
 

@@ -6,19 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/**
- * Created by francisco on 09/12/14.
- */
-@Entity
-@Table(name = "CATEGORIA")
 public class CategoriaEntity {
   private long idCategoria;
   private String nome;
   private String descricao;
-
-  @Id
-  @Column(name = "ID_CATEGORIA", nullable = false, insertable = true, updatable = true, precision = 0)
-  public long getIdCategoria() {
+public long getIdCategoria() {
     return idCategoria;
   }
 
@@ -26,8 +18,6 @@ public class CategoriaEntity {
     this.idCategoria = idCategoria;
   }
 
-  @Basic
-  @Column(name = "NOME", nullable = false, insertable = true, updatable = true, length = 100)
   public String getNome() {
     return nome;
   }
@@ -36,8 +26,6 @@ public class CategoriaEntity {
     this.nome = nome;
   }
 
-  @Basic
-  @Column(name = "DESCRICAO", nullable = true, insertable = true, updatable = true, length = 300)
   public String getDescricao() {
     return descricao;
   }

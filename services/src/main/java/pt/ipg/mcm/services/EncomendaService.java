@@ -5,6 +5,7 @@ import pt.ipg.mcm.entities.CalendarioEntity;
 import pt.ipg.mcm.entities.EncomendaEntity;
 import pt.ipg.mcm.entities.EncomendaProdutoEntity;
 import pt.ipg.mcm.entities.ProdutoEntity;
+import pt.ipg.mcm.entities.VEncomendasLoginEntity;
 import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.services.authorization.Role;
 import pt.ipg.mcm.services.authorization.SecureService;
@@ -21,6 +22,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.security.auth.login.LoginException;
+import javax.validation.constraints.Min;
 import javax.xml.ws.WebServiceContext;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -80,11 +82,17 @@ public class EncomendaService extends SecureService{
     List<MinhaEncomenda> minhasEncomendas = new ArrayList<MinhaEncomenda>();
     resMinhasEncomendas.setMinhasEncomendasList(minhasEncomendas);
     try {
-      encomendaDao.getMinhasEncomendas(login);
+      for(VEncomendasLoginEntity vEncomendasLoginEntity:encomendaDao.getMinhasEncomendas(login)){
+        MinhaEncomenda minhaEncomenda = new MinhaEncomenda();
+        minhaEncomenda.setDataPrevista(vEncomendasLoginEntity.getDataEntrega());
+        minhaEncomenda.setId(vEncomendasLoginEntity.getIdEncomenda());
+        minhaEncomenda.setPreco(vEncomendasLoginEntity.getPrecoAtual());
+        minhasEncomendas.add(minhaEncomenda);
+      }
       resMinhasEncomendas.getMinhasEncomendasList();
       return resMinhasEncomendas;
     } catch (MestradoException e) {
-      return null;
+      return new ResMinhasEncomendas(e);
     }
 
   }

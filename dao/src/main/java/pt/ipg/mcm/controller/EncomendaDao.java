@@ -2,6 +2,7 @@ package pt.ipg.mcm.controller;
 
 import pt.ipg.mcm.entities.EncomendaEntity;
 import pt.ipg.mcm.entities.EncomendaProdutoEntity;
+import pt.ipg.mcm.entities.VEncomendasLoginEntity;
 import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
 
@@ -10,11 +11,11 @@ import javax.ejb.Stateless;
 import javax.sql.DataSource;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Stateless
@@ -29,15 +30,15 @@ public class EncomendaDao {
 
       CallableStatement call = connection.prepareCall("{CALL P_ADD_ENCOMENDA(?,?,?,?,?)}");
       EncomendaEntity encomendaAssociada = encomendaEntity.getEncomendaAssociada();
-      if (encomendaAssociada == null) {
-        call.setObject(1, null);
-      } else {
-        call.setLong(1, encomendaAssociada.getIdEncomenda());
-      }
-      call.setString(2, login);
-      call.setObject(3, encomendaEntity.getCalendarioEntity().getDataprevista());
+      call.setString(1, login);
+      call.setDate(2, new java.sql.Date(encomendaEntity.getCalendarioEntity().getDataprevista().getTime()));
+      call.registerOutParameter(3, Types.NUMERIC);
       call.registerOutParameter(4, Types.NUMERIC);
-      call.registerOutParameter(5, Types.NUMERIC);
+      if (encomendaAssociada != null) {
+        call.setLong(5, encomendaAssociada.getIdEncomenda());
+      } else {
+        call.setObject(5,null);
+      }
 
       call.execute();
 
@@ -47,8 +48,8 @@ public class EncomendaDao {
         call = connection.prepareCall("{CALL P_ADD_PRODUTO_ENCOMENDA(?,?,?)}");
 
         call.setLong(1, produtoEntity.getQuantidade());
-        call.setLong(3, produtoEntity.getEncomenda().getIdEncomenda());
-        call.setLong(2, produtoEntity.getProduto().getIdProduto());
+        call.setLong(2, produtoEntity.getEncomenda().getIdEncomenda());
+        call.setLong(3, produtoEntity.getProduto().getIdProduto());
 
         call.execute();
       }
@@ -58,33 +59,43 @@ public class EncomendaDao {
     }
   }
 
-  public List<EncomendaEntity> getMinhasEncomendas(String login) throws MestradoException {
-    List<EncomendaEntity> encomendaEntities = new ArrayList<EncomendaEntity>();
+  public List<VEncomendasLoginEntity> getMinhasEncomendas(String login) throws MestradoException {
+    List<VEncomendasLoginEntity> vEncomendaEntities = new ArrayList<VEncomendasLoginEntity>();
     try {
       Connection connection = mestradoDataSource.getConnection();
 
-      CallableStatement call = connection.prepareCall("SELECT V_ENCOMENDAS_CLIENTE.ESTADO,\n" +
-          "  V_ENCOMENDAS_CLIENTE.ENCOMENDA_ASSOCIADA,\n" +
-          "  V_ENCOMENDAS_CLIENTE.DATA_PREVISTA,\n" +
-          "  V_ENCOMENDAS_CLIENTE.CALENDARIO,\n" +
-          "  V_ENCOMENDAS_CLIENTE.DATA_CRIACAO,\n" +
-          "  V_ENCOMENDAS_CLIENTE.ID_ENCOMENDA,\n" +
-          "  V_ENCOMENDAS_CLIENTE.\"DATA_ENTREGA\",\n" +
-          "  V_ENCOMENDAS_CLIENTE.OBSERVACOES\n" +
-          "FROM V_ENCOMENDAS_CLIENTE\n" +
-          "WHERE V_ENCOMENDAS_CLIENTE.LOGIN = ?");
+      String sqlString = "SELECT DATA_ENTREGA, ENCOMENDA_ASSOCIADA, CALENDARIO, DATA_CRIACAO, ESTADO,\n" +
+          "OBSERVACOES, DATA_PREVISTA, ID_ENCOMENDA, QUANTIDADE_ENCOMENDADA, PRODUTO_ENCOMENDADO, \n" +
+          "PRODUTO, PRECO_ATUAL, ID_CATEGORIA \n" +
+          "FROM V_ENCOMENDAS_LOGIN\n" +
+          "WHERE LOGIN = ?";
 
-      call.setString(1, login);
-      ResultSet rs = call.executeQuery();
+      PreparedStatement ps = connection.prepareStatement(sqlString);
 
-      while (rs.next()){
-        EncomendaEntity encomendaEntity = new EncomendaEntity();
+      ps.setString(1,login);
+      ResultSet rs = ps.executeQuery();
 
+      while (rs.next()) {
+        VEncomendasLoginEntity vEncomendasLoginEntity = new VEncomendasLoginEntity();
+        vEncomendasLoginEntity.setDataEntrega(rs.getTimestamp(1));
+        vEncomendasLoginEntity.setEncomendaAssociada(rs.getLong(2));
+        vEncomendasLoginEntity.setCalendario(rs.getLong(3));
+        vEncomendasLoginEntity.setDataCriacao(rs.getTimestamp(4));
+        vEncomendasLoginEntity.setEstado(rs.getLong(5));
+        vEncomendasLoginEntity.setObservacoes(rs.getString(6));
+        vEncomendasLoginEntity.setDataPrevista(rs.getTimestamp(7));
+        vEncomendasLoginEntity.setIdEncomenda(rs.getLong(8));
+        vEncomendasLoginEntity.setQuantidadeEncomendada(rs.getInt(9));
+        vEncomendasLoginEntity.setProdutoEncomendado(rs.getLong(10));
+        vEncomendasLoginEntity.setProduto(rs.getString(11));
+        vEncomendasLoginEntity.setPrecoAtual(rs.getBigDecimal(12));
+        vEncomendasLoginEntity.setIdCategoria(rs.getBigDecimal(13));
+        vEncomendaEntities.add(vEncomendasLoginEntity);
       }
     } catch (SQLException e) {
       throw new MestradoException(Erro.TECNICO);
     }
-    return encomendaEntities;
+    return vEncomendaEntities;
   }
 
 }
