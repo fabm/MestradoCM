@@ -32,4 +32,6 @@ public class ResAddCategoria {
   public void setRetorno(Retorno retorno) {
     this.retorno = retorno;
   }
+
+
 }

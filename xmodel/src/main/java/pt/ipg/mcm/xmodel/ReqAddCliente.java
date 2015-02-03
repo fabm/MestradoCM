@@ -23,10 +23,6 @@ public class ReqAddCliente {
 
   @NotNull
   @XmlElement(required = true)
-  private int role;
-
-  @NotNull
-  @XmlElement(required = true)
   private String morada;
 
   @NotNull
@@ -50,6 +46,10 @@ public class ReqAddCliente {
   @XmlElement(required = true)
   private int localidade;
 
+  @NotNull
+  @XmlElement(required = true)
+  private long idutilizzador;
+
   public long getContribuinte() {
     return contribuinte;
   }
@@ -64,14 +64,6 @@ public class ReqAddCliente {
 
   public void setNome(String value) {
     this.nome = value;
-  }
-
-  public int getRole() {
-    return role;
-  }
-
-  public void setRole(int value) {
-    this.role = value;
   }
 
   public String getMorada() {
@@ -122,4 +114,11 @@ public class ReqAddCliente {
     this.localidade = value;
   }
 
+  public long getIdutilizzador() {
+    return idutilizzador;
+  }
+
+  public void setIdutilizzador(long idutilizzador) {
+    this.idutilizzador = idutilizzador;
+  }
 }
