@@ -38,17 +38,16 @@ public class ClienteDao {
       connection = mestradoDataSource.getConnection();
 
 
-      CallableStatement call = connection.prepareCall("{call P_ADD_CLIENTE(?,?,?,?,?,?,?,?,?,?)}");
+      CallableStatement call = connection.prepareCall("{call P_ADD_CLIENTE(?,?,?,?,?,?,?,?,?)}");
       call.setLong(1, reqAddCliente.getContribuinte());
       call.setString(2, reqAddCliente.getNome());
-      call.setInt(3, reqAddCliente.getRole());
-      call.setString(4, reqAddCliente.getMorada());
-      call.setString(5, reqAddCliente.getPorta());
-      call.setDate(6, new Date(reqAddCliente.getDataNascimento().toGregorianCalendar().getTimeInMillis()));
-      call.setString(7, reqAddCliente.getEmail());
-      call.setString(8, reqAddCliente.getContacto());
-      call.setLong(9, reqAddCliente.getLocalidade());
-      call.registerOutParameter(10, Types.NUMERIC);
+      call.setString(3, reqAddCliente.getMorada());
+      call.setString(4, reqAddCliente.getPorta());
+      call.setDate(5, new Date(reqAddCliente.getDataNascimento().toGregorianCalendar().getTimeInMillis()));
+      call.setString(6, reqAddCliente.getEmail());
+      call.setString(7, reqAddCliente.getContacto());
+      call.setLong(8, reqAddCliente.getLocalidade());
+      call.registerOutParameter(9, Types.NUMERIC);
       call.execute();
 
       clienteResponseType.setId(call.getLong(10));

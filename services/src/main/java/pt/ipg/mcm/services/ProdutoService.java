@@ -8,14 +8,7 @@ import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.services.authorization.Role;
 import pt.ipg.mcm.services.authorization.SecureService;
 import pt.ipg.mcm.validacao.Validacao;
-import pt.ipg.mcm.xmodel.ProdutoCategoria;
-import pt.ipg.mcm.xmodel.ReqAddProduto;
-import pt.ipg.mcm.xmodel.ReqGetProdutosCategorias;
-import pt.ipg.mcm.xmodel.ResAddProduto;
-import pt.ipg.mcm.xmodel.ResGetProduto;
-import pt.ipg.mcm.xmodel.ResGetProdutos;
-import pt.ipg.mcm.xmodel.ResGetProdutosCategorias;
-import pt.ipg.mcm.xmodel.Retorno;
+import pt.ipg.mcm.xmodel.*;
 
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
@@ -48,6 +41,24 @@ public class ProdutoService extends SecureService {
       ResAddProduto resAddProduto = new ResAddProduto();
       resAddProduto.setRetorno(new Retorno(e));
       return resAddProduto;
+    }
+  }
+
+  @WebMethod
+  public ResGetProduto getProduto(@WebParam(name = "req-get-produto")@XmlElement(required = true) Integer reqGetProduto) {
+    try {
+
+        ProdutoEntity produtoEntity =  produtoDao.getProduto(reqGetProduto);
+        ResGetProduto resGetProduto = new ResGetProduto();
+        resGetProduto.setNome(produtoEntity.getNome());
+        resGetProduto.setPrecoUnitario(produtoEntity.getPrecoAtual());
+
+        return resGetProduto;
+
+    } catch (MestradoException e) {
+      ResGetProduto resGetProduto = new ResGetProduto();
+      resGetProduto.setRetorno(new Retorno(e));
+      return resGetProduto;
     }
   }
 

@@ -93,10 +93,10 @@ public class ProdutoDao {
     ProdutoEntity produtoEntity = new ProdutoEntity();
     try {
       String sqlString = "SELECT PRODUTO.NOME,\n" +
-          "  PRODUTO.PRECO_ATUAL,\n" +
-          "  PRODUTO.ID_CATEGORIA\n" +
-          "FROM PRODUTO\n" +
-          "WHERE PRODUTO.ID_PRODUTO = ?";
+              "  PRODUTO.PRECO_ATUAL,\n" +
+              "  PRODUTO.ID_CATEGORIA\n" +
+              "FROM PRODUTO\n" +
+              "WHERE PRODUTO.ID_PRODUTO = ?";
 
       Connection connection = mestradoDataSource.getConnection();
 
@@ -111,7 +111,7 @@ public class ProdutoDao {
       produtoEntity.setNome(rs.getString(1));
       produtoEntity.setPrecoAtual(rs.getBigDecimal(2));
       produtoEntity.setIdCategoria(rs.getLong(3));
-      produtoEntity.setIdProduto(rs.getLong(4));
+     // produtoEntity.setIdProduto(rs.getLong(4));
 
     } catch (SQLException e) {
       throw new MestradoException(Erro.TECNICO);
