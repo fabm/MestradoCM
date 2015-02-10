@@ -2,6 +2,7 @@ package pt.ipg.mcm.services;
 
 import pt.ipg.mcm.controller.CategoriaDao;
 import pt.ipg.mcm.entities.CategoriaEntity;
+import pt.ipg.mcm.entities.ProdutoEntity;
 import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.validacao.Validacao;
@@ -88,4 +89,25 @@ public class CategoriaService {
     }
     return resCategoriasDesync;
   }
+
+    @WebMethod
+    public ResGetCategoria getCategoria (@WebParam(name = "req-get-categoria")@XmlElement(required = true) Integer reqGetCategoria) {
+
+        try {
+            CategoriaEntity categoriaEntity =  categoriaDao.getCategoria(reqGetCategoria);
+            ResGetCategoria resGetcategoria = new ResGetCategoria();
+            resGetcategoria.setNome(categoriaEntity.getNome());
+            resGetcategoria.setDescricao(categoriaEntity.getDescricao());
+
+
+            return resGetcategoria;
+
+        } catch (MestradoException e) {
+            ResGetCategoria resGetCategoria = new ResGetCategoria();
+            resGetCategoria.setRetorno(new Retorno(e));
+            return resGetCategoria;
+        }
+
+
+    }
 }

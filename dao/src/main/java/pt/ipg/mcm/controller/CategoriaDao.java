@@ -50,6 +50,38 @@ public class CategoriaDao {
 
   }
 
+    public CategoriaEntity getCategoria (long idCategoria) throws MestradoException{
+
+        CategoriaEntity categoriaEntity = new CategoriaEntity();
+
+        try{
+            String sqlStriing  = "SELECT CATEGORIA.NOME,\n" +
+                    "  CATEGORIA.DESCRICAO\n" +
+                    "  FROM CATEGORIA\n" +
+                    "  WHERE CATEGORIA.ID_CATEGORIA = ?";
+
+
+            Connection connection = mestradoDataSource.getConnection();
+            PreparedStatement call = connection.prepareStatement(sqlStriing);
+            call.setLong(1, idCategoria);
+
+            ResultSet rs = call.executeQuery();
+
+            if (!rs.next()){
+                throw new MestradoException(Erro.CATEGORIA_NAO_ENCONTRADO, idCategoria);
+            }
+
+            categoriaEntity.setNome(rs.getString(1));
+            categoriaEntity.setDescricao(rs.getString(2));
+
+
+        }catch (SQLException e) {
+            throw new MestradoException(Erro.TECNICO);
+        }
+
+        return categoriaEntity;
+    }
+
   public List<CategoriaEntity> getAll() throws MestradoException {
 
     try {

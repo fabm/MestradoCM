@@ -110,7 +110,7 @@ public class ProdutoDao {
 
       produtoEntity.setNome(rs.getString(1));
       produtoEntity.setPrecoAtual(rs.getBigDecimal(2));
-      produtoEntity.setIdCategoria(rs.getLong(3));
+      //produtoEntity.setIdCategoria(rs.getLong(3));
      // produtoEntity.setIdProduto(rs.getLong(4));
 
     } catch (SQLException e) {
