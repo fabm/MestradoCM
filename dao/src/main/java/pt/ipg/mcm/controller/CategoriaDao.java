@@ -39,7 +39,7 @@ public class CategoriaDao {
     Connection connection = mestradoDataSource.getConnection();
 
       CallableStatement call ;
-      call = connection.prepareCall("{call P_ADD_CATEGORIA(?,?,?)");
+      call = connection.prepareCall("{call P_ADD_CATEGORIA(?,?,?)}");
       call.setString(1, categoriaEntity.getNome());
       call.setString(2, categoriaEntity.getDescricao());
       call.registerOutParameter(3, Types.NUMERIC);

@@ -50,7 +50,7 @@ public class ClienteDao {
       call.registerOutParameter(9, Types.NUMERIC);
       call.execute();
 
-      clienteResponseType.setId(call.getLong(10));
+      clienteResponseType.setId(call.getLong(9));
 
       clienteResponseType.setRetorno(new Retorno(1, "Cliente inserido com sucesso"));
       return clienteResponseType;
