@@ -3,6 +3,7 @@ package pt.ipg.mcm.entities;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class EncomendaEntity {
@@ -17,6 +18,8 @@ public class EncomendaEntity {
   private List<EncomendaProdutoEntity> encomendaProdutoEntityList;
   private List<EncomendaEntity> encomendasAssociadas;
   private CalendarioEntity calendarioEntity;
+  private Date dataCriacao;
+  private String observacoes;
 
   public List<EncomendaProdutoEntity> getEncomendaProdutoEntityList() {
     if (encomendaProdutoEntityList == null) {
@@ -104,6 +107,22 @@ public class EncomendaEntity {
     this.perco = perco;
   }
 
+  public void setDataCriacao(Date dataCriacao) {
+    this.dataCriacao = dataCriacao;
+  }
+
+  public Date getDataCriacao() {
+    return dataCriacao;
+  }
+
+  public void setObservacoes(String observacoes) {
+    this.observacoes = observacoes;
+  }
+
+  public String getObservacoes() {
+    return observacoes;
+  }
+
   public static enum Estado {
     A_ESPERA_PADEIRO(1),
     TEMPO_ESGOTADO_UTILIZADOR(2),
@@ -124,6 +143,8 @@ public class EncomendaEntity {
 
     public static Estado getByNumber(int nEstado) {
       switch (nEstado) {
+        case 0:
+          return null;
         case 1:
           return A_ESPERA_PADEIRO;
         case 2:

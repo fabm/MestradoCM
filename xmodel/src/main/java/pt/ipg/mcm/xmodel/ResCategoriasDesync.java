@@ -13,13 +13,23 @@ public class ResCategoriasDesync {
   @XmlElement(name = "categoria")
   private List<Categoria> categorias;
 
+  private long maxVersao;
+
   private Retorno retorno;
 
   public List<Categoria> getCategorias() {
-    if(categorias == null){
-        categorias = new ArrayList<Categoria>();
+    if (categorias == null) {
+      categorias = new ArrayList<Categoria>();
     }
     return categorias;
+  }
+
+  public long getMaxVersao() {
+    return maxVersao;
+  }
+
+  public void setMaxVersao(long maxVersao) {
+    this.maxVersao = maxVersao;
   }
 
   public Retorno getRetorno() {

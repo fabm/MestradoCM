@@ -107,7 +107,7 @@ public class CategoriaDao {
   public List<CategoriaEntity> getDesync(Long versao) throws MestradoException {
 
     try {
-      String sql = "SELECT ID_CATEGORIA,NOME,DESCRICAO FROM CATEGORIA WHERE SYNC > ?";
+      String sql = "SELECT ID_CATEGORIA,NOME,DESCRICAO,SYNC FROM CATEGORIA WHERE SYNC > ?";
       PreparedStatement ps = mestradoDataSource.getConnection().prepareStatement(sql);
 
       ps.setLong(1,versao);
@@ -120,6 +120,8 @@ public class CategoriaDao {
         categoriaEntity.setIdCategoria(rs.getLong(1));
         categoriaEntity.setNome(rs.getString(2));
         categoriaEntity.setDescricao(rs.getString(3));
+        categoriaEntity.setVersao(rs.getLong(4));
+
         lista.add(categoriaEntity);
       }
       return lista;

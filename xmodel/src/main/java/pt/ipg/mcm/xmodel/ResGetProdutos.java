@@ -7,15 +7,31 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ResGetProdutos {
   private Retorno retorno;
+  private Long versaoMax;
 
-  private List<ResGetProduto> resGetProdutos;
+  public ResGetProdutos(Retorno retorno) {
+    this.retorno = retorno;
+  }
 
-  public List<ResGetProduto> getResGetProdutos() {
+  private List<ProdutoXml> resGetProdutos;
+
+  public ResGetProdutos() {
+  }
+
+  public Long getVersaoMax() {
+    return versaoMax;
+  }
+
+  public void setVersaoMax(Long maxVersion) {
+    this.versaoMax = maxVersion;
+  }
+
+  public List<ProdutoXml> getResGetProdutos() {
     return resGetProdutos;
   }
 
-  public void setResGetProdutos(List<ResGetProduto> resGetProdutos) {
-    this.resGetProdutos = resGetProdutos;
+  public void setResGetProdutos(List<ProdutoXml> produtoXmls) {
+    this.resGetProdutos = produtoXmls;
   }
 
   public Retorno getRetorno() {

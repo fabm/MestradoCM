@@ -2,6 +2,7 @@ package pt.ipg.mcm.xmodel;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import java.math.BigDecimal;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ProdutoEncomendado {
@@ -25,4 +26,6 @@ public class ProdutoEncomendado {
   public void setQuantidade(int quantidade) {
     this.quantidade = quantidade;
   }
+
+
 }

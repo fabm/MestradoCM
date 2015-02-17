@@ -9,6 +9,7 @@ import javax.security.auth.login.LoginException;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -34,12 +35,12 @@ public class EncomendaRService {
   }
 
   @GET
-  @Path("/minhas")
+  @Path("/minhas/{sync}")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response addEncomenda(@Context SecurityContext securityContext){
+  public Response minhasEncomenda(@Context SecurityContext securityContext,@PathParam("sync") long sync){
     try {
       encomendaService.setRc(securityContext);
-      return Response.ok(encomendaService.getMinhasEncomendas()).build();
+      return Response.ok(encomendaService.getMinhasEncomendasDetalhe(sync)).build();
     } catch (LoginException e) {
       return Response.status(Response.Status.UNAUTHORIZED).build();
     }

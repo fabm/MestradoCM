@@ -59,31 +59,39 @@ public class ProdutoDao {
     return resAddProduto;
   }
 
-  public List<ProdutoEntity> getProdutos(long versao) throws SQLException {
+  public List<ProdutoEntity> getProdutos(long versao) throws MestradoException {
     String sqlString = "SELECT PRODUTO.ID_PRODUTO,\n" +
         "  PRODUTO.NOME,\n" +
         "  PRODUTO.PRECO_ATUAL,\n" +
         "  PRODUTO.FOTO,\n" +
-        "  PRODUTO.ID_CATEGORIA\n" +
+        "  PRODUTO.ID_CATEGORIA,\n" +
+        "  PRODUTO.SYNC\n" +
         "FROM PRODUTO\n" +
         "WHERE PRODUTO.SYNC > ?";
 
-    Connection connection = mestradoDataSource.getConnection();
-
-    PreparedStatement call = connection.prepareStatement(sqlString);
-
-    ResultSet rs = call.executeQuery();
-
     List<ProdutoEntity> produtoEntities = new ArrayList<ProdutoEntity>();
-    while (rs.next()) {
-      ProdutoEntity produtoEntity = new ProdutoEntity();
-      produtoEntity.setIdProduto(rs.getLong(1));
-      produtoEntity.setNome(rs.getString(2));
-      produtoEntity.setPrecoAtual(rs.getBigDecimal(3));
-      produtoEntity.setFoto(rs.getBytes(4));
-      produtoEntity.setIdCategoria(rs.getLong(5));
-      produtoEntities.add(produtoEntity);
+    try {
+      Connection connection = mestradoDataSource.getConnection();
+
+      PreparedStatement call = connection.prepareStatement(sqlString);
+      call.setLong(1,versao);
+      ResultSet rs = call.executeQuery();
+
+      while (rs.next()) {
+        ProdutoEntity produtoEntity = new ProdutoEntity();
+        produtoEntity.setIdProduto(rs.getLong(1));
+        produtoEntity.setNome(rs.getString(2));
+        produtoEntity.setPrecoAtual(rs.getBigDecimal(3));
+        produtoEntity.setFoto(rs.getBytes(4));
+        produtoEntity.setIdCategoria(rs.getLong(5));
+        produtoEntity.setSync(rs.getLong(6));
+        produtoEntities.add(produtoEntity);
+      }
+
+    } catch (SQLException e) {
+      throw new MestradoException(Erro.TECNICO);
     }
+
 
     return produtoEntities;
   }
@@ -111,7 +119,7 @@ public class ProdutoDao {
       produtoEntity.setNome(rs.getString(1));
       produtoEntity.setPrecoAtual(rs.getBigDecimal(2));
       //produtoEntity.setIdCategoria(rs.getLong(3));
-     // produtoEntity.setIdProduto(rs.getLong(4));
+      // produtoEntity.setIdProduto(rs.getLong(4));
 
     } catch (SQLException e) {
       throw new MestradoException(Erro.TECNICO);

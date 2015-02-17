@@ -9,11 +9,13 @@ import pt.ipg.mcm.entities.VEncomendasLoginEntity;
 import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.services.authorization.Role;
 import pt.ipg.mcm.services.authorization.SecureService;
+import pt.ipg.mcm.xmodel.Encomenda;
 import pt.ipg.mcm.xmodel.MinhaEncomenda;
 import pt.ipg.mcm.xmodel.ProdutoEncomendado;
 import pt.ipg.mcm.xmodel.ReqAddEncomenda;
 import pt.ipg.mcm.xmodel.ResAddEncomenda;
 import pt.ipg.mcm.xmodel.ResMinhasEncomendas;
+import pt.ipg.mcm.xmodel.ResMinhasEncomendasDetalhe;
 import pt.ipg.mcm.xmodel.Retorno;
 
 import javax.annotation.Resource;
@@ -22,14 +24,13 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.security.auth.login.LoginException;
-import javax.validation.constraints.Min;
 import javax.xml.ws.WebServiceContext;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 @WebService(serviceName = "Encomenda", portName = "EncomendaPort")
-public class EncomendaService extends SecureService{
+public class EncomendaService extends SecureService {
 
   @EJB
   private EncomendaDao encomendaDao;
@@ -73,7 +74,12 @@ public class EncomendaService extends SecureService{
   }
 
   @WebMethod
-  public ResMinhasEncomendas getMinhasEncomendas() throws LoginException {
+  public ResMinhasEncomendas getMinhasEncomendasTodas() throws LoginException {
+    return getMinhasEncomendas(0);
+  }
+
+  @WebMethod
+  public ResMinhasEncomendas getMinhasEncomendas(long id) throws LoginException {
     setWsc(webServiceContext);
     checkAuthorization(Role.CLIENTE);
     String login = getSecurityCommon().getUserPrincipal().getName();
@@ -82,7 +88,7 @@ public class EncomendaService extends SecureService{
     List<MinhaEncomenda> minhasEncomendas = new ArrayList<MinhaEncomenda>();
     resMinhasEncomendas.setMinhasEncomendasList(minhasEncomendas);
     try {
-      for(VEncomendasLoginEntity vEncomendasLoginEntity:encomendaDao.getMinhasEncomendas(login)){
+      for (VEncomendasLoginEntity vEncomendasLoginEntity : encomendaDao.getMinhasEncomendas(login, id)) {
         MinhaEncomenda minhaEncomenda = new MinhaEncomenda();
         minhaEncomenda.setDataPrevista(vEncomendasLoginEntity.getDataEntrega());
         minhaEncomenda.setId(vEncomendasLoginEntity.getIdEncomenda());
@@ -96,5 +102,43 @@ public class EncomendaService extends SecureService{
     }
 
   }
+
+  @WebMethod
+  public ResMinhasEncomendasDetalhe getMinhasEncomendasDetalhe(long id) throws LoginException {
+    setWsc(webServiceContext);
+    checkAuthorization(Role.CLIENTE);
+    String login = getSecurityCommon().getUserPrincipal().getName();
+    ResMinhasEncomendasDetalhe resMinhasEncomendas = new ResMinhasEncomendasDetalhe();
+
+    List<Encomenda> minhasEncomendas = new ArrayList<Encomenda>();
+    try {
+      for (EncomendaEntity encomendaEntity : encomendaDao.getMinhasEncomendasSync(login, id)) {
+        Encomenda encomenda = new Encomenda();
+        encomenda.setObservacoes(encomendaEntity.getObservacoes());
+        encomenda.setDataCriacao(encomendaEntity.getDataCriacao());
+        encomenda.setDataPrevista(encomendaEntity.getDataEntrega());
+        if (encomendaEntity.getEstado() != null) {
+          encomenda.setEstado(encomendaEntity.getEstado().getNumEstado());
+        }
+        encomenda.setId(encomendaEntity.getIdEncomenda());
+        List<ProdutoEncomendado> produtoEncomendadoList = new ArrayList<ProdutoEncomendado>();
+        for (EncomendaProdutoEntity encomendaProdutoEntity : encomendaEntity.getEncomendaProdutoEntityList()) {
+          ProdutoEncomendado produtoEncomendado = new ProdutoEncomendado();
+          produtoEncomendado.setIdProduto(encomendaProdutoEntity.getProduto().getIdProduto());
+          produtoEncomendado.setQuantidade(encomendaProdutoEntity.getQuantidade());
+          produtoEncomendadoList.add(produtoEncomendado);
+        }
+        encomenda.setProdutosEncomendados(produtoEncomendadoList);
+        minhasEncomendas.add(encomenda);
+
+      }
+      resMinhasEncomendas.setListaEncomendas(minhasEncomendas);
+      return resMinhasEncomendas;
+    } catch (MestradoException e) {
+      return new ResMinhasEncomendasDetalhe(e);
+    }
+
+  }
+
 
 }

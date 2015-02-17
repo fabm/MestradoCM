@@ -37,7 +37,7 @@ public class EncomendaDao {
       if (encomendaAssociada != null) {
         call.setLong(5, encomendaAssociada.getIdEncomenda());
       } else {
-        call.setObject(5,null);
+        call.setObject(5, null);
       }
 
       call.execute();
@@ -59,7 +59,7 @@ public class EncomendaDao {
     }
   }
 
-  public List<VEncomendasLoginEntity> getMinhasEncomendas(String login) throws MestradoException {
+  public List<VEncomendasLoginEntity> getMinhasEncomendas(String login, long idSync) throws MestradoException {
     List<VEncomendasLoginEntity> vEncomendaEntities = new ArrayList<VEncomendasLoginEntity>();
     try {
       Connection connection = mestradoDataSource.getConnection();
@@ -68,11 +68,12 @@ public class EncomendaDao {
           "OBSERVACOES, DATA_PREVISTA, ID_ENCOMENDA, QUANTIDADE_ENCOMENDADA, PRODUTO_ENCOMENDADO, \n" +
           "PRODUTO, PRECO_ATUAL, ID_CATEGORIA \n" +
           "FROM V_ENCOMENDAS_LOGIN\n" +
-          "WHERE LOGIN = ?";
+          "WHERE LOGIN = ? and SYNC > ? ";
 
       PreparedStatement ps = connection.prepareStatement(sqlString);
 
-      ps.setString(1,login);
+      ps.setString(1, login);
+      ps.setLong(2, idSync);
       ResultSet rs = ps.executeQuery();
 
       while (rs.next()) {
@@ -97,5 +98,40 @@ public class EncomendaDao {
     }
     return vEncomendaEntities;
   }
+
+
+  public List<EncomendaEntity> getMinhasEncomendasSync(String login, long idSync) throws MestradoException {
+    try {
+      Connection connection = mestradoDataSource.getConnection();
+      PreparedStatement ps = connection.prepareStatement("SELECT ID_ENCOMENDA, DATA_CRIACAO, ESTADO, DATA_PREVISTA, OBSERVACOES from V_ENCOMENDAS_CLIENTE\n" +
+          "WHERE LOGIN = ? and SYNC > ? ");
+
+      ps.setString(1, login);
+      ps.setLong(2, idSync);
+
+      ResultSet rs = ps.executeQuery();
+
+      List<EncomendaEntity> listaEncomendas = new ArrayList<EncomendaEntity>();
+      while (rs.next()) {
+        EncomendaEntity encomenda = new EncomendaEntity();
+        long idEncomenda = rs.getLong(1);
+        encomenda.setIdEncomenda(idEncomenda);
+        encomenda.setDataCriacao(rs.getTimestamp(2));
+        encomenda.setEstado(EncomendaEntity.Estado.getByNumber(rs.getInt(3)));
+        encomenda.setDataEntrega(rs.getTimestamp(4));
+        encomenda.setObservacoes(rs.getString(5));
+
+        List<EncomendaProdutoEntity> produtoEncomendadoList = encomenda.getEncomendaProdutoEntityList();
+        for (EncomendaProdutoEntity encomendaProdutoEntity : new ProdutoEncomendadoLoader(connection, idEncomenda)) {
+          produtoEncomendadoList.add(encomendaProdutoEntity);
+        }
+        listaEncomendas.add(encomenda);
+      }
+      return listaEncomendas;
+    } catch (SQLException e) {
+      throw new MestradoException(Erro.TECNICO);
+    }
+  }
+
 
 }

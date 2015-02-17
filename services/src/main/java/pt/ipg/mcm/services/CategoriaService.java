@@ -2,11 +2,16 @@ package pt.ipg.mcm.services;
 
 import pt.ipg.mcm.controller.CategoriaDao;
 import pt.ipg.mcm.entities.CategoriaEntity;
-import pt.ipg.mcm.entities.ProdutoEntity;
 import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.validacao.Validacao;
-import pt.ipg.mcm.xmodel.*;
+import pt.ipg.mcm.xmodel.Categoria;
+import pt.ipg.mcm.xmodel.ReqAddCategoria;
+import pt.ipg.mcm.xmodel.ResAddCategoria;
+import pt.ipg.mcm.xmodel.ResCategoriasDesync;
+import pt.ipg.mcm.xmodel.ResGetAllCategorias;
+import pt.ipg.mcm.xmodel.ResGetCategoria;
+import pt.ipg.mcm.xmodel.Retorno;
 
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
@@ -31,14 +36,14 @@ public class CategoriaService {
   public ResAddCategoria addCategoria(@XmlElement(required = true) @WebParam(name = "request") ReqAddCategoria reqAddCategoria) {
     ResAddCategoria resAddCategoria = new ResAddCategoria();
     try {
-      Map<String,String> aliasMap = new HashMap<String, String>();
-      aliasMap.put("descricao","descrição");
-      Validacao.getInstance().valida(reqAddCategoria,aliasMap);
+      Map<String, String> aliasMap = new HashMap<String, String>();
+      aliasMap.put("descricao", "descrição");
+      Validacao.getInstance().valida(reqAddCategoria, aliasMap);
       CategoriaEntity categoriaEntity = new CategoriaEntity();
       categoriaEntity.setDescricao(reqAddCategoria.getDescricao());
       categoriaEntity.setNome(reqAddCategoria.getNome());
       categoriaDao.addCategoria(categoriaEntity);
-      resAddCategoria.setRetorno(new Retorno(1,"Categoria inserida com sucesso"));
+      resAddCategoria.setRetorno(new Retorno(1, "Categoria inserida com sucesso"));
     } catch (MestradoException e) {
       resAddCategoria.setRetorno(new Retorno(e));
     } catch (SQLException e) {
@@ -76,13 +81,16 @@ public class CategoriaService {
     try {
       List<CategoriaEntity> categoriaEntities = categoriaDao.getDesync(versao);
       List<Categoria> categorias = resCategoriasDesync.getCategorias();
-      for (CategoriaEntity categoriaEntity:categoriaEntities){
+      long maxVersao = 0;
+      for (CategoriaEntity categoriaEntity : categoriaEntities) {
         Categoria categoria = new Categoria();
         categoria.setDescricao(categoriaEntity.getDescricao());
         categoria.setNome(categoriaEntity.getDescricao());
         categoria.setId(categoriaEntity.getIdCategoria());
+        maxVersao = Math.max(maxVersao, categoriaEntity.getVersao());
         categorias.add(categoria);
       }
+      resCategoriasDesync.setMaxVersao(maxVersao);
       return resCategoriasDesync;
     } catch (MestradoException e) {
       resCategoriasDesync.setRetorno(new Retorno(e));
@@ -90,23 +98,23 @@ public class CategoriaService {
     return resCategoriasDesync;
   }
 
-    @WebMethod
-    public ResGetCategoria getCategoria (@WebParam(name = "req-get-categoria")@XmlElement(required = true) Integer reqGetCategoria) {
+  @WebMethod
+  public ResGetCategoria getCategoria(@WebParam(name = "req-get-categoria") @XmlElement(required = true) Integer reqGetCategoria) {
 
-        try {
-            CategoriaEntity categoriaEntity =  categoriaDao.getCategoria(reqGetCategoria);
-            ResGetCategoria resGetcategoria = new ResGetCategoria();
-            resGetcategoria.setNome(categoriaEntity.getNome());
-            resGetcategoria.setDescricao(categoriaEntity.getDescricao());
+    try {
+      CategoriaEntity categoriaEntity = categoriaDao.getCategoria(reqGetCategoria);
+      ResGetCategoria resGetcategoria = new ResGetCategoria();
+      resGetcategoria.setNome(categoriaEntity.getNome());
+      resGetcategoria.setDescricao(categoriaEntity.getDescricao());
 
 
-            return resGetcategoria;
+      return resGetcategoria;
 
-        } catch (MestradoException e) {
-            ResGetCategoria resGetCategoria = new ResGetCategoria();
-            resGetCategoria.setRetorno(new Retorno(e));
-            return resGetCategoria;
-        }
+    } catch (MestradoException e) {
+      ResGetCategoria resGetCategoria = new ResGetCategoria();
+      resGetCategoria.setRetorno(new Retorno(e));
+      return resGetCategoria;
+    }
 
 
     }
@@ -138,4 +146,5 @@ public class CategoriaService {
 
 
 
+  }
 }

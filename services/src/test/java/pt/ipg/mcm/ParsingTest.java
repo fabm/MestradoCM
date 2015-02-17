@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 import org.junit.Assert;
 import org.junit.Test;
+import pt.ipg.mcm.xmodel.ProdutoEncomendado;
 import pt.ipg.mcm.xmodel.ReqAddEncomenda;
 
 import javax.xml.bind.JAXBContext;
@@ -18,6 +19,7 @@ import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.Date;
 
 public class ParsingTest {
@@ -25,6 +27,11 @@ public class ParsingTest {
   public void parsingReqEncomendaTest() throws JsonProcessingException, DatatypeConfigurationException, JAXBException {
     ReqAddEncomenda reqAddEncomenda = new ReqAddEncomenda();
     reqAddEncomenda.setDataEntrega(new Date());
+
+    ProdutoEncomendado produtoEncomendado = new ProdutoEncomendado();
+    produtoEncomendado.setIdProduto(1);
+    produtoEncomendado.setQuantidade(2);
+    reqAddEncomenda.setProdutosEncomendados(Arrays.asList(produtoEncomendado));
 
     ObjectMapper objectMapper = new ObjectMapper();
     AnnotationIntrospector annotationIntrospector = new JaxbAnnotationIntrospector(objectMapper.getTypeFactory());

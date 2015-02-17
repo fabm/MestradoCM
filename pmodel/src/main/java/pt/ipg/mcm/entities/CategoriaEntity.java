@@ -10,6 +10,8 @@ public class CategoriaEntity {
   private long idCategoria;
   private String nome;
   private String descricao;
+  private Long versao;
+
 public long getIdCategoria() {
     return idCategoria;
   }
@@ -32,6 +34,14 @@ public long getIdCategoria() {
 
   public void setDescricao(String descricao) {
     this.descricao = descricao;
+  }
+
+  public Long getVersao() {
+    return versao;
+  }
+
+  public void setVersao(Long versao) {
+    this.versao = versao;
   }
 
   @Override

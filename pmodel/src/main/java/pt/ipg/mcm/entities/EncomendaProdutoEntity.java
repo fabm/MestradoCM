@@ -5,7 +5,7 @@ public class EncomendaProdutoEntity {
   private EncomendaEntity encomenda;
   private ProdutoEntity produto;
 
-  public long getQuantidade() {
+  public int getQuantidade() {
     return quantidade;
   }
 
