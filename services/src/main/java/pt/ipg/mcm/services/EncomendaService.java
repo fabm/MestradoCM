@@ -79,7 +79,7 @@ public class EncomendaService extends SecureService {
   }
 
   @WebMethod
-  public ResMinhasEncomendas getMinhasEncomendas(long id) throws LoginException {
+  public ResMinhasEncomendas getMinhasEncomendas(@WebParam(name = "idSync")long id) throws LoginException {
     setWsc(webServiceContext);
     checkAuthorization(Role.CLIENTE);
     String login = getSecurityCommon().getUserPrincipal().getName();
@@ -104,7 +104,7 @@ public class EncomendaService extends SecureService {
   }
 
   @WebMethod
-  public ResMinhasEncomendasDetalhe getMinhasEncomendasDetalhe(long id) throws LoginException {
+  public ResMinhasEncomendasDetalhe getMinhasEncomendasDetalhe(@WebParam(name = "idSync")long id) throws LoginException {
     setWsc(webServiceContext);
     checkAuthorization(Role.CLIENTE);
     String login = getSecurityCommon().getUserPrincipal().getName();
