@@ -4,25 +4,25 @@ import pt.ipg.mcm.errors.MestradoException;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import java.util.ArrayList;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ResMinhasEncomendasDetalhe extends Retorno{
-  private List<Encomenda> listaEncomendas;
+  private List<EncomendaDetalheXml> listaEncomendasDetalheXmls;
 
   public ResMinhasEncomendasDetalhe() {
+    super();
   }
 
   public ResMinhasEncomendasDetalhe(MestradoException e) {
     super(e);
   }
 
-  public List<Encomenda> getListaEncomendas() {
-    return listaEncomendas;
+  public List<EncomendaDetalheXml> getListaEncomendasDetalheXmls() {
+    return listaEncomendasDetalheXmls;
   }
 
-  public void setListaEncomendas(List<Encomenda> listaEncomendas) {
-    this.listaEncomendas = listaEncomendas;
+  public void setListaEncomendasDetalheXmls(List<EncomendaDetalheXml> listaEncomendasDetalheXmls) {
+    this.listaEncomendasDetalheXmls = listaEncomendasDetalheXmls;
   }
 }

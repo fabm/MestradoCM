@@ -31,7 +31,7 @@ public class ParsingTest {
     ProdutoEncomendado produtoEncomendado = new ProdutoEncomendado();
     produtoEncomendado.setIdProduto(1);
     produtoEncomendado.setQuantidade(2);
-    reqAddEncomenda.setProdutosEncomendados(Arrays.asList(produtoEncomendado));
+    reqAddEncomenda.setProdutoList(Arrays.asList(produtoEncomendado));
 
     ObjectMapper objectMapper = new ObjectMapper();
     AnnotationIntrospector annotationIntrospector = new JaxbAnnotationIntrospector(objectMapper.getTypeFactory());

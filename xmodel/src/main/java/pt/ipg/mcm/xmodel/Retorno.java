@@ -13,7 +13,7 @@ public class Retorno {
 
   @NotNull
   @XmlElement(required = true)
-  private int codigo;
+  private Integer codigo;
 
   @NotNull
   @XmlElement(required = true)

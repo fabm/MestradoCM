@@ -6,13 +6,13 @@ import java.util.Date;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Encomenda {
+public class EncomendaDetalheXml {
   private long id;
   private Date dataCriacao;
   private int estado;
-  private Date dataPrevista;
+  private Date dataEntrega;
   private String observacoes;
-  private List<ProdutoEncomendado> produtosEncomendados;
+  private List<ProdutoEncomendadoComPreco> produtosEncomendados;
 
   public long getId() {
     return id;
@@ -38,12 +38,12 @@ public class Encomenda {
     this.estado = estado;
   }
 
-  public Date getDataPrevista() {
-    return dataPrevista;
+  public Date getDataEntrega() {
+    return dataEntrega;
   }
 
-  public void setDataPrevista(Date dataPrevista) {
-    this.dataPrevista = dataPrevista;
+  public void setDataEntrega(Date dataEntrega) {
+    this.dataEntrega = dataEntrega;
   }
 
   public String getObservacoes() {
@@ -54,11 +54,11 @@ public class Encomenda {
     this.observacoes = observacoes;
   }
 
-  public List<ProdutoEncomendado> getProdutosEncomendados() {
+  public List<ProdutoEncomendadoComPreco> getProdutosEncomendados() {
     return produtosEncomendados;
   }
 
-  public void setProdutosEncomendados(List<ProdutoEncomendado> produtosEncomendados) {
+  public void setProdutosEncomendados(List<ProdutoEncomendadoComPreco> produtosEncomendados) {
     this.produtosEncomendados = produtosEncomendados;
   }
 }

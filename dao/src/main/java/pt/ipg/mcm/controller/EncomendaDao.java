@@ -8,6 +8,7 @@ import pt.ipg.mcm.errors.MestradoException;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
+import javax.enterprise.inject.Decorated;
 import javax.sql.DataSource;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -20,6 +21,10 @@ import java.util.List;
 
 @Stateless
 public class EncomendaDao {
+
+  @Decorated
+  private EncomendaDao encomendaDao;
+
   @Resource(lookup = "jdbc/mestrado")
   private DataSource mestradoDataSource;
 
@@ -28,36 +33,56 @@ public class EncomendaDao {
     try {
       Connection connection = mestradoDataSource.getConnection();
 
-      CallableStatement call = connection.prepareCall("{CALL P_ADD_ENCOMENDA(?,?,?,?,?)}");
-      EncomendaEntity encomendaAssociada = encomendaEntity.getEncomendaAssociada();
-      call.setString(1, login);
-      call.setDate(2, new java.sql.Date(encomendaEntity.getCalendarioEntity().getDataprevista().getTime()));
-      call.registerOutParameter(3, Types.NUMERIC);
-      call.registerOutParameter(4, Types.NUMERIC);
-      if (encomendaAssociada != null) {
-        call.setLong(5, encomendaAssociada.getIdEncomenda());
-      } else {
-        call.setObject(5, null);
-      }
-
-      call.execute();
-
-      encomendaEntity.setIdEncomenda(call.getLong(4));
-
-      for (EncomendaProdutoEntity produtoEntity : encomendaEntity.getEncomendaProdutoEntityList()) {
-        call = connection.prepareCall("{CALL P_ADD_PRODUTO_ENCOMENDA(?,?,?)}");
-
-        call.setLong(1, produtoEntity.getQuantidade());
-        call.setLong(2, produtoEntity.getEncomenda().getIdEncomenda());
-        call.setLong(3, produtoEntity.getProduto().getIdProduto());
-
-        call.execute();
-      }
+      addEncomenda(encomendaEntity, login, connection);
 
     } catch (SQLException e) {
       throw new MestradoException(Erro.TECNICO);
     }
   }
+
+  public List<Long> inserirEncomendas(List<EncomendaEntity> encomendaEntityList, String login) throws MestradoException {
+
+    try {
+      Connection connection = mestradoDataSource.getConnection();
+      List<Long> ids = new ArrayList<Long>();
+      for (EncomendaEntity encomendaEntity : encomendaEntityList) {
+        addEncomenda(encomendaEntity, login, connection);
+        ids.add(encomendaEntity.getIdEncomenda());
+      }
+      return ids;
+    } catch (SQLException e) {
+      throw new MestradoException(Erro.TECNICO);
+    }
+  }
+
+  private void addEncomenda(EncomendaEntity encomendaEntity, String login, Connection connection) throws SQLException {
+    CallableStatement call = connection.prepareCall("{CALL P_ADD_ENCOMENDA(?,?,?,?,?)}");
+    EncomendaEntity encomendaAssociada = encomendaEntity.getEncomendaAssociada();
+    call.setString(1, login);
+    call.setDate(2, new java.sql.Date(encomendaEntity.getCalendarioEntity().getDataprevista().getTime()));
+    call.registerOutParameter(3, Types.NUMERIC);
+    call.registerOutParameter(4, Types.NUMERIC);
+    if (encomendaAssociada != null) {
+      call.setLong(5, encomendaAssociada.getIdEncomenda());
+    } else {
+      call.setObject(5, null);
+    }
+
+    call.execute();
+
+    encomendaEntity.setIdEncomenda(call.getLong(4));
+
+    for (EncomendaProdutoEntity produtoEntity : encomendaEntity.getEncomendaProdutoEntityList()) {
+      call = connection.prepareCall("{CALL P_ADD_PRODUTO_ENCOMENDA(?,?,?)}");
+
+      call.setLong(1, produtoEntity.getQuantidade());
+      call.setLong(2, produtoEntity.getEncomenda().getIdEncomenda());
+      call.setLong(3, produtoEntity.getProduto().getIdProduto());
+
+      call.execute();
+    }
+  }
+
 
   public List<VEncomendasLoginEntity> getMinhasEncomendas(String login, long idSync) throws MestradoException {
     List<VEncomendasLoginEntity> vEncomendaEntities = new ArrayList<VEncomendasLoginEntity>();
@@ -103,7 +128,7 @@ public class EncomendaDao {
   public List<EncomendaEntity> getMinhasEncomendasSync(String login, long idSync) throws MestradoException {
     try {
       Connection connection = mestradoDataSource.getConnection();
-      PreparedStatement ps = connection.prepareStatement("SELECT ID_ENCOMENDA, DATA_CRIACAO, ESTADO, DATA_PREVISTA, OBSERVACOES from V_ENCOMENDAS_CLIENTE\n" +
+      PreparedStatement ps = connection.prepareStatement("SELECT ID_ENCOMENDA, DATA_CRIACAO, ESTADO, OBSERVACOES from V_ENCOMENDAS_CLIENTE\n" +
           "WHERE LOGIN = ? and SYNC > ? ");
 
       ps.setString(1, login);
@@ -118,8 +143,7 @@ public class EncomendaDao {
         encomenda.setIdEncomenda(idEncomenda);
         encomenda.setDataCriacao(rs.getTimestamp(2));
         encomenda.setEstado(EncomendaEntity.Estado.getByNumber(rs.getInt(3)));
-        encomenda.setDataEntrega(rs.getTimestamp(4));
-        encomenda.setObservacoes(rs.getString(5));
+        encomenda.setObservacoes(rs.getString(4));
 
         List<EncomendaProdutoEntity> produtoEncomendadoList = encomenda.getEncomendaProdutoEntityList();
         for (EncomendaProdutoEntity encomendaProdutoEntity : new ProdutoEncomendadoLoader(connection, idEncomenda)) {

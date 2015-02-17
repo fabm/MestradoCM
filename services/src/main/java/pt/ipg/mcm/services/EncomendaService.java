@@ -9,11 +9,16 @@ import pt.ipg.mcm.entities.VEncomendasLoginEntity;
 import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.services.authorization.Role;
 import pt.ipg.mcm.services.authorization.SecureService;
-import pt.ipg.mcm.xmodel.Encomenda;
+import pt.ipg.mcm.xmodel.EncomendaDetalheXml;
+import pt.ipg.mcm.xmodel.EncomendaXml;
+import pt.ipg.mcm.xmodel.EncomendaXmlSemPreco;
 import pt.ipg.mcm.xmodel.MinhaEncomenda;
 import pt.ipg.mcm.xmodel.ProdutoEncomendado;
+import pt.ipg.mcm.xmodel.ProdutoEncomendadoComPreco;
 import pt.ipg.mcm.xmodel.ReqAddEncomenda;
+import pt.ipg.mcm.xmodel.ReqAddEncomendas;
 import pt.ipg.mcm.xmodel.ResAddEncomenda;
+import pt.ipg.mcm.xmodel.ResAddEncomendas;
 import pt.ipg.mcm.xmodel.ResMinhasEncomendas;
 import pt.ipg.mcm.xmodel.ResMinhasEncomendasDetalhe;
 import pt.ipg.mcm.xmodel.Retorno;
@@ -53,7 +58,7 @@ public class EncomendaService extends SecureService {
 
     encomendaEntity.setCalendarioEntity(calendarioEncomeda);
 
-    for (ProdutoEncomendado produtoEncomendado : reqAddEncomenda.getProdutosEncomendados()) {
+    for (ProdutoEncomendado produtoEncomendado : reqAddEncomenda.getProdutoList()) {
       EncomendaProdutoEntity encomendaProdutoEntity = new EncomendaProdutoEntity();
       encomendaProdutoEntity.setEncomenda(encomendaEntity);
 
@@ -74,12 +79,52 @@ public class EncomendaService extends SecureService {
   }
 
   @WebMethod
+  public ResAddEncomendas addEncomendas(@WebParam(name = "addEncomendas") ReqAddEncomendas reqAddEncomendas) throws LoginException {
+    setWsc(webServiceContext);
+    checkAuthorization(Role.CLIENTE);
+
+    String login = getSecurityCommon().getUserPrincipal().getName();
+
+    List<EncomendaEntity> encomendaEntityList = new ArrayList<EncomendaEntity>();
+
+    for (EncomendaXmlSemPreco encomendaXml : reqAddEncomendas.getEncomendas()) {
+      EncomendaEntity encomendaEntity = new EncomendaEntity();
+
+      CalendarioEntity calendarioEncomeda = new CalendarioEntity();
+
+      calendarioEncomeda.setDataprevista(new Timestamp(encomendaXml.getDataEntrega().getTime()));
+
+      encomendaEntity.setCalendarioEntity(calendarioEncomeda);
+
+      for (ProdutoEncomendado produtoEncomendado : encomendaXml.getProdutoList()) {
+        EncomendaProdutoEntity encomendaProdutoEntity = new EncomendaProdutoEntity();
+        encomendaProdutoEntity.setEncomenda(encomendaEntity);
+
+        ProdutoEntity produtoEntity = new ProdutoEntity();
+        produtoEntity.setIdProduto(produtoEncomendado.getIdProduto());
+        encomendaProdutoEntity.setProduto(produtoEntity);
+
+        encomendaProdutoEntity.setQuantidade(produtoEncomendado.getQuantidade());
+        encomendaEntity.getEncomendaProdutoEntityList().add(encomendaProdutoEntity);
+      }
+
+      encomendaEntityList.add(encomendaEntity);
+    }
+    try {
+      List<Long> ids = encomendaDao.inserirEncomendas(encomendaEntityList, login);
+      return new ResAddEncomendas(ids);
+    } catch (MestradoException e) {
+      return new ResAddEncomendas(e);
+    }
+  }
+
+  @WebMethod
   public ResMinhasEncomendas getMinhasEncomendasTodas() throws LoginException {
     return getMinhasEncomendas(0);
   }
 
   @WebMethod
-  public ResMinhasEncomendas getMinhasEncomendas(@WebParam(name = "idSync")long id) throws LoginException {
+  public ResMinhasEncomendas getMinhasEncomendas(@WebParam(name = "idSync") long id) throws LoginException {
     setWsc(webServiceContext);
     checkAuthorization(Role.CLIENTE);
     String login = getSecurityCommon().getUserPrincipal().getName();
@@ -104,35 +149,36 @@ public class EncomendaService extends SecureService {
   }
 
   @WebMethod
-  public ResMinhasEncomendasDetalhe getMinhasEncomendasDetalhe(@WebParam(name = "idSync")long id) throws LoginException {
+  public ResMinhasEncomendasDetalhe getMinhasEncomendasDetalhe(@WebParam(name = "idSync") long id) throws LoginException {
     setWsc(webServiceContext);
     checkAuthorization(Role.CLIENTE);
     String login = getSecurityCommon().getUserPrincipal().getName();
     ResMinhasEncomendasDetalhe resMinhasEncomendas = new ResMinhasEncomendasDetalhe();
 
-    List<Encomenda> minhasEncomendas = new ArrayList<Encomenda>();
+    List<EncomendaDetalheXml> minhasEncomendasDetalheXmls = new ArrayList<EncomendaDetalheXml>();
     try {
       for (EncomendaEntity encomendaEntity : encomendaDao.getMinhasEncomendasSync(login, id)) {
-        Encomenda encomenda = new Encomenda();
-        encomenda.setObservacoes(encomendaEntity.getObservacoes());
-        encomenda.setDataCriacao(encomendaEntity.getDataCriacao());
-        encomenda.setDataPrevista(encomendaEntity.getDataEntrega());
+        EncomendaDetalheXml encomendaDetalheXml = new EncomendaDetalheXml();
+        encomendaDetalheXml.setObservacoes(encomendaEntity.getObservacoes());
+        encomendaDetalheXml.setDataCriacao(encomendaEntity.getDataCriacao());
+        encomendaDetalheXml.setDataEntrega(encomendaEntity.getDataEntrega());
         if (encomendaEntity.getEstado() != null) {
-          encomenda.setEstado(encomendaEntity.getEstado().getNumEstado());
+          encomendaDetalheXml.setEstado(encomendaEntity.getEstado().getNumEstado());
         }
-        encomenda.setId(encomendaEntity.getIdEncomenda());
-        List<ProdutoEncomendado> produtoEncomendadoList = new ArrayList<ProdutoEncomendado>();
+        encomendaDetalheXml.setId(encomendaEntity.getIdEncomenda());
+        List<ProdutoEncomendadoComPreco> produtoEncomendadoList = new ArrayList<ProdutoEncomendadoComPreco>();
         for (EncomendaProdutoEntity encomendaProdutoEntity : encomendaEntity.getEncomendaProdutoEntityList()) {
-          ProdutoEncomendado produtoEncomendado = new ProdutoEncomendado();
+          ProdutoEncomendadoComPreco produtoEncomendado = new ProdutoEncomendadoComPreco();
           produtoEncomendado.setIdProduto(encomendaProdutoEntity.getProduto().getIdProduto());
           produtoEncomendado.setQuantidade(encomendaProdutoEntity.getQuantidade());
+          produtoEncomendado.setPreco(encomendaProdutoEntity.getProduto().getPrecoAtual());
           produtoEncomendadoList.add(produtoEncomendado);
         }
-        encomenda.setProdutosEncomendados(produtoEncomendadoList);
-        minhasEncomendas.add(encomenda);
+        encomendaDetalheXml.setProdutosEncomendados(produtoEncomendadoList);
+        minhasEncomendasDetalheXmls.add(encomendaDetalheXml);
 
       }
-      resMinhasEncomendas.setListaEncomendas(minhasEncomendas);
+      resMinhasEncomendas.setListaEncomendasDetalheXmls(minhasEncomendasDetalheXmls);
       return resMinhasEncomendas;
     } catch (MestradoException e) {
       return new ResMinhasEncomendasDetalhe(e);
