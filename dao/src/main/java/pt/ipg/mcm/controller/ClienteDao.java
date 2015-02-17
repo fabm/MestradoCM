@@ -1,5 +1,6 @@
 package pt.ipg.mcm.controller;
 
+import pt.ipg.mcm.controller.ps.PsAddUtilizadorCliente;
 import pt.ipg.mcm.entities.ClienteEntity;
 import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
@@ -30,6 +31,28 @@ public class ClienteDao {
 
   @PersistenceContext(unitName = "mestrado")
   private EntityManager entityManager;
+
+  public void addClienteUtilizador() throws MestradoException {
+    try {
+      Connection connection = mestradoDataSource.getConnection();
+
+      CallableStatement call = connection.prepareCall("{call P_ADD_UTILIZADOR_CLIENTE(?,?,?,?,?,?,?,?,?)}");
+      PsAddUtilizadorCliente psAddUtilizadorCliente = new PsAddUtilizadorCliente();
+      call.setInt(0, psAddUtilizadorCliente.getContribuinte());
+      call.setString(1, psAddUtilizadorCliente.getNome());
+      call.setString(2, psAddUtilizadorCliente.getMorada());
+      call.setString(3, psAddUtilizadorCliente.getNPorta());
+      call.setDate(4, new Date(psAddUtilizadorCliente.getDataNascimento().getTime()));
+      call.setString(5, psAddUtilizadorCliente.getEmail());
+      call.setLong(6, psAddUtilizadorCliente.getLocalidade());
+      call.setString(7, psAddUtilizadorCliente.getLogin());
+      call.setString(8, psAddUtilizadorCliente.getPassword());
+
+    } catch (SQLException e) {
+      throw new MestradoException(Erro.TECNICO);
+    }
+  }
+
 
   public ResAddCliente addClient(ReqAddCliente reqAddCliente) throws MestradoException {
     ResAddCliente clienteResponseType = new ResAddCliente();
