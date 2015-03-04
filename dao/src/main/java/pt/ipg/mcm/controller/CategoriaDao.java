@@ -50,7 +50,20 @@ public class CategoriaDao {
 
   }
 
-    public CategoriaEntity getCategoria (long idCategoria) throws MestradoException{
+  public void updateCategoria (CategoriaEntity categoriaEntity) throws SQLException{
+      Connection connection = mestradoDataSource.getConnection();
+
+      CallableStatement call ;
+      call = connection.prepareCall("{call P_UPDATE_CATEGORIA(?,?,?)}");
+      call.setLong(1, categoriaEntity.getIdCategoria());
+      call.setString(2, categoriaEntity.getNome());
+      call.setString(3, categoriaEntity.getDescricao());
+
+      call.execute();
+
+  }
+
+  public CategoriaEntity getCategoria (long idCategoria) throws MestradoException{
 
         CategoriaEntity categoriaEntity = new CategoriaEntity();
 
