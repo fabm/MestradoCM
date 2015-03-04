@@ -2,11 +2,13 @@ package pt.ipg.mcm.controller;
 
 import pt.ipg.mcm.controller.ps.PsAddUtilizadorCliente;
 import pt.ipg.mcm.entities.ClienteEntity;
+import pt.ipg.mcm.entities.VUtilizadorClienteEntity;
 import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.xmodel.ReqAddCliente;
 import pt.ipg.mcm.xmodel.ReqGetCliente;
 import pt.ipg.mcm.xmodel.ResAddCliente;
+import pt.ipg.mcm.xmodel.ResAddClienteUtilizador;
 import pt.ipg.mcm.xmodel.ResGetCliente;
 import pt.ipg.mcm.xmodel.Retorno;
 
@@ -32,21 +34,24 @@ public class ClienteDao {
   @PersistenceContext(unitName = "mestrado")
   private EntityManager entityManager;
 
-  public void addClienteUtilizador() throws MestradoException {
+  public void addClienteUtilizador(PsAddUtilizadorCliente psAddUtilizadorCliente) throws MestradoException {
     try {
       Connection connection = mestradoDataSource.getConnection();
 
-      CallableStatement call = connection.prepareCall("{call P_ADD_UTILIZADOR_CLIENTE(?,?,?,?,?,?,?,?,?)}");
-      PsAddUtilizadorCliente psAddUtilizadorCliente = new PsAddUtilizadorCliente();
-      call.setInt(0, psAddUtilizadorCliente.getContribuinte());
-      call.setString(1, psAddUtilizadorCliente.getNome());
-      call.setString(2, psAddUtilizadorCliente.getMorada());
-      call.setString(3, psAddUtilizadorCliente.getNPorta());
-      call.setDate(4, new Date(psAddUtilizadorCliente.getDataNascimento().getTime()));
-      call.setString(5, psAddUtilizadorCliente.getEmail());
-      call.setLong(6, psAddUtilizadorCliente.getLocalidade());
-      call.setString(7, psAddUtilizadorCliente.getLogin());
-      call.setString(8, psAddUtilizadorCliente.getPassword());
+      CallableStatement call = connection.prepareCall("{call P_ADD_UTILIZADOR_CLIENTE(?,?,?,?,?,?,?,?,?,?)}");
+
+      call.setLong(1, psAddUtilizadorCliente.getContribuinte());
+      call.setString(2, psAddUtilizadorCliente.getNome());
+      call.setString(3, psAddUtilizadorCliente.getMorada());
+      call.setString(4, psAddUtilizadorCliente.getNPorta());
+      call.setDate(5, new Date(psAddUtilizadorCliente.getDataNascimento().getTime()));
+      call.setString(6, psAddUtilizadorCliente.getEmail());
+      call.setString(7, psAddUtilizadorCliente.getContacto());
+      call.setLong(8, psAddUtilizadorCliente.getLocalidade());
+      call.setString(9, psAddUtilizadorCliente.getLogin());
+      call.setString(10, psAddUtilizadorCliente.getPassword());
+
+      call.execute();
 
     } catch (SQLException e) {
       throw new MestradoException(Erro.TECNICO);
@@ -59,7 +64,6 @@ public class ClienteDao {
     Connection connection;
     try {
       connection = mestradoDataSource.getConnection();
-
 
       CallableStatement call = connection.prepareCall("{call P_ADD_CLIENTE(?,?,?,?,?,?,?,?,?)}");
       call.setLong(1, reqAddCliente.getContribuinte());

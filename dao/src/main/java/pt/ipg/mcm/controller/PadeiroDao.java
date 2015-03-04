@@ -1,5 +1,6 @@
 package pt.ipg.mcm.controller;
 
+import pt.ipg.mcm.controller.imp.CategoriaDaoImp;
 import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.xmodel.ReqAddPadeiro;
@@ -18,7 +19,7 @@ import java.util.logging.Logger;
 
 @Stateless
 public class PadeiroDao {
-  private static Logger LOGGER = Logger.getLogger(CategoriaDao.class.getName());
+  private static Logger LOGGER = Logger.getLogger(CategoriaDaoImp.class.getName());
 
   @Resource(lookup = "jdbc/mestrado")
   private DataSource mestradoDataSource;

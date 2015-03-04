@@ -1,13 +1,16 @@
 package pt.ipg.mcm.services;
 
 import pt.ipg.mcm.controller.ClienteDao;
+import pt.ipg.mcm.controller.ps.PsAddUtilizadorCliente;
 import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.services.authorization.Role;
 import pt.ipg.mcm.services.authorization.SecureService;
 import pt.ipg.mcm.validacao.Validacao;
 import pt.ipg.mcm.xmodel.ReqAddCliente;
+import pt.ipg.mcm.xmodel.ReqAddClienteUtilizador;
 import pt.ipg.mcm.xmodel.ReqGetCliente;
 import pt.ipg.mcm.xmodel.ResAddCliente;
+import pt.ipg.mcm.xmodel.ResAddClienteUtilizador;
 import pt.ipg.mcm.xmodel.ResGetCliente;
 import pt.ipg.mcm.xmodel.Retorno;
 
@@ -59,5 +62,37 @@ public class ClienteService extends SecureService {
       return resAdCliente;
     }
   }
+
+
+  @WebMethod
+  public ResAddClienteUtilizador addClienteUtilizador(@WebParam(name = "request") @XmlElement(required = true) ReqAddClienteUtilizador
+                                                          reqAddClienteUtilizador) throws
+      LoginException {
+    setWsc(webServiceContext);
+    checkAuthorization(Role.ADMINISTRADOR, Role.CONVIDADO);
+    try {
+      Map<String, String> aliasMap = new HashMap<String, String>();
+      aliasMap.put("dataNascimento", "date de nascimento");
+      Validacao.getInstance().valida(reqAddClienteUtilizador, aliasMap);
+
+      PsAddUtilizadorCliente psAddUtilizadorCliente = new PsAddUtilizadorCliente();
+      psAddUtilizadorCliente.setContribuinte(reqAddClienteUtilizador.getContribuinte());
+      psAddUtilizadorCliente.setNome(reqAddClienteUtilizador.getNome());
+      psAddUtilizadorCliente.setMorada(reqAddClienteUtilizador.getMorada());
+      psAddUtilizadorCliente.setNPorta(reqAddClienteUtilizador.getPorta());
+      psAddUtilizadorCliente.setDataNascimento(reqAddClienteUtilizador.getDataNascimento());
+      psAddUtilizadorCliente.setEmail(reqAddClienteUtilizador.getEmail());
+      psAddUtilizadorCliente.setContacto(reqAddClienteUtilizador.getContacto());
+      psAddUtilizadorCliente.setLocalidade(reqAddClienteUtilizador.getLocalidade());
+      psAddUtilizadorCliente.setLogin(reqAddClienteUtilizador.getLogin());
+      psAddUtilizadorCliente.setPassword(reqAddClienteUtilizador.getPassword());
+
+      clienteDao.addClienteUtilizador(psAddUtilizadorCliente);
+      return new ResAddClienteUtilizador(1, "Registo efectuado com sucesso");
+    } catch (MestradoException e) {
+      return new ResAddClienteUtilizador(e);
+    }
+  }
+
 
 }

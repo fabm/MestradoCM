@@ -49,7 +49,7 @@ public class CallableStatementHelper {
       } else if (types[i] == Date.class) {
         stringBuilderValues.append("call.setDate(");
       }
-      stringBuilderValues.append(i);
+      stringBuilderValues.append(i+1);
       stringBuilderValues.append(", ");
       if(types[i] == Date.class){
         stringBuilderValues.append("new Date(");

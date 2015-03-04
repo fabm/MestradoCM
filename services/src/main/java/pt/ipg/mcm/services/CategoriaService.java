@@ -1,6 +1,6 @@
 package pt.ipg.mcm.services;
 
-import pt.ipg.mcm.controller.CategoriaDao;
+import pt.ipg.mcm.controller.dao.CategoriaDao;
 import pt.ipg.mcm.entities.CategoriaEntity;
 import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;

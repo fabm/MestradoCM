@@ -1,6 +1,7 @@
-package pt.ipg.mcm.controller;
+package pt.ipg.mcm.controller.imp;
 
 
+import pt.ipg.mcm.controller.dao.UtilizadorDao;
 import pt.ipg.mcm.entities.PadeiroEntity;
 import pt.ipg.mcm.entities.UtilizadorPadeiroEntity;
 import pt.ipg.mcm.errors.Erro;
@@ -11,18 +12,15 @@ import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.logging.Logger;
 
 @Stateless
-public class UtilizadorDao {
-
-    private static Logger LOGGER = Logger.getLogger(UtilizadorDao.class.getName());
+public class UtilizadorDaoImp implements UtilizadorDao {
 
     @Resource(lookup = "jdbc/mestrado")
     private DataSource mestradoDataSource ;
 
 
-    public void addUtilizador (UtilizadorPadeiroEntity utilizadorPadeiroEntity) throws MestradoException {
+    @Override public void addUtilizador (UtilizadorPadeiroEntity utilizadorPadeiroEntity) throws MestradoException {
         try {
             Connection connection = mestradoDataSource.getConnection();
             ResAddUtilizador resAddUtilizador = new ResAddUtilizador();
@@ -44,7 +42,7 @@ public class UtilizadorDao {
 //OBTER PADEIRO
 
 
-    public PadeiroEntity getPadeiro (long idpadeiro)throws  MestradoException{
+    @Override public PadeiroEntity getPadeiro (long idpadeiro)throws  MestradoException{
         PadeiroEntity padeiroEntity =  new PadeiroEntity();
         try{
             String sqlString = "SELECT PADEIRO.NOME,\n" +

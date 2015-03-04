@@ -52,39 +52,4 @@ public class EncomendaRService {
     }
   }
 
-  @GET
-  @Path("/teste")
-  @Produces(MediaType.APPLICATION_JSON)
-  public Response teste() {
-    ReqAddEncomendas reqAddEncomendas = new ReqAddEncomendas();
-    List<EncomendaXmlSemPreco> lista = new ArrayList<EncomendaXmlSemPreco>();
-
-    EncomendaXmlSemPreco encomenda = new EncomendaXmlSemPreco();
-    encomenda.setIdCliente(1L);
-    encomenda.setDataEntrega(new Date());
-    List<ProdutoEncomendado> produtos = new ArrayList<ProdutoEncomendado>();
-    ProdutoEncomendado produto = new ProdutoEncomendado();
-    produto.setIdProduto(2);
-    produto.setQuantidade(2);
-    produtos.add(produto);
-    encomenda.setProdutoList(produtos);
-    lista.add(encomenda);
-
-    encomenda = new EncomendaXmlSemPreco();
-    encomenda.setIdCliente(2L);
-    encomenda.setDataEntrega(new Date());
-    produtos = new ArrayList<ProdutoEncomendado>();
-    produto = new ProdutoEncomendado();
-    produto.setIdProduto(2);
-    produto.setQuantidade(2);
-    produtos.add(produto);
-    encomenda.setProdutoList(produtos);
-    lista.add(encomenda);
-
-    reqAddEncomendas.setEncomendas(lista);
-
-    return Response.ok(reqAddEncomendas).build();
-  }
-
-
 }

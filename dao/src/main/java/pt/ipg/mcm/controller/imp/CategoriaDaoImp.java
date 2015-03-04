@@ -1,16 +1,11 @@
-package pt.ipg.mcm.controller;
+package pt.ipg.mcm.controller.imp;
 
+import pt.ipg.mcm.controller.dao.CategoriaDao;
 import pt.ipg.mcm.entities.CategoriaEntity;
 import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
-import pt.ipg.mcm.xmodel.Categoria;
-import pt.ipg.mcm.xmodel.ReqAddCategoria;
-import pt.ipg.mcm.xmodel.ResAddCategoria;
-import pt.ipg.mcm.xmodel.ResCategoriasDesync;
-import pt.ipg.mcm.xmodel.Retorno;
 
 import javax.annotation.Resource;
-import javax.ejb.Singleton;
 import javax.ejb.Stateless;
 import javax.sql.DataSource;
 import java.sql.CallableStatement;
@@ -22,19 +17,15 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Stateless
-@Singleton
-public class CategoriaDao {
-
-  private static Logger LOGGER = Logger.getLogger(CategoriaDao.class.getName());
+public class CategoriaDaoImp implements CategoriaDao {
 
   @Resource(lookup = "jdbc/mestrado")
   private DataSource mestradoDataSource;
 
 
+  @Override
   public Long addCategoria(CategoriaEntity categoriaEntity) throws SQLException {
     Connection connection = mestradoDataSource.getConnection();
 
@@ -50,7 +41,8 @@ public class CategoriaDao {
 
   }
 
-    public CategoriaEntity getCategoria (long idCategoria) throws MestradoException{
+    @Override
+    public CategoriaEntity getCategoria(long idCategoria) throws MestradoException{
 
         CategoriaEntity categoriaEntity = new CategoriaEntity();
 
@@ -82,6 +74,7 @@ public class CategoriaDao {
         return categoriaEntity;
     }
 
+  @Override
   public List<CategoriaEntity> getAll() throws MestradoException {
 
     try {
@@ -104,6 +97,7 @@ public class CategoriaDao {
   }
 
 
+  @Override
   public List<CategoriaEntity> getDesync(Long versao) throws MestradoException {
 
     try {

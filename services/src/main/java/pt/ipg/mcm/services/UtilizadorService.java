@@ -2,7 +2,7 @@ package pt.ipg.mcm.services;
 
 
 import pt.ipg.mcm.controller.PadeiroDao;
-import pt.ipg.mcm.controller.UtilizadorDao;
+import pt.ipg.mcm.controller.dao.UtilizadorDao;
 import pt.ipg.mcm.entities.PadeiroEntity;
 import pt.ipg.mcm.entities.UtilizadorPadeiroEntity;
 import pt.ipg.mcm.errors.MestradoException;
@@ -15,6 +15,7 @@ import pt.ipg.mcm.xmodel.ResGetUtilizador;
 import pt.ipg.mcm.xmodel.Retorno;
 
 import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -26,10 +27,10 @@ import java.util.Map;
 @WebService(serviceName = "Utilizador", portName = "UtilizadorPort")
 public class UtilizadorService extends SecureService {
 
-  @EJB
+  @Inject
   private UtilizadorDao utilizadorDao;
 
-  @EJB
+  @Inject
   private PadeiroDao padeiroDao;
 
 

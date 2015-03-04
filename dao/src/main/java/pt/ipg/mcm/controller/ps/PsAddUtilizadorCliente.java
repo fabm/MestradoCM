@@ -5,11 +5,11 @@ import pt.ipg.mcm.controller.parameters.ProcedureValue;
 
 import java.util.Date;
 
-@Procedure(name = "P_ADD_UTILIZADOR_CLIENTE",fieldsNumber = 9)
+@Procedure(name = "P_ADD_UTILIZADOR_CLIENTE", fieldsNumber = 10)
 public class PsAddUtilizadorCliente {
 
   @ProcedureValue(index = 0)
-  private int contribuinte;
+  private long contribuinte;
   @ProcedureValue(index = 1)
   private String nome;
   @ProcedureValue(index = 2)
@@ -21,17 +21,19 @@ public class PsAddUtilizadorCliente {
   @ProcedureValue(index = 5)
   private String email;
   @ProcedureValue(index = 6)
-  private long localidade;
+  private String contacto;
   @ProcedureValue(index = 7)
-  private String login;
+  private long localidade;
   @ProcedureValue(index = 8)
+  private String login;
+  @ProcedureValue(index = 9)
   private String password;
 
-  public int getContribuinte() {
+  public long getContribuinte() {
     return contribuinte;
   }
 
-  public void setContribuinte(int contribuinte) {
+  public void setContribuinte(long contribuinte) {
     this.contribuinte = contribuinte;
   }
 
@@ -97,5 +99,21 @@ public class PsAddUtilizadorCliente {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public String getContacto() {
+    return contacto;
+  }
+
+  public void setContacto(String contacto) {
+    this.contacto = contacto;
+  }
+
+  public String getnPorta() {
+    return nPorta;
+  }
+
+  public void setnPorta(String nPorta) {
+    this.nPorta = nPorta;
   }
 }
