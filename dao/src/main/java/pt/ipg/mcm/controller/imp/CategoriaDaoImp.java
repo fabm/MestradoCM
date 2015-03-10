@@ -1,11 +1,16 @@
-package pt.ipg.mcm.controller.imp;
+package pt.ipg.mcm.controller;
 
-import pt.ipg.mcm.controller.dao.CategoriaDao;
 import pt.ipg.mcm.entities.CategoriaEntity;
 import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
+import pt.ipg.mcm.xmodel.Categoria;
+import pt.ipg.mcm.xmodel.ReqAddCategoria;
+import pt.ipg.mcm.xmodel.ResAddCategoria;
+import pt.ipg.mcm.xmodel.ResCategoriasDesync;
+import pt.ipg.mcm.xmodel.Retorno;
 
 import javax.annotation.Resource;
+import javax.ejb.Singleton;
 import javax.ejb.Stateless;
 import javax.sql.DataSource;
 import java.sql.CallableStatement;
@@ -17,9 +22,13 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Stateless
-public class CategoriaDaoImp implements CategoriaDao {
+public class CategoriaDao {
+
+  private static Logger LOGGER = Logger.getLogger(CategoriaDao.class.getName());
 
   @Resource(lookup = "jdbc/mestrado")
   private DataSource mestradoDataSource;
@@ -41,8 +50,20 @@ public class CategoriaDaoImp implements CategoriaDao {
 
   }
 
-    @Override
-    public CategoriaEntity getCategoria(long idCategoria) throws MestradoException{
+  public void updateCategoria (CategoriaEntity categoriaEntity) throws SQLException{
+      Connection connection = mestradoDataSource.getConnection();
+
+      CallableStatement call ;
+      call = connection.prepareCall("{call P_UPDATE_CATEGORIA(?,?,?)}");
+      call.setLong(1, categoriaEntity.getIdCategoria());
+      call.setString(2, categoriaEntity.getNome());
+      call.setString(3, categoriaEntity.getDescricao());
+
+      call.execute();
+
+  }
+
+  public CategoriaEntity getCategoria (long idCategoria) throws MestradoException{
 
         CategoriaEntity categoriaEntity = new CategoriaEntity();
 
