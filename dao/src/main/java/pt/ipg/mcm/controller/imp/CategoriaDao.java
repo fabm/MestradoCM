@@ -1,16 +1,10 @@
-package pt.ipg.mcm.controller;
+package pt.ipg.mcm.controller.imp;
 
 import pt.ipg.mcm.entities.CategoriaEntity;
 import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
-import pt.ipg.mcm.xmodel.Categoria;
-import pt.ipg.mcm.xmodel.ReqAddCategoria;
-import pt.ipg.mcm.xmodel.ResAddCategoria;
-import pt.ipg.mcm.xmodel.ResCategoriasDesync;
-import pt.ipg.mcm.xmodel.Retorno;
 
 import javax.annotation.Resource;
-import javax.ejb.Singleton;
 import javax.ejb.Stateless;
 import javax.sql.DataSource;
 import java.sql.CallableStatement;
@@ -22,80 +16,74 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Stateless
 public class CategoriaDao {
-
-  private static Logger LOGGER = Logger.getLogger(CategoriaDao.class.getName());
 
   @Resource(lookup = "jdbc/mestrado")
   private DataSource mestradoDataSource;
 
 
-  @Override
   public Long addCategoria(CategoriaEntity categoriaEntity) throws SQLException {
     Connection connection = mestradoDataSource.getConnection();
 
-      CallableStatement call ;
-      call = connection.prepareCall("{call P_ADD_CATEGORIA(?,?,?)}");
-      call.setString(1, categoriaEntity.getNome());
-      call.setString(2, categoriaEntity.getDescricao());
-      call.registerOutParameter(3, Types.NUMERIC);
-      call.execute();
+    CallableStatement call;
+    call = connection.prepareCall("{call P_ADD_CATEGORIA(?,?,?)}");
+    call.setString(1, categoriaEntity.getNome());
+    call.setString(2, categoriaEntity.getDescricao());
+    call.registerOutParameter(3, Types.NUMERIC);
+    call.execute();
 
-      return call.getLong(3);
+    return call.getLong(3);
 
 
   }
 
-  public void updateCategoria (CategoriaEntity categoriaEntity) throws SQLException{
+  public void updateCategoria(CategoriaEntity categoriaEntity) throws SQLException {
+    Connection connection = mestradoDataSource.getConnection();
+
+    CallableStatement call;
+    call = connection.prepareCall("{call P_UPDATE_CATEGORIA(?,?,?)}");
+    call.setLong(1, categoriaEntity.getIdCategoria());
+    call.setString(2, categoriaEntity.getNome());
+    call.setString(3, categoriaEntity.getDescricao());
+
+    call.execute();
+
+  }
+
+  public CategoriaEntity getCategoria(long idCategoria) throws MestradoException {
+
+    CategoriaEntity categoriaEntity = new CategoriaEntity();
+
+    try {
+      String sqlStriing = "SELECT CATEGORIA.NOME,\n" +
+          "  CATEGORIA.DESCRICAO\n" +
+          "  FROM CATEGORIA\n" +
+          "  WHERE CATEGORIA.ID_CATEGORIA = ?";
+
+
       Connection connection = mestradoDataSource.getConnection();
+      PreparedStatement call = connection.prepareStatement(sqlStriing);
+      call.setLong(1, idCategoria);
 
-      CallableStatement call ;
-      call = connection.prepareCall("{call P_UPDATE_CATEGORIA(?,?,?)}");
-      call.setLong(1, categoriaEntity.getIdCategoria());
-      call.setString(2, categoriaEntity.getNome());
-      call.setString(3, categoriaEntity.getDescricao());
+      ResultSet rs = call.executeQuery();
 
-      call.execute();
+      if (!rs.next()) {
+        throw new MestradoException(Erro.CATEGORIA_NAO_ENCONTRADO, idCategoria);
+      }
 
-  }
-
-  public CategoriaEntity getCategoria (long idCategoria) throws MestradoException{
-
-        CategoriaEntity categoriaEntity = new CategoriaEntity();
-
-        try{
-            String sqlStriing  = "SELECT CATEGORIA.NOME,\n" +
-                    "  CATEGORIA.DESCRICAO\n" +
-                    "  FROM CATEGORIA\n" +
-                    "  WHERE CATEGORIA.ID_CATEGORIA = ?";
+      categoriaEntity.setNome(rs.getString(1));
+      categoriaEntity.setDescricao(rs.getString(2));
 
 
-            Connection connection = mestradoDataSource.getConnection();
-            PreparedStatement call = connection.prepareStatement(sqlStriing);
-            call.setLong(1, idCategoria);
-
-            ResultSet rs = call.executeQuery();
-
-            if (!rs.next()){
-                throw new MestradoException(Erro.CATEGORIA_NAO_ENCONTRADO, idCategoria);
-            }
-
-            categoriaEntity.setNome(rs.getString(1));
-            categoriaEntity.setDescricao(rs.getString(2));
-
-
-        }catch (SQLException e) {
-            throw new MestradoException(Erro.TECNICO);
-        }
-
-        return categoriaEntity;
+    } catch (SQLException e) {
+      throw new MestradoException(Erro.TECNICO);
     }
 
-  @Override
+    return categoriaEntity;
+  }
+
   public List<CategoriaEntity> getAll() throws MestradoException {
 
     try {
@@ -118,14 +106,13 @@ public class CategoriaDao {
   }
 
 
-  @Override
   public List<CategoriaEntity> getDesync(Long versao) throws MestradoException {
 
     try {
       String sql = "SELECT ID_CATEGORIA,NOME,DESCRICAO,SYNC FROM CATEGORIA WHERE SYNC > ?";
       PreparedStatement ps = mestradoDataSource.getConnection().prepareStatement(sql);
 
-      ps.setLong(1,versao);
+      ps.setLong(1, versao);
 
       ResultSet rs = ps.executeQuery();
 

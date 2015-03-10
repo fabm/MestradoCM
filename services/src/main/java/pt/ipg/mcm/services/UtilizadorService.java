@@ -2,7 +2,7 @@ package pt.ipg.mcm.services;
 
 
 import pt.ipg.mcm.controller.PadeiroDao;
-import pt.ipg.mcm.controller.dao.UtilizadorDao;
+import pt.ipg.mcm.controller.imp.UtilizadorDao;
 import pt.ipg.mcm.entities.PadeiroEntity;
 import pt.ipg.mcm.entities.UtilizadorPadeiroEntity;
 import pt.ipg.mcm.errors.MestradoException;
@@ -14,7 +14,6 @@ import pt.ipg.mcm.xmodel.ResAddUtilizador;
 import pt.ipg.mcm.xmodel.ResGetUtilizador;
 import pt.ipg.mcm.xmodel.Retorno;
 
-import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;

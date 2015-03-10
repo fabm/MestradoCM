@@ -18,7 +18,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="services" />
-    <orderEntry type="module" module-name="controller" />
+    <orderEntry type="module" module-name="dao" />
     <orderEntry type="module" module-name="xmodel" />
     <orderEntry type="module" module-name="common" />
     <orderEntry type="module" module-name="pmodel" />

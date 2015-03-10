@@ -19,7 +19,6 @@ import java.util.logging.Logger;
  * Created by BrrF on 30-01-2015.
  */
 @Stateless
-@Singleton
 public class LocalidadeDao {
 
 

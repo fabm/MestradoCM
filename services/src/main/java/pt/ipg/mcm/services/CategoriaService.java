@@ -1,6 +1,6 @@
 package pt.ipg.mcm.services;
 
-import pt.ipg.mcm.controller.dao.CategoriaDao;
+import pt.ipg.mcm.controller.imp.CategoriaDao;
 import pt.ipg.mcm.entities.CategoriaEntity;
 import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
@@ -120,31 +120,11 @@ public class CategoriaService {
     }
 
 
-    @WebResult
-     public ResUpdateCategoria updateCategoria(@XmlElement(required = true) @WebParam(name = "request") ReqUpdateCategoria reqUpdateCategoria) {
-        ResUpdateCategoria resUpdateCategoria =  new ResUpdateCategoria();
-
-        try {
-
-            CategoriaEntity categoriaEntity = new CategoriaEntity();
-            categoriaEntity.setIdCategoria(reqUpdateCategoria.getIdCategoria());
-            categoriaEntity.setNome(reqUpdateCategoria.getNome());
-            categoriaEntity.setDescricao(reqUpdateCategoria.getDescricao());
-
-
-            categoriaDao.updateCategoria(categoriaEntity);
-
-            resUpdateCategoria.setRetorno(new Retorno(1,"Categoria Atualizada com sucesso !"));
-
-        } catch (SQLException e) {
-            resUpdateCategoria.setRetorno(new Retorno(new MestradoException(Erro.TECNICO)));
-        }
-        return resUpdateCategoria;
-
-    }
 
 
 
 
-  }
+
+
+
 }
