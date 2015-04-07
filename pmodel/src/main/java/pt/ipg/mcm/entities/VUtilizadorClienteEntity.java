@@ -2,6 +2,7 @@ package pt.ipg.mcm.entities;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Date;
 
 public class VUtilizadorClienteEntity {
   private String login;
@@ -24,13 +25,13 @@ public class VUtilizadorClienteEntity {
     this.password = password;
   }
 
-  private BigDecimal contribuinte;
+  private Long contribuinte;
 
-  public BigDecimal getContribuinte() {
+  public Long getContribuinte() {
     return contribuinte;
   }
 
-  public void setContribuinte(BigDecimal contribuinte) {
+  public void setContribuinte(Long contribuinte) {
     this.contribuinte = contribuinte;
   }
 
@@ -44,23 +45,23 @@ public class VUtilizadorClienteEntity {
     this.nome = nome;
   }
 
-  private Timestamp datanascimento;
+  private Date datanascimento;
 
-  public Timestamp getDatanascimento() {
+  public Date getDatanascimento() {
     return datanascimento;
   }
 
-  public void setDatanascimento(Timestamp datanascimento) {
+  public void setDatanascimento(Date datanascimento) {
     this.datanascimento = datanascimento;
   }
 
-  private BigDecimal contacto;
+  private String contacto;
 
-  public BigDecimal getContacto() {
+  public String getContacto() {
     return contacto;
   }
 
-  public void setContacto(BigDecimal contacto) {
+  public void setContacto(String contacto) {
     this.contacto = contacto;
   }
 
@@ -84,13 +85,13 @@ public class VUtilizadorClienteEntity {
     this.email = email;
   }
 
-  private BigDecimal localidade;
+  private Integer localidade;
 
-  public BigDecimal getLocalidade() {
+  public Integer getLocalidade() {
     return localidade;
   }
 
-  public void setLocalidade(BigDecimal localidade) {
+  public void setLocalidade(Integer localidade) {
     this.localidade = localidade;
   }
 

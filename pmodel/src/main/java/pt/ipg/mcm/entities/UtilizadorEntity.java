@@ -8,22 +8,18 @@ import javax.persistence.Table;
 import java.math.BigDecimal;
 
 public class UtilizadorEntity {
-  private BigDecimal idUtilizador;
+  private Long idUtilizador;
   private String login;
   private String password;
 
-  @Id
-  @Column(name = "ID_UTILIZADOR", nullable = false, insertable = true, updatable = true, precision = -127)
-  public BigDecimal getIdUtilizador() {
+  public Long getIdUtilizador() {
     return idUtilizador;
   }
 
-  public void setIdUtilizador(BigDecimal idUtilizador) {
+  public void setIdUtilizador(Long idUtilizador) {
     this.idUtilizador = idUtilizador;
   }
 
-  @Basic
-  @Column(name = "LOGIN", nullable = false, insertable = true, updatable = true, length = 100)
   public String getLogin() {
     return login;
   }
@@ -32,8 +28,6 @@ public class UtilizadorEntity {
     this.login = login;
   }
 
-  @Basic
-  @Column(name = "PASSWORD", nullable = false, insertable = true, updatable = true, length = 256)
   public String getPassword() {
     return password;
   }

@@ -10,17 +10,18 @@ import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.services.authorization.Role;
 import pt.ipg.mcm.services.authorization.SecureService;
 import pt.ipg.mcm.xmodel.EncomendaDetalheXml;
-import pt.ipg.mcm.xmodel.EncomendaXml;
 import pt.ipg.mcm.xmodel.EncomendaXmlSemPreco;
 import pt.ipg.mcm.xmodel.MinhaEncomenda;
 import pt.ipg.mcm.xmodel.ProdutoEncomendado;
 import pt.ipg.mcm.xmodel.ProdutoEncomendadoComPreco;
 import pt.ipg.mcm.xmodel.ReqAddEncomenda;
 import pt.ipg.mcm.xmodel.ReqAddEncomendas;
+import pt.ipg.mcm.xmodel.PostEncomenda;
 import pt.ipg.mcm.xmodel.ResAddEncomenda;
 import pt.ipg.mcm.xmodel.ResAddEncomendas;
 import pt.ipg.mcm.xmodel.ResMinhasEncomendas;
 import pt.ipg.mcm.xmodel.ResMinhasEncomendasDetalhe;
+import pt.ipg.mcm.xmodel.ResPostMinhasEncomendas;
 import pt.ipg.mcm.xmodel.Retorno;
 
 import javax.annotation.Resource;
@@ -186,5 +187,9 @@ public class EncomendaService extends SecureService {
 
   }
 
+  @WebMethod
+  public ResPostMinhasEncomendas postEncomendas(List<PostEncomenda> postEncomendaList, String login) throws MestradoException{
+    return encomendaDao.postEncomendas(postEncomendaList, login);
+  }
 
 }

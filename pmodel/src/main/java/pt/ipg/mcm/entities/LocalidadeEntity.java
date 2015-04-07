@@ -4,6 +4,7 @@ public class LocalidadeEntity {
   private String codigoPostal;
   private String localidade;
   private long idLocalidade;
+  private int codPostalNum;
 
   public String getCodigoPostal() {
     return codigoPostal;
@@ -29,5 +30,11 @@ public class LocalidadeEntity {
     this.idLocalidade = idLocalidade;
   }
 
+  public int getCodPostalNum() {
+    return codPostalNum;
+  }
 
+  public void setCodPostalNum(int codPostalNum) {
+    this.codPostalNum = codPostalNum;
+  }
 }

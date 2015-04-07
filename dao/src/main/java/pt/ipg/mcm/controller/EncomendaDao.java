@@ -5,13 +5,17 @@ import pt.ipg.mcm.entities.EncomendaProdutoEntity;
 import pt.ipg.mcm.entities.VEncomendasLoginEntity;
 import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
+import pt.ipg.mcm.xmodel.PostEncomendaDetalhe;
+import pt.ipg.mcm.xmodel.PostEncomenda;
+import pt.ipg.mcm.xmodel.ResPostMinhasEncomendas;
+import pt.ipg.mcm.xmodel.ResPostMinhasEncomendasDetalhe;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
-import javax.enterprise.inject.Decorated;
 import javax.sql.DataSource;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,9 +25,6 @@ import java.util.List;
 
 @Stateless
 public class EncomendaDao {
-
-  @Decorated
-  private EncomendaDao encomendaDao;
 
   @Resource(lookup = "jdbc/mestrado")
   private DataSource mestradoDataSource;
@@ -40,6 +41,7 @@ public class EncomendaDao {
     }
   }
 
+  @Deprecated
   public List<Long> inserirEncomendas(List<EncomendaEntity> encomendaEntityList, String login) throws MestradoException {
 
     try {
@@ -55,6 +57,60 @@ public class EncomendaDao {
     }
   }
 
+  public ResPostMinhasEncomendas postEncomendas(List<PostEncomenda> postEncomendaList, String login) throws MestradoException {
+    ResPostMinhasEncomendas resPostMinhasEncomendas = new ResPostMinhasEncomendas();
+    try {
+      Connection connection = mestradoDataSource.getConnection();
+      for (PostEncomenda postEncomenda : postEncomendaList) {
+        ResPostMinhasEncomendasDetalhe res = addEncomenda(postEncomenda, login, connection, null);
+        res.setClientId(postEncomenda.getClientId());
+        resPostMinhasEncomendas.getResPostMinhasEncomendasDetalhes().add(res);
+      }
+      return resPostMinhasEncomendas;
+    } catch (SQLException e) {
+      throw new MestradoException(Erro.TECNICO);
+    }
+  }
+
+  private ResPostMinhasEncomendasDetalhe addEncomenda(PostEncomenda postEncomenda, String login, Connection connection, Long
+      encomendaAssociada) throws MestradoException {
+    ResPostMinhasEncomendasDetalhe resPostMinhasEncomendasDetalhe = new ResPostMinhasEncomendasDetalhe();
+
+    try {
+      CallableStatement call = connection.prepareCall("{CALL P_ADD_ENCOMENDA(?,?,?,?,?)}");
+      call.setString(1, login);
+      call.setDate(2, new Date(postEncomenda.getDataEntrega().getTime()));
+      call.registerOutParameter(3, Types.NUMERIC);
+      call.registerOutParameter(4, Types.NUMERIC);
+      call.setNull(5, Types.NUMERIC);
+      if (encomendaAssociada != null) {
+        call.setLong(5, encomendaAssociada);
+      } else {
+        call.setNull(5, Types.NUMERIC);
+      }
+
+      call.execute();
+
+      resPostMinhasEncomendasDetalhe.setServerId(call.getLong(3));
+
+
+      for (PostEncomendaDetalhe postEncomendaDetalhe : postEncomenda.getProdutosEncomendados()) {
+        call = connection.prepareCall("{CALL P_ADD_PRODUTO_ENCOMENDA(?,?,?)}");
+
+        call.setLong(1, postEncomendaDetalhe.getQuantidade());
+        call.setLong(2, resPostMinhasEncomendasDetalhe.getServerId());
+        call.setLong(3, postEncomendaDetalhe.getIdProduto());
+
+        call.execute();
+      }
+      return resPostMinhasEncomendasDetalhe;
+    } catch (SQLException e) {
+      throw new MestradoException(Erro.TECNICO);
+    }
+
+  }
+
+  @Deprecated
   private void addEncomenda(EncomendaEntity encomendaEntity, String login, Connection connection) throws SQLException {
     CallableStatement call = connection.prepareCall("{CALL P_ADD_ENCOMENDA(?,?,?,?,?)}");
     EncomendaEntity encomendaAssociada = encomendaEntity.getEncomendaAssociada();

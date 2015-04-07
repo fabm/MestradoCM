@@ -13,7 +13,7 @@
         <module>xmodel</module>
         <module>services</module>
         <module>app</module>
-        <module>ws-client-tests</module>
+        <module>rest-client</module>
         <module>pmodel</module>
         <module>common</module>
     </modules>

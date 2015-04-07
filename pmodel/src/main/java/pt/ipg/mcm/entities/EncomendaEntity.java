@@ -13,7 +13,7 @@ public class EncomendaEntity {
   private long sync;
   private long fatura;
   private Estado estado;
-  private BigDecimal perco;
+  private int preco;
   private ClienteEntity clienteEntity;
   private List<EncomendaProdutoEntity> encomendaProdutoEntityList;
   private List<EncomendaEntity> encomendasAssociadas;
@@ -99,12 +99,12 @@ public class EncomendaEntity {
     this.clienteEntity = clienteEntity;
   }
 
-  public BigDecimal getPerco() {
-    return perco;
+  public int getPreco() {
+    return preco;
   }
 
-  public void setPreco(BigDecimal perco) {
-    this.perco = perco;
+  public void setPreco(int perco) {
+    this.preco = perco;
   }
 
   public void setDataCriacao(Date dataCriacao) {

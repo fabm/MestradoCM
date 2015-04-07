@@ -23,4 +23,18 @@ public class LocalidadeRService {
     return Response.ok(localidadeService.getAllLocalidades()).build();
   }
 
+  @GET
+  @Path("/filtro/{pagina}/{filtro}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response comFiltro(@PathParam("pagina") int pagina, @PathParam("filtro") String filtro) {
+    return Response.ok(localidadeService.getLocalidadesComFiltroEPagina(filtro, pagina)).build();
+  }
+
+  @GET
+  @Path("/filtro/{pagina}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response comFiltro(@PathParam("pagina") int pagina) {
+    return Response.ok(localidadeService.getLocalidadesComPagina(pagina)).build();
+  }
+
 }

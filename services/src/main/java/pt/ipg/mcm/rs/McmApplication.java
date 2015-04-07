@@ -5,8 +5,10 @@ import pt.ipg.mcm.rs.services.ClienteRService;
 import pt.ipg.mcm.rs.services.DeleteSyncRService;
 import pt.ipg.mcm.rs.services.EncomendaRService;
 import pt.ipg.mcm.rs.services.AuthenticationRService;
+import pt.ipg.mcm.rs.services.IterfacesTest;
 import pt.ipg.mcm.rs.services.LocalidadeRService;
 import pt.ipg.mcm.rs.services.ProdutoRService;
+import pt.ipg.mcm.rs.services.UtilizadorRService;
 import pt.ipg.mcm.services.ClienteService;
 
 import javax.annotation.ManagedBean;
@@ -27,6 +29,8 @@ public class McmApplication extends Application {
     classes.add(DeleteSyncRService.class);
     classes.add(ClienteRService.class);
     classes.add(LocalidadeRService.class);
+    classes.add(UtilizadorRService.class);
+    classes.add(IterfacesTest.class);
     return classes;
   }
 }
