@@ -5,7 +5,7 @@ import pt.ipg.mcm.entities.LocalidadeEntity;
 import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.xmodel.Localidade;
 import pt.ipg.mcm.xmodel.ResGetAllLocalidades;
-import pt.ipg.mcm.xmodel.Retorno;
+import pt.ipg.mcm.xmodel.RetornoSoap;
 
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
@@ -39,7 +39,7 @@ public class LocalidadeService {
       }
       return resGetAllLocalidades;
     } catch (MestradoException e) {
-      resGetAllLocalidades.setRetorno(new Retorno(e));
+      resGetAllLocalidades.setRetorno(new RetornoSoap(e));
       return resGetAllLocalidades;
     }
   }
@@ -60,7 +60,7 @@ public class LocalidadeService {
       }
       return resGetAllLocalidades;
     } catch (MestradoException e) {
-      resGetAllLocalidades.setRetorno(new Retorno(e));
+      resGetAllLocalidades.setRetorno(new RetornoSoap(e));
       return resGetAllLocalidades;
     }
   }
@@ -79,7 +79,7 @@ public class LocalidadeService {
       }
       return resGetAllLocalidades;
     } catch (MestradoException e) {
-      resGetAllLocalidades.setRetorno(new Retorno(e));
+      resGetAllLocalidades.setRetorno(new RetornoSoap(e));
       return resGetAllLocalidades;
     }
   }

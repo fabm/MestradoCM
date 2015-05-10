@@ -17,7 +17,7 @@ public class ResGetAllLocalidades {
     private List<Localidade> localidades;
 
     @XmlElement(required = true)
-    private Retorno retorno;
+    private RetornoSoap retorno;
 
     public List<Localidade> getLocalidades() {
         if (localidades == null){
@@ -27,11 +27,11 @@ public class ResGetAllLocalidades {
     }
 
 
-    public Retorno getRetorno() {
+    public RetornoSoap getRetorno() {
         return retorno;
     }
 
-    public void setRetorno(Retorno retorno) {
+    public void setRetorno(RetornoSoap retorno) {
         this.retorno = retorno;
     }
 }

@@ -5,10 +5,14 @@ import pt.ipg.mcm.entities.EncomendaProdutoEntity;
 import pt.ipg.mcm.entities.VEncomendasLoginEntity;
 import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
-import pt.ipg.mcm.xmodel.PostEncomendaDetalhe;
-import pt.ipg.mcm.xmodel.PostEncomenda;
-import pt.ipg.mcm.xmodel.ResPostMinhasEncomendas;
-import pt.ipg.mcm.xmodel.ResPostMinhasEncomendasDetalhe;
+import pt.ipg.mcm.xmodel.EncomendaDetalheXml;
+import pt.ipg.mcm.xmodel.ProdutoEncomendadoComPreco;
+import pt.ipg.mcm.xmodel.ResMinhasEncomendas;
+import pt.ipg.mcm.xmodel.ResMinhasEncomendasDetalhe;
+import pt.ipg.mcm.xmodel.encomendas.ProdutoSoapIn;
+import pt.ipg.mcm.xmodel.encomendas.EncomendaSoapIn;
+import pt.ipg.mcm.xmodel.encomendas.XOutEncomendas;
+import pt.ipg.mcm.xmodel.encomendas.XOutEncomenda;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
@@ -57,29 +61,29 @@ public class EncomendaDao {
     }
   }
 
-  public ResPostMinhasEncomendas postEncomendas(List<PostEncomenda> postEncomendaList, String login) throws MestradoException {
-    ResPostMinhasEncomendas resPostMinhasEncomendas = new ResPostMinhasEncomendas();
+  public XOutEncomendas postEncomendas(List<EncomendaSoapIn> EncomendaSoapInList, String login) throws MestradoException {
+    XOutEncomendas XOutEncomendas = new XOutEncomendas();
     try {
       Connection connection = mestradoDataSource.getConnection();
-      for (PostEncomenda postEncomenda : postEncomendaList) {
-        ResPostMinhasEncomendasDetalhe res = addEncomenda(postEncomenda, login, connection, null);
-        res.setClientId(postEncomenda.getClientId());
-        resPostMinhasEncomendas.getResPostMinhasEncomendasDetalhes().add(res);
+      for (EncomendaSoapIn EncomendaSoapIn : EncomendaSoapInList) {
+        XOutEncomenda res = addEncomenda(EncomendaSoapIn, login, connection, null);
+        res.setClientId(EncomendaSoapIn.getClientId());
+        XOutEncomendas.getXOutEncomendas().add(res);
       }
-      return resPostMinhasEncomendas;
+      return XOutEncomendas;
     } catch (SQLException e) {
       throw new MestradoException(Erro.TECNICO);
     }
   }
 
-  private ResPostMinhasEncomendasDetalhe addEncomenda(PostEncomenda postEncomenda, String login, Connection connection, Long
+  private XOutEncomenda addEncomenda(EncomendaSoapIn encomendaSoapIn, String login, Connection connection, Long
       encomendaAssociada) throws MestradoException {
-    ResPostMinhasEncomendasDetalhe resPostMinhasEncomendasDetalhe = new ResPostMinhasEncomendasDetalhe();
+    XOutEncomenda xOutEncomenda = new XOutEncomenda();
 
     try {
       CallableStatement call = connection.prepareCall("{CALL P_ADD_ENCOMENDA(?,?,?,?,?)}");
       call.setString(1, login);
-      call.setDate(2, new Date(postEncomenda.getDataEntrega().getTime()));
+      call.setDate(2, new Date(encomendaSoapIn.getDataEntrega().getTime()));
       call.registerOutParameter(3, Types.NUMERIC);
       call.registerOutParameter(4, Types.NUMERIC);
       call.setNull(5, Types.NUMERIC);
@@ -91,19 +95,19 @@ public class EncomendaDao {
 
       call.execute();
 
-      resPostMinhasEncomendasDetalhe.setServerId(call.getLong(3));
+      xOutEncomenda.setServerId(call.getLong(3));
 
 
-      for (PostEncomendaDetalhe postEncomendaDetalhe : postEncomenda.getProdutosEncomendados()) {
+      for (ProdutoSoapIn produtoSoapIn : encomendaSoapIn.getXInProdutos()) {
         call = connection.prepareCall("{CALL P_ADD_PRODUTO_ENCOMENDA(?,?,?)}");
 
-        call.setLong(1, postEncomendaDetalhe.getQuantidade());
-        call.setLong(2, resPostMinhasEncomendasDetalhe.getServerId());
-        call.setLong(3, postEncomendaDetalhe.getIdProduto());
+        call.setLong(1, produtoSoapIn.getQuantidade());
+        call.setLong(2, xOutEncomenda.getServerId());
+        call.setLong(3, produtoSoapIn.getIdProduto());
 
         call.execute();
       }
-      return resPostMinhasEncomendasDetalhe;
+      return xOutEncomenda;
     } catch (SQLException e) {
       throw new MestradoException(Erro.TECNICO);
     }
@@ -181,10 +185,12 @@ public class EncomendaDao {
   }
 
 
-  public List<EncomendaEntity> getMinhasEncomendasSync(String login, long idSync) throws MestradoException {
+
+
+  public ResMinhasEncomendasDetalhe getMinhasEncomendasSync(String login, long idSync) throws MestradoException {
     try {
       Connection connection = mestradoDataSource.getConnection();
-      PreparedStatement ps = connection.prepareStatement("SELECT ID_ENCOMENDA, DATA_CRIACAO, ESTADO, OBSERVACOES from V_ENCOMENDAS_CLIENTE\n" +
+      PreparedStatement ps = connection.prepareStatement("SELECT ID_ENCOMENDA, DATA_CRIACAO, ESTADO, OBSERVACOES,DATA_ENTREGA, SYNC from V_ENCOMENDAS_CLIENTE\n" +
           "WHERE LOGIN = ? and SYNC > ? ");
 
       ps.setString(1, login);
@@ -192,22 +198,28 @@ public class EncomendaDao {
 
       ResultSet rs = ps.executeQuery();
 
-      List<EncomendaEntity> listaEncomendas = new ArrayList<EncomendaEntity>();
+      List<EncomendaDetalheXml> minhasEncomendasDetalheXmls = new ArrayList<>();
       while (rs.next()) {
-        EncomendaEntity encomenda = new EncomendaEntity();
-        long idEncomenda = rs.getLong(1);
-        encomenda.setIdEncomenda(idEncomenda);
-        encomenda.setDataCriacao(rs.getTimestamp(2));
-        encomenda.setEstado(EncomendaEntity.Estado.getByNumber(rs.getInt(3)));
-        encomenda.setObservacoes(rs.getString(4));
+        EncomendaDetalheXml encomendaDetalheXml = new EncomendaDetalheXml();
+        encomendaDetalheXml.setId(rs.getLong(1));
+        encomendaDetalheXml.setDataCriacao(rs.getTimestamp(2));
+        encomendaDetalheXml.setEstado(rs.getInt(3));
+        encomendaDetalheXml.setObservacoes(rs.getString(4));
+        encomendaDetalheXml.setDataEntrega(rs.getTimestamp(5));
+        idSync = Math.max(idSync,rs.getLong(6));
 
-        List<EncomendaProdutoEntity> produtoEncomendadoList = encomenda.getEncomendaProdutoEntityList();
-        for (EncomendaProdutoEntity encomendaProdutoEntity : new ProdutoEncomendadoLoader(connection, idEncomenda)) {
-          produtoEncomendadoList.add(encomendaProdutoEntity);
+        List<ProdutoEncomendadoComPreco> produtoEncomendadoList = new ArrayList<>();
+        encomendaDetalheXml.setProdutosEncomendados(produtoEncomendadoList);
+        for (ProdutoEncomendadoComPreco produtoEncomendadoComPreco : new ProdutoEncomendadoLoader(connection,encomendaDetalheXml.getId())) {
+          produtoEncomendadoList.add(produtoEncomendadoComPreco);
         }
-        listaEncomendas.add(encomenda);
+
+        minhasEncomendasDetalheXmls.add(encomendaDetalheXml);
       }
-      return listaEncomendas;
+      ResMinhasEncomendasDetalhe resMinhasEncomendasDetalhe = new ResMinhasEncomendasDetalhe();
+      resMinhasEncomendasDetalhe.setListaEncomendasDetalheXmls(minhasEncomendasDetalheXmls);
+      resMinhasEncomendasDetalhe.setMaxSync(idSync);
+      return resMinhasEncomendasDetalhe;
     } catch (SQLException e) {
       throw new MestradoException(Erro.TECNICO);
     }

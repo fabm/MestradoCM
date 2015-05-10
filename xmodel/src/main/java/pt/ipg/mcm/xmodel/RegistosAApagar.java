@@ -7,9 +7,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class RegistosAApagar extends Retorno{
+public class RegistosAApagar extends RetornoSoap {
   public RegistosAApagar() {
   }
+  private List<RegistoAApagar> registoAApagarList;
 
   public RegistosAApagar(MestradoException e) {
     super(e);
@@ -18,8 +19,6 @@ public class RegistosAApagar extends Retorno{
   public RegistosAApagar(List<RegistoAApagar> registoAApagarList) {
     this.registoAApagarList = registoAApagarList;
   }
-
-  private List<RegistoAApagar> registoAApagarList;
 
   public List<RegistoAApagar> getRegistoAApagarList() {
     return registoAApagarList;

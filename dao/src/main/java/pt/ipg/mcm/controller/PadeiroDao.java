@@ -5,7 +5,7 @@ import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.xmodel.ReqAddPadeiro;
 import pt.ipg.mcm.xmodel.ResAddPadeiro;
-import pt.ipg.mcm.xmodel.Retorno;
+import pt.ipg.mcm.xmodel.RetornoSoap;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
@@ -39,12 +39,12 @@ public class PadeiroDao {
       resAddPadeiro = new ResAddPadeiro();
 
       resAddPadeiro.setId(call.getLong(3));
-      resAddPadeiro.setRetorno(new Retorno(1, "Padeiro inserido com sucesso"));
+      resAddPadeiro.setRetorno(new RetornoSoap(1, "Padeiro inserido com sucesso"));
       return resAddPadeiro;
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, "sql problem", e);
       resAddPadeiro = new ResAddPadeiro();
-      resAddPadeiro.setRetorno(new Retorno(new MestradoException(Erro.TECNICO)));
+      resAddPadeiro.setRetorno(new RetornoSoap(new MestradoException(Erro.TECNICO)));
       return resAddPadeiro;
     }
 

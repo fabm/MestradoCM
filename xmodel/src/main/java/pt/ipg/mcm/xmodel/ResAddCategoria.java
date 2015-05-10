@@ -15,7 +15,7 @@ public class ResAddCategoria {
   private Long id;
 
   @XmlElement(required = true)
-  private Retorno retorno;
+  private RetornoSoap retorno;
 
   public long getId() {
     return id;
@@ -25,11 +25,11 @@ public class ResAddCategoria {
     this.id = value;
   }
 
-  public Retorno getRetorno() {
+  public RetornoSoap getRetorno() {
     return retorno;
   }
 
-  public void setRetorno(Retorno retorno) {
+  public void setRetorno(RetornoSoap retorno) {
     this.retorno = retorno;
   }
 

@@ -5,11 +5,9 @@ import javax.validation.ConstraintValidatorContext;
 
 public class NotEmptyValidator implements ConstraintValidator<NotEmpty, String> {
 
-  @Override
   public void initialize(NotEmpty notEmpty) {
   }
 
-  @Override
   public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
     if (s == null) {
       return false;

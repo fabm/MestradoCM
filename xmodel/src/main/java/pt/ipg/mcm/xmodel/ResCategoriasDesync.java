@@ -15,7 +15,7 @@ public class ResCategoriasDesync {
 
   private long maxVersao;
 
-  private Retorno retorno;
+  private RetornoSoap retorno;
 
   public List<Categoria> getCategorias() {
     if (categorias == null) {
@@ -32,11 +32,11 @@ public class ResCategoriasDesync {
     this.maxVersao = maxVersao;
   }
 
-  public Retorno getRetorno() {
+  public RetornoSoap getRetorno() {
     return retorno;
   }
 
-  public void setRetorno(Retorno retorno) {
+  public void setRetorno(RetornoSoap retorno) {
     this.retorno = retorno;
   }
 }

@@ -5,7 +5,7 @@ import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.validacao.Validacao;
 import pt.ipg.mcm.xmodel.ReqAddPadeiro;
 import pt.ipg.mcm.xmodel.ResAddPadeiro;
-import pt.ipg.mcm.xmodel.Retorno;
+import pt.ipg.mcm.xmodel.RetornoSoap;
 
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
@@ -30,7 +30,7 @@ public class PadeiroService {
       return padeiroDao.addPadeiro(reqAddPadeiro);
     } catch (MestradoException e) {
       ResAddPadeiro resAddPadeiro = new ResAddPadeiro();
-      resAddPadeiro.setRetorno(new Retorno(e));
+      resAddPadeiro.setRetorno(new RetornoSoap(e));
       return resAddPadeiro;
     }
   }

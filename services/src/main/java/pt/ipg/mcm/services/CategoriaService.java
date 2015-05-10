@@ -11,7 +11,7 @@ import pt.ipg.mcm.xmodel.ResAddCategoria;
 import pt.ipg.mcm.xmodel.ResCategoriasDesync;
 import pt.ipg.mcm.xmodel.ResGetAllCategorias;
 import pt.ipg.mcm.xmodel.ResGetCategoria;
-import pt.ipg.mcm.xmodel.Retorno;
+import pt.ipg.mcm.xmodel.RetornoSoap;
 
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
@@ -43,11 +43,11 @@ public class CategoriaService {
       categoriaEntity.setDescricao(reqAddCategoria.getDescricao());
       categoriaEntity.setNome(reqAddCategoria.getNome());
       categoriaDao.addCategoria(categoriaEntity);
-      resAddCategoria.setRetorno(new Retorno(1, "Categoria inserida com sucesso"));
+      resAddCategoria.setRetorno(new RetornoSoap(1, "Categoria inserida com sucesso"));
     } catch (MestradoException e) {
-      resAddCategoria.setRetorno(new Retorno(e));
+      resAddCategoria.setRetorno(new RetornoSoap(e));
     } catch (SQLException e) {
-      resAddCategoria.setRetorno(new Retorno(new MestradoException(Erro.TECNICO)));
+      resAddCategoria.setRetorno(new RetornoSoap(new MestradoException(Erro.TECNICO)));
     }
     return resAddCategoria;
   }
@@ -71,7 +71,7 @@ public class CategoriaService {
       }
       return resGetAllCategorias;
     } catch (MestradoException e) {
-      resGetAllCategorias.setRetorno(new Retorno(e));
+      resGetAllCategorias.setRetorno(new RetornoSoap(e));
       return resGetAllCategorias;
     }
   }
@@ -93,7 +93,7 @@ public class CategoriaService {
       resCategoriasDesync.setMaxVersao(maxVersao);
       return resCategoriasDesync;
     } catch (MestradoException e) {
-      resCategoriasDesync.setRetorno(new Retorno(e));
+      resCategoriasDesync.setRetorno(new RetornoSoap(e));
     }
     return resCategoriasDesync;
   }
@@ -107,24 +107,13 @@ public class CategoriaService {
       resGetcategoria.setNome(categoriaEntity.getNome());
       resGetcategoria.setDescricao(categoriaEntity.getDescricao());
 
-
       return resGetcategoria;
 
     } catch (MestradoException e) {
       ResGetCategoria resGetCategoria = new ResGetCategoria();
-      resGetCategoria.setRetorno(new Retorno(e));
+      resGetCategoria.setRetorno(new RetornoSoap(e));
       return resGetCategoria;
     }
-
-
-    }
-
-
-
-
-
-
-
-
+  }
 
 }

@@ -7,8 +7,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ResMinhasEncomendasDetalhe extends Retorno{
+public class ResMinhasEncomendasDetalhe extends RetornoSoap {
   private List<EncomendaDetalheXml> listaEncomendasDetalheXmls;
+  private long maxSync;
 
   public ResMinhasEncomendasDetalhe() {
     super();
@@ -24,5 +25,13 @@ public class ResMinhasEncomendasDetalhe extends Retorno{
 
   public void setListaEncomendasDetalheXmls(List<EncomendaDetalheXml> listaEncomendasDetalheXmls) {
     this.listaEncomendasDetalheXmls = listaEncomendasDetalheXmls;
+  }
+
+  public long getMaxSync() {
+    return maxSync;
+  }
+
+  public void setMaxSync(long maxSync) {
+    this.maxSync = maxSync;
   }
 }

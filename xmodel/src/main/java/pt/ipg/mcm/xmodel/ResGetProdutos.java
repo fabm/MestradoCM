@@ -6,10 +6,10 @@ import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ResGetProdutos {
-  private Retorno retorno;
+  private RetornoSoap retorno;
   private Long versaoMax;
 
-  public ResGetProdutos(Retorno retorno) {
+  public ResGetProdutos(RetornoSoap retorno) {
     this.retorno = retorno;
   }
 
@@ -34,11 +34,11 @@ public class ResGetProdutos {
     this.resGetProdutos = produtoXmls;
   }
 
-  public Retorno getRetorno() {
+  public RetornoSoap getRetorno() {
     return retorno;
   }
 
-  public void setRetorno(Retorno retorno) {
+  public void setRetorno(RetornoSoap retorno) {
     this.retorno = retorno;
   }
 }

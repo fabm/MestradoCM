@@ -2,15 +2,13 @@ package pt.ipg.mcm.controller;
 
 import pt.ipg.mcm.controller.ps.PsAddUtilizadorCliente;
 import pt.ipg.mcm.entities.ClienteEntity;
-import pt.ipg.mcm.entities.VUtilizadorClienteEntity;
 import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.xmodel.ReqAddCliente;
 import pt.ipg.mcm.xmodel.ReqGetCliente;
 import pt.ipg.mcm.xmodel.ResAddCliente;
-import pt.ipg.mcm.xmodel.ResAddClienteUtilizador;
 import pt.ipg.mcm.xmodel.ResGetCliente;
-import pt.ipg.mcm.xmodel.Retorno;
+import pt.ipg.mcm.xmodel.RetornoSoap;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
@@ -22,8 +20,6 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Stateless
 public class ClienteDao {
@@ -79,7 +75,7 @@ public class ClienteDao {
 
       clienteResponseType.setId(call.getLong(9));
 
-      clienteResponseType.setRetorno(new Retorno(1, "Cliente inserido com sucesso"));
+      clienteResponseType.setRetorno(new RetornoSoap(1, "Cliente inserido com sucesso"));
       return clienteResponseType;
     }catch (SQLException e){
       throw new MestradoException(Erro.TECNICO);

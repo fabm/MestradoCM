@@ -9,20 +9,18 @@ import pt.ipg.mcm.entities.VEncomendasLoginEntity;
 import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.services.authorization.Role;
 import pt.ipg.mcm.services.authorization.SecureService;
-import pt.ipg.mcm.xmodel.EncomendaDetalheXml;
 import pt.ipg.mcm.xmodel.EncomendaXmlSemPreco;
 import pt.ipg.mcm.xmodel.MinhaEncomenda;
 import pt.ipg.mcm.xmodel.ProdutoEncomendado;
-import pt.ipg.mcm.xmodel.ProdutoEncomendadoComPreco;
 import pt.ipg.mcm.xmodel.ReqAddEncomenda;
 import pt.ipg.mcm.xmodel.ReqAddEncomendas;
-import pt.ipg.mcm.xmodel.PostEncomenda;
 import pt.ipg.mcm.xmodel.ResAddEncomenda;
 import pt.ipg.mcm.xmodel.ResAddEncomendas;
 import pt.ipg.mcm.xmodel.ResMinhasEncomendas;
 import pt.ipg.mcm.xmodel.ResMinhasEncomendasDetalhe;
-import pt.ipg.mcm.xmodel.ResPostMinhasEncomendas;
-import pt.ipg.mcm.xmodel.Retorno;
+import pt.ipg.mcm.xmodel.RetornoSoap;
+import pt.ipg.mcm.xmodel.encomendas.XInEncomendas;
+import pt.ipg.mcm.xmodel.encomendas.XOutEncomendas;
 
 import javax.annotation.Resource;
 import javax.ejb.EJB;
@@ -73,9 +71,9 @@ public class EncomendaService extends SecureService {
 
     try {
       encomendaDao.inserirEncomenda(encomendaEntity, login);
-      return new ResAddEncomenda(encomendaEntity.getIdEncomenda(), new Retorno(1, "Encomenda inserida com sucesso"));
+      return new ResAddEncomenda(encomendaEntity.getIdEncomenda(), new RetornoSoap(1, "Encomenda inserida com sucesso"));
     } catch (MestradoException e) {
-      return new ResAddEncomenda(new Retorno(e));
+      return new ResAddEncomenda(new RetornoSoap(e));
     }
   }
 
@@ -154,33 +152,9 @@ public class EncomendaService extends SecureService {
     setWsc(webServiceContext);
     checkAuthorization(Role.CLIENTE);
     String login = getSecurityCommon().getUserPrincipal().getName();
-    ResMinhasEncomendasDetalhe resMinhasEncomendas = new ResMinhasEncomendasDetalhe();
 
-    List<EncomendaDetalheXml> minhasEncomendasDetalheXmls = new ArrayList<EncomendaDetalheXml>();
     try {
-      for (EncomendaEntity encomendaEntity : encomendaDao.getMinhasEncomendasSync(login, id)) {
-        EncomendaDetalheXml encomendaDetalheXml = new EncomendaDetalheXml();
-        encomendaDetalheXml.setObservacoes(encomendaEntity.getObservacoes());
-        encomendaDetalheXml.setDataCriacao(encomendaEntity.getDataCriacao());
-        encomendaDetalheXml.setDataEntrega(encomendaEntity.getDataEntrega());
-        if (encomendaEntity.getEstado() != null) {
-          encomendaDetalheXml.setEstado(encomendaEntity.getEstado().getNumEstado());
-        }
-        encomendaDetalheXml.setId(encomendaEntity.getIdEncomenda());
-        List<ProdutoEncomendadoComPreco> produtoEncomendadoList = new ArrayList<ProdutoEncomendadoComPreco>();
-        for (EncomendaProdutoEntity encomendaProdutoEntity : encomendaEntity.getEncomendaProdutoEntityList()) {
-          ProdutoEncomendadoComPreco produtoEncomendado = new ProdutoEncomendadoComPreco();
-          produtoEncomendado.setIdProduto(encomendaProdutoEntity.getProduto().getIdProduto());
-          produtoEncomendado.setQuantidade(encomendaProdutoEntity.getQuantidade());
-          produtoEncomendado.setPreco(encomendaProdutoEntity.getProduto().getPrecoAtual());
-          produtoEncomendadoList.add(produtoEncomendado);
-        }
-        encomendaDetalheXml.setProdutosEncomendados(produtoEncomendadoList);
-        minhasEncomendasDetalheXmls.add(encomendaDetalheXml);
-
-      }
-      resMinhasEncomendas.setListaEncomendasDetalheXmls(minhasEncomendasDetalheXmls);
-      return resMinhasEncomendas;
+      return encomendaDao.getMinhasEncomendasSync(login, id);
     } catch (MestradoException e) {
       return new ResMinhasEncomendasDetalhe(e);
     }
@@ -188,8 +162,15 @@ public class EncomendaService extends SecureService {
   }
 
   @WebMethod
-  public ResPostMinhasEncomendas postEncomendas(List<PostEncomenda> postEncomendaList, String login) throws MestradoException{
-    return encomendaDao.postEncomendas(postEncomendaList, login);
+  public XOutEncomendas postEncomendas(XInEncomendas xInEncomendas) throws LoginException {
+    setWsc(webServiceContext);
+    checkAuthorization(Role.CLIENTE);
+    String login = getSecurityCommon().getUserPrincipal().getName();
+    try {
+      return encomendaDao.postEncomendas(xInEncomendas.getEncomendaSoapIns(), login);
+    } catch (MestradoException e) {
+      return new XOutEncomendas(e);
+    }
   }
 
 }

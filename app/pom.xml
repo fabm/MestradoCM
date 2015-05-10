@@ -32,13 +32,52 @@
                     </modules>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>deploy automatico</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.4.0</version>
+                        <executions>
+                            <execution>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <workingDirectory>/Users/francisco/Documents/glassfish4/glassfish/bin</workingDirectory>
+                            <executable>./asadmin</executable>
+                            <arguments>
+                                <argument>deploy</argument>
+                                <argument>--force=true</argument>
+                                <argument>${project.basedir}/target/app-${project.version}.ear</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <dependencies>
         <dependency>
             <groupId>MestradoCM</groupId>
             <artifactId>services</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>MestradoCM</groupId>
+            <artifactId>web</artifactId>
             <version>1.0-SNAPSHOT</version>
             <type>war</type>
         </dependency>

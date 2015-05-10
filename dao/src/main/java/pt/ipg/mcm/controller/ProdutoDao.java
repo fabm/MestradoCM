@@ -6,7 +6,7 @@ import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.xmodel.ReqAddProduto;
 import pt.ipg.mcm.xmodel.ResAddProduto;
-import pt.ipg.mcm.xmodel.Retorno;
+import pt.ipg.mcm.xmodel.RetornoSoap;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
@@ -54,7 +54,7 @@ public class ProdutoDao {
       throw new MestradoException(Erro.TECNICO);
     }
 
-    resAddProduto.setRetorno(new Retorno(1, "Produto inserido com sucesso"));
+    resAddProduto.setRetorno(new RetornoSoap(1, "Produto inserido com sucesso"));
 
     return resAddProduto;
   }

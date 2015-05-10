@@ -10,12 +10,12 @@ public class ResAddPadeiro {
 
   private Long id;
 
-  private Retorno retorno;
+  private RetornoSoap retorno;
 
   public ResAddPadeiro() {
   }
 
-  public ResAddPadeiro(Retorno retorno) {
+  public ResAddPadeiro(RetornoSoap retorno) {
     this.retorno = retorno;
   }
 
@@ -27,11 +27,11 @@ public class ResAddPadeiro {
     this.id = id;
   }
 
-  public Retorno getRetorno() {
+  public RetornoSoap getRetorno() {
     return retorno;
   }
 
-  public void setRetorno(Retorno retorno) {
+  public void setRetorno(RetornoSoap retorno) {
     this.retorno = retorno;
   }
 }

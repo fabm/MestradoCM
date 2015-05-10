@@ -48,4 +48,5 @@ public class SchemaTest {
       XMLSerializer serializer = new XMLSerializer( System.out, format );
       serializer.serialize( doc );
   }
+
 }

@@ -17,6 +17,46 @@ public class UserClienteCreationRequest {
   private String login;
   private String password;
 
+  public void setContribuinte(Long contribuinte) {
+    this.contribuinte = contribuinte;
+  }
+
+  public void setNome(String nome) {
+    this.nome = nome;
+  }
+
+  public void setMorada(String morada) {
+    this.morada = morada;
+  }
+
+  public void setPorta(String porta) {
+    this.porta = porta;
+  }
+
+  public void setDataNascimento(Date dataNascimento) {
+    this.dataNascimento = dataNascimento;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public void setContacto(String contacto) {
+    this.contacto = contacto;
+  }
+
+  public void setLocalidade(Integer localidade) {
+    this.localidade = localidade;
+  }
+
+  public void setLogin(String login) {
+    this.login = login;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
   public Long getContribuinte() {
     return contribuinte;
   }

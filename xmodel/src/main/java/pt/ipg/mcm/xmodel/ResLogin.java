@@ -12,13 +12,13 @@ import javax.xml.bind.annotation.XmlType;
 public class ResLogin {
 
     @XmlElement(required = true)
-    private Retorno retorno;
+    private RetornoSoap retorno;
 
-    public Retorno getRetorno() {
+    public RetornoSoap getRetorno() {
         return retorno;
     }
 
-    public void setRetorno(Retorno retorno) {
+    public void setRetorno(RetornoSoap retorno) {
         this.retorno = retorno;
     }
 }

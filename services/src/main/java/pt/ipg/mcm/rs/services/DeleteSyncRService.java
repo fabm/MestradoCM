@@ -1,5 +1,7 @@
 package pt.ipg.mcm.rs.services;
 
+import pt.ipg.mcm.calls.client.model.delete.GetRegistosAApagarRest;
+import pt.ipg.mcm.rs.conversors.deleted.GetRegistosAApagarSoap2Rest;
 import pt.ipg.mcm.services.SyncDeleteService;
 
 import javax.inject.Inject;
@@ -19,8 +21,9 @@ public class DeleteSyncRService {
   @GET
   @Path("/desync/{desync}")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response desync(@PathParam(value = "desync") long sincId) {
-    return Response.ok(syncDeleteService.getRegistosAApagar(sincId)).build();
+  public Response desync(@PathParam(value = "desync") long syncId) {
+    final GetRegistosAApagarRest response = new GetRegistosAApagarSoap2Rest(syncDeleteService.getRegistosAApagar(syncId)).converted();
+    return Response.ok(response).build();
   }
 
 

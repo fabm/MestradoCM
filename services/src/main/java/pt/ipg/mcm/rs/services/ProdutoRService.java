@@ -1,5 +1,6 @@
 package pt.ipg.mcm.rs.services;
 
+import pt.ipg.mcm.rs.conversors.produto.GetProdutoDesyncXml2Rest;
 import pt.ipg.mcm.services.ProdutoService;
 import pt.ipg.mcm.xmodel.ReqGetProdutosCategorias;
 
@@ -37,8 +38,8 @@ public class ProdutoRService {
   @GET
   @Path("desync/{desync}")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response desync(@PathParam(value = "desync") Long id) {
-    return Response.ok(produtoService.getProdutosDeSync(id)).build();
+  public Response getProdutosDesync(@PathParam(value = "desync") Long id) {
+    return Response.ok(new GetProdutoDesyncXml2Rest(produtoService.getProdutosDeSync(id)).converted()).build();
   }
 
 

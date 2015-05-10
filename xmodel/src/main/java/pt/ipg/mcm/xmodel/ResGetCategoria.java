@@ -1,13 +1,10 @@
 package pt.ipg.mcm.xmodel;
 
-import javax.ejb.Singleton;
-import javax.ejb.Stateless;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.logging.Logger;
 
 /**
  * Created by BrrF on 09-02-2015.
@@ -25,7 +22,7 @@ public class ResGetCategoria {
     private String descricao;
 
     @XmlElement(required = false)
-    private Retorno retorno;
+    private RetornoSoap retorno;
 
     public String getNome() {
         return nome;
@@ -43,11 +40,11 @@ public class ResGetCategoria {
         this.descricao = descricao;
     }
 
-    public Retorno getRetorno() {
+    public RetornoSoap getRetorno() {
         return retorno;
     }
 
-    public void setRetorno(Retorno retorno) {
+    public void setRetorno(RetornoSoap retorno) {
         this.retorno = retorno;
     }
 }

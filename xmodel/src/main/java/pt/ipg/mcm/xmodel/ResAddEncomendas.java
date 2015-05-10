@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ResAddEncomendas extends Retorno{
+public class ResAddEncomendas extends RetornoSoap {
   private List<Long> idsEncomendas;
   public ResAddEncomendas(MestradoException e) {
     super(e);

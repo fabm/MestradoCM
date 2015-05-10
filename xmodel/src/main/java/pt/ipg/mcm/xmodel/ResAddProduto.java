@@ -13,7 +13,7 @@ public class ResAddProduto {
   private long id;
 
   @XmlElement(required = false)
-  private Retorno retorno;
+  private RetornoSoap retorno;
 
   public long getId() {
     return id;
@@ -23,11 +23,11 @@ public class ResAddProduto {
     this.id = value;
   }
 
-  public Retorno getRetorno() {
+  public RetornoSoap getRetorno() {
     return retorno;
   }
 
-  public void setRetorno(Retorno retorno) {
+  public void setRetorno(RetornoSoap retorno) {
     this.retorno = retorno;
   }
 }

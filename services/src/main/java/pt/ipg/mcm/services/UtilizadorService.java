@@ -14,7 +14,7 @@ import pt.ipg.mcm.xmodel.ReqAddUtilizador;
 import pt.ipg.mcm.xmodel.ResAddUtilizador;
 import pt.ipg.mcm.xmodel.ResCreationUserClient;
 import pt.ipg.mcm.xmodel.ResGetUtilizador;
-import pt.ipg.mcm.xmodel.Retorno;
+import pt.ipg.mcm.xmodel.RetornoSoap;
 import pt.ipg.mcm.xmodel.UserClienteCreationRequest;
 
 import javax.inject.Inject;
@@ -53,13 +53,13 @@ public class UtilizadorService extends SecureService {
       utilizadorDao.addUtilizador(utilizadorPadeiroEntity);
 
       ResAddUtilizador resAddUtilizador = new ResAddUtilizador();
-      resAddUtilizador.setRetorno(new Retorno(1, "Padeiro Adicionado Com Sucesso. "));
+      resAddUtilizador.setRetorno(new RetornoSoap(1, "Padeiro Adicionado Com Sucesso. "));
 
       return resAddUtilizador;
 
     } catch (MestradoException e) {
       ResAddUtilizador resAddUtilizador = new ResAddUtilizador();
-      resAddUtilizador.setRetorno(new Retorno(e));
+      resAddUtilizador.setRetorno(new RetornoSoap(e));
       return resAddUtilizador;
     }
 
@@ -72,7 +72,7 @@ public class UtilizadorService extends SecureService {
       PadeiroEntity padeiro = utilizadorDao.getPadeiro(versao);
 
     } catch (MestradoException e) {
-      resGetUtilizador.setRetorno(new Retorno(e));
+      resGetUtilizador.setRetorno(new RetornoSoap(e));
     }
     return resGetUtilizador;
   }

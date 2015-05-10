@@ -23,7 +23,7 @@ public class SyncDeleteService {
   public RegistosAApagar getRegistosAApagar(@WebParam(name = "versao")long versao) {
     try {
       List<SyncDeleteEntity> rowsToDelete = syncDeleteDao.getRowsToDelete(versao);
-      List<RegistoAApagar> registosAApagar = new ArrayList<RegistoAApagar>();
+      List<RegistoAApagar> registosAApagar = new ArrayList<>();
       for (SyncDeleteEntity syncDeleteEntity : rowsToDelete) {
         RegistoAApagar registo = new RegistoAApagar();
         registo.setId(syncDeleteEntity.getIdSync());

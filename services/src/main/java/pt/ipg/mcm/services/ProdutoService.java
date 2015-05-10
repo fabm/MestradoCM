@@ -15,7 +15,7 @@ import pt.ipg.mcm.xmodel.ResAddProduto;
 import pt.ipg.mcm.xmodel.ResGetProduto;
 import pt.ipg.mcm.xmodel.ResGetProdutos;
 import pt.ipg.mcm.xmodel.ResGetProdutosCategorias;
-import pt.ipg.mcm.xmodel.Retorno;
+import pt.ipg.mcm.xmodel.RetornoSoap;
 
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
@@ -34,7 +34,6 @@ public class ProdutoService extends SecureService {
   @EJB
   private ProdutoDao produtoDao;
 
-
   @WebMethod
   public ResAddProduto addProduto(@WebParam(name = "req-add-produto") @XmlElement(required = true) ReqAddProduto reqAddProduto) throws LoginException {
     try {
@@ -45,7 +44,7 @@ public class ProdutoService extends SecureService {
       return produtoDao.addProduto(reqAddProduto);
     } catch (MestradoException e) {
       ResAddProduto resAddProduto = new ResAddProduto();
-      resAddProduto.setRetorno(new Retorno(e));
+      resAddProduto.setRetorno(new RetornoSoap(e));
       return resAddProduto;
     }
   }
@@ -63,7 +62,7 @@ public class ProdutoService extends SecureService {
 
     } catch (MestradoException e) {
       ResGetProduto resGetProduto = new ResGetProduto();
-      resGetProduto.setRetorno(new Retorno(e));
+      resGetProduto.setRetorno(new RetornoSoap(e));
       return resGetProduto;
     }
   }
@@ -71,7 +70,6 @@ public class ProdutoService extends SecureService {
   @WebMethod
   public ResGetProdutosCategorias getProdutosCategorias(@WebParam(name = "req-get-produtos-categorias") @XmlElement(required = true) ReqGetProdutosCategorias
                                                             reqGetProdutosCategorias) {
-
     ResGetProdutosCategorias resGetProdutosCategorias = new ResGetProdutosCategorias();
     try {
       List<ProdutoCategoria> produtosCategorias = resGetProdutosCategorias.getProdutoCategoriaList();
@@ -90,7 +88,7 @@ public class ProdutoService extends SecureService {
       }
     } catch (MestradoException e) {
       resGetProdutosCategorias = new ResGetProdutosCategorias();
-      resGetProdutosCategorias.setRetorno(new Retorno(e));
+      resGetProdutosCategorias.setRetorno(new RetornoSoap(e));
     }
     return resGetProdutosCategorias;
   }
@@ -104,7 +102,7 @@ public class ProdutoService extends SecureService {
     try {
       produtos = produtoDao.getProdutos(versao);
     } catch (MestradoException e) {
-      return new ResGetProdutos(new Retorno(e));
+      return new ResGetProdutos(new RetornoSoap(e));
     }
     List<ProdutoXml> produtoXmlList = new ArrayList<ProdutoXml>();
 
@@ -117,6 +115,7 @@ public class ProdutoService extends SecureService {
       produtoXml.setFoto(produtoEntity.getFoto());
       produtoXml.setId(produtoEntity.getIdProduto());
       versaoMax=Math.max(versaoMax, produtoEntity.getSync());
+      produtoXml.setPrecoUnitario(produtoEntity.getPrecoAtual());
       produtoXmlList.add(produtoXml);
     }
     resGetProdutos.setVersaoMax(versaoMax);

@@ -15,7 +15,7 @@ public class ResGetProdutosCategorias {
   private List<ProdutoCategoria> produtoCategoriaList;
 
   @XmlElement(required = false)
-  private Retorno retorno;
+  private RetornoSoap retorno;
 
   public List<ProdutoCategoria> getProdutoCategoriaList() {
     if (produtoCategoriaList == null) {
@@ -24,11 +24,11 @@ public class ResGetProdutosCategorias {
     return this.produtoCategoriaList;
   }
 
-  public Retorno getRetorno() {
+  public RetornoSoap getRetorno() {
     return retorno;
   }
 
-  public void setRetorno(Retorno retorno) {
+  public void setRetorno(RetornoSoap retorno) {
     this.retorno = retorno;
   }
 }

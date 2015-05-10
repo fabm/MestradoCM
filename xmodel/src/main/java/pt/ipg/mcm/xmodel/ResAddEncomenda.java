@@ -6,17 +6,17 @@ import javax.xml.bind.annotation.XmlAccessorType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ResAddEncomenda {
   private Long idEncomenda;
-  private Retorno retorno;
+  private RetornoSoap retorno;
 
   public ResAddEncomenda() {
   }
 
-  public ResAddEncomenda(Long idEncomenda, Retorno retorno) {
+  public ResAddEncomenda(Long idEncomenda, RetornoSoap retorno) {
     this.idEncomenda = idEncomenda;
     this.retorno = retorno;
   }
 
-  public ResAddEncomenda(Retorno retorno) {
+  public ResAddEncomenda(RetornoSoap retorno) {
     this.retorno = retorno;
   }
 
@@ -28,11 +28,11 @@ public class ResAddEncomenda {
     this.idEncomenda = idEncomenda;
   }
 
-  public Retorno getRetorno() {
+  public RetornoSoap getRetorno() {
     return retorno;
   }
 
-  public void setRetorno(Retorno retorno) {
+  public void setRetorno(RetornoSoap retorno) {
     this.retorno = retorno;
   }
 }

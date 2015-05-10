@@ -1,6 +1,6 @@
 package pt.ipg.mcm.servlets;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import pt.ipg.mcm.controller.ProdutoDao;
 import pt.ipg.mcm.errors.MestradoException;
 
@@ -33,8 +33,8 @@ public class LoadProductImage extends HttpServlet {
       out.close();
     } catch (MestradoException e) {
       resp.setContentType("application/json");
-      Gson gson = new Gson();
-      resp.getWriter().write(gson.toJson(e.toMap()));
+      ObjectMapper objectMapper = new ObjectMapper();
+      resp.getWriter().write(objectMapper.writeValueAsString(e.toMap()));
     }
   }
 }

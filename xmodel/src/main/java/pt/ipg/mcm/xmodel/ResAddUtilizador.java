@@ -15,20 +15,20 @@ import javax.xml.bind.annotation.XmlType;
 public class ResAddUtilizador {
 
     @XmlElement(required = false)
-    private Retorno retorno;
+    private RetornoSoap retorno;
 
     public ResAddUtilizador() {
     }
 
-    public ResAddUtilizador(Retorno retorno) {
+    public ResAddUtilizador(RetornoSoap retorno) {
         this.retorno = retorno;
     }
 
-    public Retorno getRetorno() {
+    public RetornoSoap getRetorno() {
         return retorno;
     }
 
-    public void setRetorno(Retorno retorno) {
+    public void setRetorno(RetornoSoap retorno) {
         this.retorno = retorno;
     }
 }

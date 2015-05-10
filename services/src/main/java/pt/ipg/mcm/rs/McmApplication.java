@@ -1,5 +1,6 @@
 package pt.ipg.mcm.rs;
 
+import org.glassfish.jersey.jackson.JacksonFeature;
 import pt.ipg.mcm.rs.services.CategoriaRService;
 import pt.ipg.mcm.rs.services.ClienteRService;
 import pt.ipg.mcm.rs.services.DeleteSyncRService;
@@ -9,14 +10,14 @@ import pt.ipg.mcm.rs.services.IterfacesTest;
 import pt.ipg.mcm.rs.services.LocalidadeRService;
 import pt.ipg.mcm.rs.services.ProdutoRService;
 import pt.ipg.mcm.rs.services.UtilizadorRService;
-import pt.ipg.mcm.services.ClienteService;
 
 import javax.annotation.ManagedBean;
+import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 import java.util.HashSet;
 import java.util.Set;
 
-@ManagedBean
+@ApplicationPath("/rest")
 public class McmApplication extends Application {
 
   @Override
@@ -31,6 +32,9 @@ public class McmApplication extends Application {
     classes.add(LocalidadeRService.class);
     classes.add(UtilizadorRService.class);
     classes.add(IterfacesTest.class);
+
+    classes.add(JacksonFeature.class);
+    classes.add(MCMJacksonJsonProvider.class);
     return classes;
   }
 }

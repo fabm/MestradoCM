@@ -1,6 +1,6 @@
 package pt.ipg.mcm.servlets;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -36,7 +36,6 @@ public class UploadProductImage extends HttpServlet {
 
     resp.setContentType("application/json");
 
-    Gson gson = new Gson();
 
     try {
       if (!isMultipart) {
@@ -81,7 +80,8 @@ public class UploadProductImage extends HttpServlet {
       }
 
     } catch (MestradoException e) {
-      resp.getWriter().write(gson.toJson(e.toMap()));
+      ObjectMapper objectMapper = new ObjectMapper();
+      resp.getWriter().write(objectMapper.writeValueAsString(e.toMap()));
     }
 
   }

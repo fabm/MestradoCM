@@ -1,11 +1,9 @@
 package pt.ipg.mcm.xmodel;
 
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.math.BigDecimal;
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -13,13 +11,13 @@ import java.math.BigDecimal;
 public class ResGetProduto extends ProdutoXml {
 
   @XmlElement(required = false)
-  private Retorno retorno;
+  private RetornoSoap retorno;
 
-  public Retorno getRetorno() {
+  public RetornoSoap getRetorno() {
     return retorno;
   }
 
-  public void setRetorno(Retorno retorno) {
+  public void setRetorno(RetornoSoap retorno) {
     this.retorno = retorno;
   }
 }

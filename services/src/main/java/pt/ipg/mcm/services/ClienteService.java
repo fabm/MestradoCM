@@ -12,7 +12,7 @@ import pt.ipg.mcm.xmodel.ReqGetCliente;
 import pt.ipg.mcm.xmodel.ResAddCliente;
 import pt.ipg.mcm.xmodel.ResAddClienteUtilizador;
 import pt.ipg.mcm.xmodel.ResGetCliente;
-import pt.ipg.mcm.xmodel.Retorno;
+import pt.ipg.mcm.xmodel.RetornoSoap;
 
 import javax.annotation.Resource;
 import javax.ejb.EJB;
@@ -58,7 +58,7 @@ public class ClienteService extends SecureService {
       return clienteDao.addClient(reqAddCliente);
     } catch (MestradoException e) {
       ResAddCliente resAdCliente = new ResAddCliente();
-      resAdCliente.setRetorno(new Retorno(e));
+      resAdCliente.setRetorno(new RetornoSoap(e));
       return resAdCliente;
     }
   }

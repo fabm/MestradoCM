@@ -1,6 +1,8 @@
 package pt.ipg.mcm.rs.services;
 
 
+import pt.ipg.mcm.calls.client.model.categoria.GetCategoriaDesyncRest;
+import pt.ipg.mcm.rs.conversors.categoria.GetCategoriaDesyncS2R;
 import pt.ipg.mcm.services.CategoriaService;
 import pt.ipg.mcm.xmodel.ReqAddCategoria;
 
@@ -39,7 +41,10 @@ public class CategoriaRService {
   @Path("/desync/{versao}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response getCategorias(@PathParam("versao") Long versao) {
-    return Response.ok(categoriaService.getCategoriasDeSync(versao)).build();
+    GetCategoriaDesyncRest getCategoriaDesyncRest = new GetCategoriaDesyncS2R(categoriaService.getCategoriasDeSync
+        (versao)).converted();
+
+    return Response.ok(getCategoriaDesyncRest).build();
   }
 
 

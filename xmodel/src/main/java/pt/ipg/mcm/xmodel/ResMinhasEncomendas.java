@@ -1,14 +1,13 @@
 package pt.ipg.mcm.xmodel;
 
 import pt.ipg.mcm.errors.MestradoException;
-import pt.ipg.mcm.xmodel.Retorno;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ResMinhasEncomendas extends Retorno{
+public class ResMinhasEncomendas extends RetornoSoap {
 
     public  ResMinhasEncomendas(){
 

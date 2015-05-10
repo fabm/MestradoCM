@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ResAddClienteUtilizador extends Retorno{
+public class ResAddClienteUtilizador extends RetornoSoap {
   public ResAddClienteUtilizador(MestradoException e) {
     super(e);
   }

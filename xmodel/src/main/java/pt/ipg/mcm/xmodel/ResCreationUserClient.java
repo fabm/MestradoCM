@@ -2,7 +2,7 @@ package pt.ipg.mcm.xmodel;
 
 import pt.ipg.mcm.errors.MestradoException;
 
-public class ResCreationUserClient extends Retorno{
+public class ResCreationUserClient extends RetornoSoap {
   public ResCreationUserClient(MestradoException e) {
     super(e);
   }

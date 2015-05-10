@@ -15,7 +15,7 @@ public class ResDeleteProduto {
     private Long id;
 
     @XmlElement(required = true)
-    private Retorno retorno;
+    private RetornoSoap retorno;
 
     public Long getId() {
         return id;
@@ -25,11 +25,11 @@ public class ResDeleteProduto {
         this.id = id;
     }
 
-    public Retorno getRetorno() {
+    public RetornoSoap getRetorno() {
         return retorno;
     }
 
-    public void setRetorno(Retorno retorno) {
+    public void setRetorno(RetornoSoap retorno) {
         this.retorno = retorno;
     }
 }

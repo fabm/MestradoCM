@@ -1,7 +1,7 @@
 package pt.ipg.mcm.services;
 
 import pt.ipg.mcm.xmodel.ResLogin;
-import pt.ipg.mcm.xmodel.Retorno;
+import pt.ipg.mcm.xmodel.RetornoSoap;
 
 import javax.jws.WebService;
 
@@ -9,7 +9,7 @@ import javax.jws.WebService;
 public class AuthenticationService {
   public ResLogin login() {
     ResLogin resLogin = new ResLogin();
-    resLogin.setRetorno(new Retorno(1, "Login efetuado com sucesso"));
+    resLogin.setRetorno(new RetornoSoap(1, "Login efetuado com sucesso"));
     return resLogin;
   }
 }

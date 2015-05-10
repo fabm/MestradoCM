@@ -17,7 +17,7 @@ public class ResGetAllCategorias {
   private List<Categoria> categorias;
 
   @XmlElement(required = true)
-  private Retorno retorno;
+  private RetornoSoap retorno;
 
   public List<Categoria> getCategorias() {
     if(categorias == null){
@@ -26,11 +26,11 @@ public class ResGetAllCategorias {
     return categorias;
   }
 
-  public Retorno getRetorno() {
+  public RetornoSoap getRetorno() {
     return retorno;
   }
 
-  public void setRetorno(Retorno retorno) {
+  public void setRetorno(RetornoSoap retorno) {
     this.retorno = retorno;
   }
 }

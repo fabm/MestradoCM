@@ -9,15 +9,15 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ResGetPadeiro {
-    private Retorno retorno;
+    private RetornoSoap retorno;
 
     private List<ResGetPadeiro> resGetPadeiros;
 
-    public Retorno getRetorno() {
+    public RetornoSoap getRetorno() {
         return retorno;
     }
 
-    public void setRetorno(Retorno retorno) {
+    public void setRetorno(RetornoSoap retorno) {
         this.retorno = retorno;
     }
 
