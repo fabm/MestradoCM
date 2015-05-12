@@ -1,15 +1,13 @@
 package pt.ipg.mcm.calls.client.model.encomendas;
 
-import java.math.BigDecimal;
-
 public class ProdutoEncomendadoComPrecoRest extends ProdutoEncomendadoRest{
-  private BigDecimal preco;
+  private int preco;
 
-  public BigDecimal getPreco() {
+  public int getPreco() {
     return preco;
   }
 
-  public void setPreco(BigDecimal preco) {
+  public void setPreco(int preco) {
     this.preco = preco;
   }
 

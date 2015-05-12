@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public class ProdutoRest {
   private String nome;
-  private BigDecimal precoUnitario;
+  private int precoUnitario;
   private long categoria;
   private String foto;
   private long id;
@@ -17,11 +17,11 @@ public class ProdutoRest {
     this.nome = nome;
   }
 
-  public BigDecimal getPrecoUnitario() {
+  public int getPrecoUnitario() {
     return precoUnitario;
   }
 
-  public void setPrecoUnitario(BigDecimal precoUnitario) {
+  public void setPrecoUnitario(int precoUnitario) {
     this.precoUnitario = precoUnitario;
   }
 

@@ -18,14 +18,16 @@
                             <th>#</th>
                             <th>Data de criação</th>
                             <th>Data de entrega</th>
+                            <td>Quantidade de produtos encomendados</td>
                         </tr>
                         </thead>
                         <tbody>
                         {{#encomendaDetalheRestList}}
-                            <tr>
+                            <tr id="linha-produto-encomendado-{{id}}" class="linha-produto-encomendado">
                                 <td></td>
                                 <td>{{dataCriacao}}</td>
                                 <td>{{dataEntrega}}</td>
+                                <td>{{produtosEncomendados.length}}</td>
                             </tr>
                         {{/encomendaDetalheRestList}}
                         </tbody>

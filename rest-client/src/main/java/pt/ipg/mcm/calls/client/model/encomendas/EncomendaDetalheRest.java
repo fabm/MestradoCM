@@ -53,7 +53,7 @@ public class EncomendaDetalheRest {
   }
 
   public List<ProdutoEncomendadoComPrecoRest> createProdutosEncomendados() {
-    produtosEncomendados = new ArrayList<ProdutoEncomendadoComPrecoRest>();
+    produtosEncomendados = new ArrayList<>();
     return produtosEncomendados;
   }
 

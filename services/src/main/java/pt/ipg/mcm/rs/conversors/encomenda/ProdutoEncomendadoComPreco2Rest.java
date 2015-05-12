@@ -16,7 +16,8 @@ public class ProdutoEncomendadoComPreco2Rest extends AbstractConversor<ProdutoEn
     ProdutoEncomendadoComPrecoRest produtoEncomendadoComPrecoRest = new ProdutoEncomendadoComPrecoRest();
     produtoEncomendadoComPrecoRest.setIdProduto(source.getIdProduto());
     produtoEncomendadoComPrecoRest.setQuandidade(source.getQuantidade());
-    produtoEncomendadoComPrecoRest.setPreco(source.getPreco());
+    final BigDecimal preco = source.getPreco();
+    produtoEncomendadoComPrecoRest.setPreco(preco.multiply(new BigDecimal(100)).intValue());
     return produtoEncomendadoComPrecoRest;
   }
 }

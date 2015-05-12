@@ -367,43 +367,66 @@
 
 <!-- Page-Level Demo Scripts - Tables - Use for reference -->
 <script>
-    var antigo;
+    function Dados(){
+        var self = this;
+        this._valueLoaded = false;
+        this._templateLoaded = false;
+        this.value;
+        this.template;
+        this.callback;
+
+        self._atualizar = function(){
+            if(self._templateLoaded && self._valueLoaded){
+                self._render();
+            }
+        }
+
+        self._render = function(){
+            templateLoaded = false;
+            templateValue = false;
+            var data={
+                "values":self.value,
+                "template":self.template,
+                "rendered":Mustache.render(self.template, self.value)
+            };
+            self.callback(data);
+        }
+
+        this.setValue = function(value){
+            self._valueLoaded = true;
+            self.value = value;
+            self._atualizar();
+        }
+
+        this.setTemplate = function(template){
+            self._templateLoaded = true;
+            self.template = template;
+            self._atualizar();
+        }
+
+
+    }
+
     $(document).ready(function () {
-        var carregados = {
-            "valores": null,
-            "template": ""
-        };
         $('#dataTables-example').DataTable({
             responsive: true
         });
 
-        function atualizar() {
-            if (carregados.valores == null)return;
-            if (carregados.template == "")return;
-
-            antigo = carregados;
-            console.log(antigo);
-
-            var html = Mustache.render(carregados.template, carregados.valores);
-            $("#page-wrapper").html(html);
-        }
 
         $('#carrega-dados').click(function () {
+            var dados = new Dados();
+            dados.callback = function(data){
+                $("#page-wrapper").html(data.rendered);
+            }
             $.ajax({
                 url: "/web/templates/template-exemplo.html"
-            }).done(function (data) {
-                carregados.template = data;
-                atualizar();
-            });
+            }).done(dados.setTemplate);
             $.ajax({
                 url: "/services/rest/encomenda/minhas/0",
                 dataType: "json",
                 username: "bruno",
                 password: "bruno"
-            }).done(function (data) {
-                carregados.valores = data;
-                atualizar();
-            });
+            }).done(dados.setValue);
         });
     });
 </script>

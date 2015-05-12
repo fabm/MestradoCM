@@ -5,6 +5,8 @@ import pt.ipg.mcm.calls.client.model.produtos.ProdutoRest;
 import pt.ipg.mcm.rs.conversors.AbstractConversor;
 import pt.ipg.mcm.xmodel.ProdutoXml;
 
+import java.math.BigDecimal;
+
 
 public class ProdutoXml2Rest extends AbstractConversor<ProdutoXml, ProdutoRest> {
   public ProdutoXml2Rest(ProdutoXml source) {
@@ -20,7 +22,8 @@ public class ProdutoXml2Rest extends AbstractConversor<ProdutoXml, ProdutoRest> 
       produtoRest.setFoto(new String(Base64.encodeBase64(source.getFoto())));
     }
     produtoRest.setId(source.getId());
-    produtoRest.setPrecoUnitario(source.getPrecoUnitario());
+    final BigDecimal precoUnitario = source.getPrecoUnitario();
+    produtoRest.setPrecoUnitario(precoUnitario.multiply(new BigDecimal(100)).intValue());
     return produtoRest;
   }
 }

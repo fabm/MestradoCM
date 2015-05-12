@@ -44,6 +44,17 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.5.2</version>
         </dependency>
+        <dependency>
+            <groupId>cz.habarta.typescript-generator</groupId>
+            <artifactId>typescript-generator-core</artifactId>
+            <version>1.1.71</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>18.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -56,6 +67,43 @@
                     <source>1.7</source>
                     <target>1.7</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>cz.habarta.typescript-generator</groupId>
+                <artifactId>typescript-generator-maven-plugin</artifactId>
+                <version>1.1.71</version>
+                <executions>
+                    <execution>
+                        <id>generate</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <classes>
+                                <class>pt.ipg.mcm.calls.client.model.categoria.CategoriaRest</class>
+                                <class>pt.ipg.mcm.calls.client.model.categoria.GetCategoriaDesyncRest</class>
+                                <class>pt.ipg.mcm.calls.client.model.delete.GetRegistosAApagarRest</class>
+                                <class>pt.ipg.mcm.calls.client.model.delete.RegistoAApagarRest</class>
+                                <class>pt.ipg.mcm.calls.client.model.encomendas.EncomendaDetalheRest</class>
+                                <class>pt.ipg.mcm.calls.client.model.encomendas.EncomendaGenericRest</class>
+                                <class>pt.ipg.mcm.calls.client.model.encomendas.EncomendaIdsRest</class>
+                                <class>pt.ipg.mcm.calls.client.model.encomendas.EncomendaRest</class>
+                                <class>pt.ipg.mcm.calls.client.model.encomendas.GetEncomendasRestOut</class>
+                                <class>pt.ipg.mcm.calls.client.model.encomendas.GetMinhasEncomendasRest</class>
+                                <class>pt.ipg.mcm.calls.client.model.encomendas.ProdutoEncomendadoComPrecoRest</class>
+                                <class>pt.ipg.mcm.calls.client.model.encomendas.ProdutoEncomendadoRest</class>
+                                <class>pt.ipg.mcm.calls.client.model.encomendas.UpdateEncomendasRestIn</class>
+                                <class>pt.ipg.mcm.calls.client.model.encomendas.UpdateEncomendasRestOut</class>
+                                <class>pt.ipg.mcm.calls.client.model.localidades.GetLocalidadeRest</class>
+                                <class>pt.ipg.mcm.calls.client.model.localidades.LocalidadeRest</class>
+                                <class>pt.ipg.mcm.calls.client.model.produtos.GetProdutoDesyncRest</class>
+                                <class>pt.ipg.mcm.calls.client.model.produtos.ProdutoRest</class>
+                                <class>pt.ipg.mcm.calls.client.model.user.CreateUserClientRestIn</class>
+                            </classes>
+                            <outputFile>target/rest-api.d.ts</outputFile>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
         <testResources>
