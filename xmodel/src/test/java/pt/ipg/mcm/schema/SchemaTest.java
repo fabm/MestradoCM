@@ -16,37 +16,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SchemaTest {
-  @Test
-  public void schemaTest() throws JAXBException, IOException {
-      // grab the context
-      JAXBContext context = JAXBContext.newInstance(ResGetProdutosCategorias.class);
+    @Test
+    public void schemaTest() throws JAXBException, IOException {
+        // grab the context
+        JAXBContext context = JAXBContext.newInstance(ResGetProdutosCategorias.class);
 
-      final List results = new ArrayList();
+        final List results = new ArrayList();
 
-      // generate the schema
-      context.generateSchema(
-          // need to define a SchemaOutputResolver to store to
-          new SchemaOutputResolver()
-          {
-            @Override
-            public Result createOutput( String ns, String file )
-                throws IOException
-            {
-              // save the schema to the list
-              DOMResult result = new DOMResult();
-              result.setSystemId( file );
-              results.add( result );
-              return result;
-            }
-          } );
+        // generate the schema
+        context.generateSchema(
+            // need to define a SchemaOutputResolver to store to
+            new SchemaOutputResolver() {
+                @Override
+                public Result createOutput(String ns, String file)
+                    throws IOException {
+                    // save the schema to the list
+                    DOMResult result = new DOMResult();
+                    result.setSystemId(file);
+                    results.add(result);
+                    return result;
+                }
+            });
 
-      // output schema via System.out
-      DOMResult domResult = (DOMResult) results.get( 0 );
-      Document doc = (Document) domResult.getNode();
-      OutputFormat format = new OutputFormat( doc );
-      format.setIndenting( true );
-      XMLSerializer serializer = new XMLSerializer( System.out, format );
-      serializer.serialize( doc );
-  }
+        // output schema via System.out
+        DOMResult domResult = (DOMResult) results.get(0);
+        Document doc = (Document) domResult.getNode();
+        OutputFormat format = new OutputFormat(doc);
+        format.setIndenting(true);
+        XMLSerializer serializer = new XMLSerializer(System.out, format);
+        serializer.serialize(doc);
+    }
 
 }
