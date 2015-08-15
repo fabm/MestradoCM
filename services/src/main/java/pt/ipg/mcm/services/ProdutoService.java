@@ -34,7 +34,6 @@ public class ProdutoService extends SecureService {
     try {
       Map<String, String> aliasMap = new HashMap<String, String>();
       aliasMap.put("precoUnitario", "preço unitário");
-      Validacao.getInstance().valida(reqAddProduto, aliasMap);
       checkAuthorization(Role.ADMINISTRADOR);
       return produtoDao.addProduto(reqAddProduto);
     } catch (MestradoException e) {
