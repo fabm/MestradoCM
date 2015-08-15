@@ -5,13 +5,7 @@ import pt.ipg.mcm.entities.CategoriaEntity;
 import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.validacao.Validacao;
-import pt.ipg.mcm.xmodel.Categoria;
-import pt.ipg.mcm.xmodel.ReqAddCategoria;
-import pt.ipg.mcm.xmodel.ResAddCategoria;
-import pt.ipg.mcm.xmodel.ResCategoriasDesync;
-import pt.ipg.mcm.xmodel.ResGetAllCategorias;
-import pt.ipg.mcm.xmodel.ResGetCategoria;
-import pt.ipg.mcm.xmodel.RetornoSoap;
+import pt.ipg.mcm.xmodel.*;
 
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
@@ -114,6 +108,32 @@ public class CategoriaService {
       resGetCategoria.setRetorno(new RetornoSoap(e));
       return resGetCategoria;
     }
+  }
+
+  @WebMethod
+  public ResUpdateCategoria updateCategoria(@WebParam(name="req-update-categoria") @XmlElement(required = true) ReqUpdateCategoria reqUpdateCategoria){
+
+    ResUpdateCategoria resUpdateCategoria = new ResUpdateCategoria();
+
+    try {
+      Map<String, String> aliasMap = new HashMap<String, String>();
+      aliasMap.put("descricao", "descrição");
+      Validacao.getInstance().valida(reqUpdateCategoria, aliasMap);
+      CategoriaEntity categoriaEntity = new CategoriaEntity();
+      categoriaEntity.setIdCategoria(reqUpdateCategoria.getIdCategoria());
+      categoriaEntity.setDescricao(reqUpdateCategoria.getDescricao());
+      categoriaEntity.setNome(reqUpdateCategoria.getNome());
+      categoriaDao.updateCategoria(categoriaEntity);
+      resUpdateCategoria.setRetorno(new RetornoSoap(1, "Categoria atualizada com sucesso"));
+    } catch (MestradoException e) {
+      resUpdateCategoria.setRetorno(new RetornoSoap(e));
+    } catch (SQLException e) {
+      resUpdateCategoria.setRetorno(new RetornoSoap(new MestradoException(Erro.TECNICO)));
+    }
+
+
+    return resUpdateCategoria;
+
   }
 
 }

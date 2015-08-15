@@ -1,21 +1,15 @@
 package pt.ipg.mcm.services;
 
 import pt.ipg.mcm.controller.ProdutoDao;
+import pt.ipg.mcm.entities.CategoriaEntity;
 import pt.ipg.mcm.entities.ProdutoEntity;
 import pt.ipg.mcm.entities.VProdutoCategoriaEntity;
+import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.services.authorization.Role;
 import pt.ipg.mcm.services.authorization.SecureService;
 import pt.ipg.mcm.validacao.Validacao;
-import pt.ipg.mcm.xmodel.ProdutoCategoria;
-import pt.ipg.mcm.xmodel.ProdutoXml;
-import pt.ipg.mcm.xmodel.ReqAddProduto;
-import pt.ipg.mcm.xmodel.ReqGetProdutosCategorias;
-import pt.ipg.mcm.xmodel.ResAddProduto;
-import pt.ipg.mcm.xmodel.ResGetProduto;
-import pt.ipg.mcm.xmodel.ResGetProdutos;
-import pt.ipg.mcm.xmodel.ResGetProdutosCategorias;
-import pt.ipg.mcm.xmodel.RetornoSoap;
+import pt.ipg.mcm.xmodel.*;
 
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
@@ -23,6 +17,7 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.security.auth.login.LoginException;
 import javax.xml.bind.annotation.XmlElement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -122,4 +117,31 @@ public class ProdutoService extends SecureService {
     resGetProdutos.setResGetProdutos(produtoXmlList);
     return resGetProdutos;
   }
+
+
+/*  @WebMethod
+  public ResUpdateProduto updateProduto (@WebParam(name = "req-update-produtp") @XmlElement(required = true) ResUpdateProduto reqUpdateProduto){
+
+    ResUpdateProduto resUpdateProduto = new ResUpdateProduto();
+
+    /*try {
+      Map<String, String> aliasMap = new HashMap<String, String>();
+      aliasMap.put("descricao", "descrição");
+      Validacao.getInstance().valida(reqUpdateProduto, aliasMap);
+      ProdutoEntity produtoEntity = new ProdutoEntity();
+      produtoEntity.setIdCategoria(reqUpdateProduto.getIdCategoria());
+      produtoEntity.setDescricao(reqUpdateCategoria.getDescricao());
+      produtoEntity.setNome(reqUpdateCategoria.getNome());
+      categoriaDao.updateCategoria(produtoEntity);
+      resUpdateProduto.setRetorno(new RetornoSoap(1, "Categoria atualizada com sucesso"));
+    } catch (MestradoException e) {
+      resUpdateProduto.setRetorno(new RetornoSoap(e));
+    } catch (SQLException e) {
+      resUpdateProduto.setRetorno(new RetornoSoap(new MestradoException(Erro.TECNICO)));
+    }
+
+
+    return resUpdateProduto;
+
+  }*/
 }
