@@ -5,26 +5,19 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-/**
- * Created by BrrF on 26-01-2015.
- */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Res-update-produto")
 public class ResUpdateProduto {
 
-    @XmlElement(required = true)
-    private Long id;
+    public ResUpdateProduto() {
+    }
+
+    public ResUpdateProduto(RetornoSoap retorno) {
+        this.retorno = retorno;
+    }
 
     @XmlElement(required = true)
     private RetornoSoap retorno;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public RetornoSoap getRetorno() {
         return retorno;

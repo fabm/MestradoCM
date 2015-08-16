@@ -11,8 +11,10 @@ import pt.ipg.mcm.xmodel.ProdutoCategoria;
 import pt.ipg.mcm.xmodel.ProdutoXml;
 import pt.ipg.mcm.xmodel.ReqAddProduto;
 import pt.ipg.mcm.xmodel.ReqGetProdutosCategorias;
+import pt.ipg.mcm.xmodel.ReqUpdateProduto;
 import pt.ipg.mcm.xmodel.ResAddProduto;
 import pt.ipg.mcm.xmodel.ResGetProduto;
+import pt.ipg.mcm.xmodel.ResUpdateProduto;
 import pt.ipg.mcm.xmodel.RetornoSoap;
 
 import javax.annotation.Resource;
@@ -192,4 +194,12 @@ public class ProdutoDao {
     }
 
 
+    public void updateProduto(ReqUpdateProduto reqUpdateProduto) {
+        SqlSession session = mappedSql.getSqlSession();
+        try {
+            session.update("updateProduto", reqUpdateProduto);
+        } finally {
+            session.close();
+        }
+    }
 }

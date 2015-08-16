@@ -58,6 +58,15 @@
         WHERE PRODUTO.ID_PRODUTO = ${id}
     </select>
 
+    <update id="updateProduto">
+        UPDATE PRODUTO
+        SET NOME = '${nome}', PRECO_ATUAL = ${precoUnitario}, ID_CATEGORIA = ${categoria},
+        <choose>
+            <when test="foto == null">FOTO = NULL</when>
+            <otherwise>FOTO = ${foto}</otherwise>
+        </choose>
+        WHERE ID_PRODUTO = ${idProduto}
+    </update>
 
 </mapper>
 

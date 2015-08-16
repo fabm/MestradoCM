@@ -98,29 +98,21 @@ public class ProdutoService extends SecureService {
     }
 
 
-/*  @WebMethod
-  public ResUpdateProduto updateProduto (@WebParam(name = "req-update-produtp") @XmlElement(required = true) ResUpdateProduto reqUpdateProduto){
+    @WebMethod
+    public ResUpdateProduto updateProduto(@WebParam(name = "req-update-produtp") @XmlElement(required = true) ReqUpdateProduto reqUpdateProduto) {
 
-    ResUpdateProduto resUpdateProduto = new ResUpdateProduto();
+        ResUpdateProduto resUpdateProduto = new ResUpdateProduto();
 
-    /*try {
-      Map<String, String> aliasMap = new HashMap<String, String>();
-      aliasMap.put("descricao", "descrição");
-      Validacao.getInstance().valida(reqUpdateProduto, aliasMap);
-      ProdutoEntity produtoEntity = new ProdutoEntity();
-      produtoEntity.setIdCategoria(reqUpdateProduto.getIdCategoria());
-      produtoEntity.setDescricao(reqUpdateCategoria.getDescricao());
-      produtoEntity.setNome(reqUpdateCategoria.getNome());
-      categoriaDao.updateCategoria(produtoEntity);
-      resUpdateProduto.setRetorno(new RetornoSoap(1, "Categoria atualizada com sucesso"));
-    } catch (MestradoException e) {
-      resUpdateProduto.setRetorno(new RetornoSoap(e));
-    } catch (SQLException e) {
-      resUpdateProduto.setRetorno(new RetornoSoap(new MestradoException(Erro.TECNICO)));
+        try {
+            Map<String, String> aliasMap = new HashMap<>();
+            aliasMap.put("descricao", "descrição");
+            Validacao.getInstance().valida(reqUpdateProduto, aliasMap);
+            produtoDao.updateProduto(reqUpdateProduto);
+            resUpdateProduto.setRetorno(new RetornoSoap(1, "Produto atualizado com sucesso"));
+        } catch (MestradoException e) {
+            return new ResUpdateProduto(new RetornoSoap(e));
+        }
+        return resUpdateProduto;
+
     }
-
-
-    return resUpdateProduto;
-
-  }*/
 }
