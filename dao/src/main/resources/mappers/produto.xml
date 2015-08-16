@@ -9,7 +9,7 @@
         </selectKey>
 
         INSERT INTO PRODUTO (ID_PRODUTO,NOME,PRECO_ATUAL,ID_CATEGORIA,FOTO)
-        VALUES (#{id}, #{nome}, #{precoUnitario}, #{categoria}, #{foto})
+        VALUES (#{id}, #{nome}, #{precoUnitario}, #{categoria}, #{foto,jdbcType=BLOB})
     </insert>
 </mapper>
 

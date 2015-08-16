@@ -41,6 +41,7 @@ public class ProdutoDao {
         try {
             sqlSession.insert("insertProduto", reqAddProduto);
             resAddProduto.setId(reqAddProduto.getId());
+            sqlSession.commit();
             sqlSession.close();
         } catch (PersistenceException e) {
             Logger.getGlobal().severe(e.getMessage());
