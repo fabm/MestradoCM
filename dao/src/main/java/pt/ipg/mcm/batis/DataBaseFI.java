@@ -1,6 +1,5 @@
 package pt.ipg.mcm.batis;
 
-import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
@@ -12,7 +11,6 @@ import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.Singleton;
-import javax.ejb.Stateless;
 import javax.sql.DataSource;
 import java.io.InputStream;
 
