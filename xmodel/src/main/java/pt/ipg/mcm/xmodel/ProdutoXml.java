@@ -3,10 +3,14 @@ package pt.ipg.mcm.xmodel;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.math.BigDecimal;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ProdutoXml {
+
+  @XmlTransient
+  private long sync;
 
   @XmlElement(required = true)
   private String nome;
@@ -21,7 +25,11 @@ public class ProdutoXml {
   private byte[] foto;
 
   @XmlElement(required = false)
-  private long id;
+  private Long id;
+
+  public long getSync() {
+    return sync;
+  }
 
   public long getId() {
     return id;

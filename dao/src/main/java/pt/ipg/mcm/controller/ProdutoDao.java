@@ -7,8 +7,12 @@ import pt.ipg.mcm.entities.ProdutoEntity;
 import pt.ipg.mcm.entities.VProdutoCategoriaEntity;
 import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
+import pt.ipg.mcm.xmodel.ProdutoCategoria;
+import pt.ipg.mcm.xmodel.ProdutoXml;
 import pt.ipg.mcm.xmodel.ReqAddProduto;
+import pt.ipg.mcm.xmodel.ReqGetProdutosCategorias;
 import pt.ipg.mcm.xmodel.ResAddProduto;
+import pt.ipg.mcm.xmodel.ResGetProduto;
 import pt.ipg.mcm.xmodel.RetornoSoap;
 
 import javax.annotation.Resource;
@@ -23,6 +27,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -41,8 +46,6 @@ public class ProdutoDao {
         try {
             sqlSession.insert("insertProduto", reqAddProduto);
             resAddProduto.setId(reqAddProduto.getId());
-            sqlSession.commit();
-            sqlSession.close();
         } catch (PersistenceException e) {
             Logger.getGlobal().severe(e.getMessage());
             throw new MestradoException(Erro.TECNICO);
@@ -54,7 +57,8 @@ public class ProdutoDao {
         return resAddProduto;
     }
 
-    public List<ProdutoEntity> getProdutos(long versao) throws MestradoException {
+    public List<ProdutoXml> getProdutos(final long versao) throws MestradoException {
+/*
         String sqlString = "SELECT PRODUTO.ID_PRODUTO,\n" +
             "  PRODUTO.NOME,\n" +
             "  PRODUTO.PRECO_ATUAL,\n" +
@@ -88,39 +92,34 @@ public class ProdutoDao {
         }
 
 
-        return produtoEntities;
+*/
+        List<ProdutoXml> list = mappedSql.getSqlSession().selectList("getProdutos", new HashMap<String, Object>() {{
+            put("id", versao);
+        }});
+
+        return list;
     }
 
-    public ProdutoEntity getProduto(long idProduto) throws MestradoException {
+    public ResGetProduto getProduto(final long idProduto) throws MestradoException {
 
-        ProdutoEntity produtoEntity = new ProdutoEntity();
+        ResGetProduto resGetProduto;
         try {
-            String sqlString = "SELECT PRODUTO.NOME,\n" +
-                "  PRODUTO.PRECO_ATUAL,\n" +
-                "  PRODUTO.ID_CATEGORIA\n" +
-                "FROM PRODUTO\n" +
-                "WHERE PRODUTO.ID_PRODUTO = ?";
 
-            Connection connection = mestradoDataSource.getConnection();
+            SqlSession session = mappedSql.getSqlSession();
+            resGetProduto = session.selectOne("getProduto", new HashMap<String, Object>() {{
+                put("id", idProduto);
+            }});
 
-            PreparedStatement call = connection.prepareStatement(sqlString);
-            call.setLong(1, idProduto);
-            ResultSet rs = call.executeQuery();
-
-            if (!rs.next()) {
+            if (resGetProduto == null) {
                 throw new MestradoException(Erro.PRODUTO_NAO_ENCONTRADO, idProduto);
             }
 
-            produtoEntity.setNome(rs.getString(1));
-            produtoEntity.setPrecoAtual(rs.getBigDecimal(2));
-            //produtoEntity.setIdCategoria(rs.getLong(3));
-            // produtoEntity.setIdProduto(rs.getLong(4));
-
-        } catch (SQLException e) {
+        } catch (PersistenceException e) {
+            Logger.getGlobal().severe(e.getMessage());
             throw new MestradoException(Erro.TECNICO);
         }
 
-        return produtoEntity;
+        return resGetProduto;
     }
 
     public void saveFoto(long id, InputStream inputStream) throws MestradoException {
@@ -180,46 +179,15 @@ public class ProdutoDao {
         return call.executeQuery(strSql);
     }
 
-    public List<VProdutoCategoriaEntity> getProdutos(boolean withFoto, Long idCategoria) throws MestradoException {
-
+    public List<ProdutoCategoria> getProdutos(ReqGetProdutosCategorias reqGetProdutosCategorias) throws MestradoException {
+        SqlSession session = mappedSql.getSqlSession();
         try {
-            Connection connection = mestradoDataSource.getConnection();
-            Statement call = connection.createStatement();
-            String sqlStr;
-            if (withFoto) {
-                sqlStr = ",FOTO";
-            } else {
-                sqlStr = "";
-            }
-
-            sqlStr = String.format("SELECT NOME_CATEGORIA, DESCRICAO,PRECO_ATUAL,NOME_PRODUTO, ID_PRODUTO%s from V_PRODUTO_CATEGORIA", sqlStr);
-
-            ResultSet rs;
-            if (idCategoria != null) {
-                rs = getResultProdutos(sqlStr, idCategoria);
-            } else {
-                rs = getResultProdutos(sqlStr);
-            }
-
-            List<VProdutoCategoriaEntity> vProdutoCategoriaEntities = new ArrayList<VProdutoCategoriaEntity>();
-
-            while (rs.next()) {
-                VProdutoCategoriaEntity vProdutoCategoriaEntity = new VProdutoCategoriaEntity();
-                vProdutoCategoriaEntity.setNomeCategoria(rs.getString(1));
-                vProdutoCategoriaEntity.setDescricao(rs.getString(2));
-                vProdutoCategoriaEntity.setPrecoAtual(rs.getBigDecimal(3));
-                vProdutoCategoriaEntity.setNomeProduto(rs.getString(4));
-                vProdutoCategoriaEntity.setIdproduto(rs.getLong(5));
-
-                if (withFoto) {
-                    vProdutoCategoriaEntity.setFoto(rs.getBytes(6));
-                }
-
-                vProdutoCategoriaEntities.add(vProdutoCategoriaEntity);
-            }
-            return vProdutoCategoriaEntities;
-        } catch (SQLException e) {
+            return session.selectList("getProdutosCategoria", reqGetProdutosCategorias);
+        } catch (PersistenceException e) {
+            Logger.getGlobal().severe(e.getMessage());
             throw new MestradoException(Erro.TECNICO);
+        } finally {
+            session.close();
         }
     }
 

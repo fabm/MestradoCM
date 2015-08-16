@@ -11,5 +11,53 @@
         INSERT INTO PRODUTO (ID_PRODUTO,NOME,PRECO_ATUAL,ID_CATEGORIA,FOTO)
         VALUES (#{id}, #{nome}, #{precoUnitario}, #{categoria}, #{foto,jdbcType=BLOB})
     </insert>
+
+    <resultMap id="produtoXml" type="pt.ipg.mcm.xmodel.ProdutoXml">
+        <result property="id" column="ID_PRODUTO"/>
+        <result property="nome" column="NOME"/>
+        <result property="precoUnitario" column="PRECO_ATUAL"/>
+        <result property="foto" column="FOTO"/>
+        <result property="categoria" column="ID_CATEGORIA"/>
+        <result property="sync" column="SYNC"/>
+    </resultMap>
+
+    <select id="getProdutos" resultMap="produtoXml">
+        SELECT PRODUTO.ID_PRODUTO,
+          PRODUTO.NOME,
+          PRODUTO.PRECO_ATUAL,
+          PRODUTO.FOTO,
+          PRODUTO.ID_CATEGORIA,
+          PRODUTO.SYNC
+        FROM PRODUTO
+        WHERE PRODUTO.SYNC > ${id}
+    </select>
+
+    <resultMap id="produtoCategoria" type="pt.ipg.mcm.xmodel.ProdutoCategoria">
+        <result property="idproduto" column="ID_PRODUTO"/>
+        <result property="nomeProduto" column="NOME_PRODUTO"/>
+        <result property="nomeCategoria" column="NOME_CATEGORIA"/>
+        <result property="precoActual" column="PRECO_ATUAL"/>
+        <result property="descricao" column="DESCRICAO"/>
+        <result property="foto" column="FOTO"/>
+    </resultMap>
+
+    <select id="getProdutosCategoria" resultMap="produtoCategoria">
+        SELECT NOME_CATEGORIA, DESCRICAO,PRECO_ATUAL,NOME_PRODUTO, ID_PRODUTO
+        <if test="comFoto">, FOTO</if>
+        FROM V_PRODUTO_CATEGORIA
+        <if test="idCategoria != null">WHERE ID_CATEGORIA = ${categoria}</if>
+    </select>
+
+    <resultMap id="resGetProduto" extends="produtoXml" type="pt.ipg.mcm.xmodel.ResGetProduto"/>
+
+    <select id="getProduto" resultMap="resGetProduto">
+        SELECT PRODUTO.NOME,
+          PRODUTO.PRECO_ATUAL,
+          PRODUTO.ID_CATEGORIA
+        FROM PRODUTO
+        WHERE PRODUTO.ID_PRODUTO = ${id}
+    </select>
+
+
 </mapper>
 

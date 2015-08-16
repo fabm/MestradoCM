@@ -31,4 +31,8 @@ public class ResGetProdutosCategorias {
   public void setRetorno(RetornoSoap retorno) {
     this.retorno = retorno;
   }
+
+  public void setProdutoCategoriaList(List<ProdutoCategoria> produtoCategoriaList) {
+    this.produtoCategoriaList = produtoCategoriaList;
+  }
 }

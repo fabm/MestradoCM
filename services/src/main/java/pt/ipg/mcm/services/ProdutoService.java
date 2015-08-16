@@ -28,102 +28,74 @@ import java.util.Map;
 @WebService(serviceName = "Produto", portName = "ProdutoPort")
 public class ProdutoService extends SecureService {
 
-  @EJB
-  private ProdutoDao produtoDao;
+    @EJB
+    private ProdutoDao produtoDao;
 
-  @Resource
-  private WebServiceContext webServiceContext;
+    @Resource
+    private WebServiceContext webServiceContext;
 
-  @WebMethod
-  public ResAddProduto addProduto(@WebParam(name = "req-add-produto") @XmlElement(required = true) ReqAddProduto reqAddProduto) throws LoginException {
-    try {
-      setWsc(webServiceContext);
-      checkAuthorization(Role.ADMINISTRADOR);
+    @WebMethod
+    public ResAddProduto addProduto(@WebParam(name = "req-add-produto") @XmlElement(required = true) ReqAddProduto reqAddProduto) throws LoginException {
+        try {
+            setWsc(webServiceContext);
+            checkAuthorization(Role.ADMINISTRADOR);
 
-      Map<String, String> aliasMap = new HashMap<>();
-      aliasMap.put("precoUnitario", "preço unitário");
-      Validacao.getInstance().valida(reqAddProduto, aliasMap);
-      return produtoDao.addProduto(reqAddProduto);
-    } catch (MestradoException e) {
-      ResAddProduto resAddProduto = new ResAddProduto();
-      resAddProduto.setRetorno(new RetornoSoap(e));
-      return resAddProduto;
+            Map<String, String> aliasMap = new HashMap<>();
+            aliasMap.put("precoUnitario", "preço unitário");
+            Validacao.getInstance().valida(reqAddProduto, aliasMap);
+            return produtoDao.addProduto(reqAddProduto);
+        } catch (MestradoException e) {
+            ResAddProduto resAddProduto = new ResAddProduto();
+            resAddProduto.setRetorno(new RetornoSoap(e));
+            return resAddProduto;
+        }
     }
-  }
 
-  @WebMethod
-  public ResGetProduto getProduto(@WebParam(name = "req-get-produto") @XmlElement(required = true) Integer reqGetProduto) {
-    try {
-
-      ProdutoEntity produtoEntity = produtoDao.getProduto(reqGetProduto);
-      ResGetProduto resGetProduto = new ResGetProduto();
-      resGetProduto.setNome(produtoEntity.getNome());
-      resGetProduto.setPrecoUnitario(produtoEntity.getPrecoAtual());
-
-      return resGetProduto;
-
-    } catch (MestradoException e) {
-      ResGetProduto resGetProduto = new ResGetProduto();
-      resGetProduto.setRetorno(new RetornoSoap(e));
-      return resGetProduto;
+    @WebMethod
+    public ResGetProduto getProduto(@WebParam(name = "req-get-produto") @XmlElement(required = true) Integer reqGetProduto) {
+        try {
+            return produtoDao.getProduto(reqGetProduto);
+        } catch (MestradoException e) {
+            ResGetProduto resGetProduto = new ResGetProduto();
+            resGetProduto.setRetorno(new RetornoSoap(e));
+            return resGetProduto;
+        }
     }
-  }
 
-  @WebMethod
-  public ResGetProdutosCategorias getProdutosCategorias(@WebParam(name = "req-get-produtos-categorias") @XmlElement(required = true) ReqGetProdutosCategorias
-                                                            reqGetProdutosCategorias) {
-    ResGetProdutosCategorias resGetProdutosCategorias = new ResGetProdutosCategorias();
-    try {
-      List<ProdutoCategoria> produtosCategorias = resGetProdutosCategorias.getProdutoCategoriaList();
-      List<VProdutoCategoriaEntity> allProdutos = produtoDao.getProdutos(reqGetProdutosCategorias.isComFoto(), reqGetProdutosCategorias.getIdCategoria());
-      for (VProdutoCategoriaEntity vProdutoCategoriaEntity : allProdutos) {
-        ProdutoCategoria produtoCategoria = new ProdutoCategoria();
-
-        produtoCategoria.setIdproduto(vProdutoCategoriaEntity.getIdProduto());
-
-        produtoCategoria.setNomeCategoria(vProdutoCategoriaEntity.getNomeCategoria());
-        produtoCategoria.setNomeProduto(vProdutoCategoriaEntity.getNomeProduto());
-        produtoCategoria.setPrecoActual(vProdutoCategoriaEntity.getPrecoAtual());
-        produtoCategoria.setFoto(vProdutoCategoriaEntity.getFoto());
-        produtoCategoria.setNomeProduto(vProdutoCategoriaEntity.getNomeProduto());
-        produtosCategorias.add(produtoCategoria);
-      }
-    } catch (MestradoException e) {
-      resGetProdutosCategorias = new ResGetProdutosCategorias();
-      resGetProdutosCategorias.setRetorno(new RetornoSoap(e));
+    @WebMethod
+    public ResGetProdutosCategorias getProdutosCategorias(@WebParam(name = "req-get-produtos-categorias") @XmlElement(required = true) ReqGetProdutosCategorias
+                                                              reqGetProdutosCategorias) {
+        ResGetProdutosCategorias resGetProdutosCategorias = new ResGetProdutosCategorias();
+        try {
+            resGetProdutosCategorias.setProdutoCategoriaList(produtoDao.getProdutos(reqGetProdutosCategorias));
+        } catch (MestradoException e) {
+            resGetProdutosCategorias = new ResGetProdutosCategorias();
+            resGetProdutosCategorias.setRetorno(new RetornoSoap(e));
+        }
+        return resGetProdutosCategorias;
     }
-    return resGetProdutosCategorias;
-  }
 
-  @WebMethod
-  public ResGetProdutos getProdutosDeSync(@WebParam(name = "versao") Long versao) {
+    @WebMethod
+    public ResGetProdutos getProdutosDeSync(@WebParam(name = "versao") Long versao) {
 
-    ResGetProdutos resGetProdutos = new ResGetProdutos();
+        ResGetProdutos resGetProdutos = new ResGetProdutos();
 
-    List<ProdutoEntity> produtos;
-    try {
-      produtos = produtoDao.getProdutos(versao);
-    } catch (MestradoException e) {
-      return new ResGetProdutos(new RetornoSoap(e));
+        List<ProdutoXml> produtos;
+        try {
+            produtos = produtoDao.getProdutos(versao);
+        } catch (MestradoException e) {
+            return new ResGetProdutos(new RetornoSoap(e));
+        }
+        long versaoMax = 0;
+
+        for (ProdutoXml produtoXml : produtos) {
+            versaoMax = Math.max(versaoMax, produtoXml.getSync());
+        }
+
+        resGetProdutos.setVersaoMax(versaoMax);
+        resGetProdutos.setResGetProdutos(produtos);
+        return resGetProdutos;
     }
-    List<ProdutoXml> produtoXmlList = new ArrayList<ProdutoXml>();
-
-    long versaoMax = 0;
-
-    for (ProdutoEntity produtoEntity : produtos) {
-      ProdutoXml produtoXml = new ResGetProduto();
-      produtoXml.setNome(produtoEntity.getNome());
-      produtoXml.setCategoria(produtoEntity.getIdCategoria());
-      produtoXml.setFoto(produtoEntity.getFoto());
-      produtoXml.setId(produtoEntity.getIdProduto());
-      versaoMax=Math.max(versaoMax, produtoEntity.getSync());
-      produtoXml.setPrecoUnitario(produtoEntity.getPrecoAtual());
-      produtoXmlList.add(produtoXml);
-    }
-    resGetProdutos.setVersaoMax(versaoMax);
-    resGetProdutos.setResGetProdutos(produtoXmlList);
-    return resGetProdutos;
-  }
 
 
 /*  @WebMethod
