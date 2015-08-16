@@ -2,7 +2,7 @@ package pt.ipg.mcm.controller;
 
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
-import pt.ipg.mcm.batis.DataBaseFI;
+import pt.ipg.mcm.batis.MappedSql;
 import pt.ipg.mcm.entities.ProdutoEntity;
 import pt.ipg.mcm.entities.VProdutoCategoriaEntity;
 import pt.ipg.mcm.errors.Erro;
@@ -32,11 +32,11 @@ public class ProdutoDao {
     private DataSource mestradoDataSource;
 
     @EJB
-    private DataBaseFI dataBaseFI;
+    private MappedSql mappedSql;
 
     public ResAddProduto addProduto(ReqAddProduto reqAddProduto) throws MestradoException {
         ResAddProduto resAddProduto = new ResAddProduto();
-        SqlSession sqlSession = dataBaseFI.getSqlSession();
+        SqlSession sqlSession = mappedSql.getSqlSession();
 
         try {
             sqlSession.insert("insertProduto", reqAddProduto);

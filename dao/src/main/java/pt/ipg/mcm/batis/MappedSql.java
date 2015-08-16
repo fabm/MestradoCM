@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 import java.io.InputStream;
 
 @Singleton
-public class DataBaseFI {
+public class MappedSql {
     @Resource(lookup = "jdbc/mestrado")
     private DataSource mestradoDataSource;
     private SqlSessionFactory sqlSessionFactory;
