@@ -34,6 +34,7 @@ public class ProdutoDao {
       Connection connection = mestradoDataSource.getConnection();
       ResultSet rs = connection.createStatement().executeQuery("SELECT SEQ_PRODUTO.NEXTVAL FROM DUAL");
 
+      rs.next();
       long idProduto = rs.getLong(1);
 
       CallableStatement call = connection.prepareCall("INSERT INTO PRODUTO (ID_PRODUTO,NOME,PRECO_ATUAL,ID_CATEGORIA,FOTO)VALUES(?,?,?,?,?)");

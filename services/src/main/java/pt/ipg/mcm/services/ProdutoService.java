@@ -11,12 +11,14 @@ import pt.ipg.mcm.services.authorization.SecureService;
 import pt.ipg.mcm.validacao.Validacao;
 import pt.ipg.mcm.xmodel.*;
 
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.security.auth.login.LoginException;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.ws.WebServiceContext;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,12 +31,18 @@ public class ProdutoService extends SecureService {
   @EJB
   private ProdutoDao produtoDao;
 
+  @Resource
+  private WebServiceContext webServiceContext;
+
   @WebMethod
   public ResAddProduto addProduto(@WebParam(name = "req-add-produto") @XmlElement(required = true) ReqAddProduto reqAddProduto) throws LoginException {
     try {
-      Map<String, String> aliasMap = new HashMap<String, String>();
-      aliasMap.put("precoUnitario", "preço unitário");
+      setWsc(webServiceContext);
       checkAuthorization(Role.ADMINISTRADOR);
+
+      Map<String, String> aliasMap = new HashMap<>();
+      aliasMap.put("precoUnitario", "preço unitário");
+      Validacao.getInstance().valida(reqAddProduto, aliasMap);
       return produtoDao.addProduto(reqAddProduto);
     } catch (MestradoException e) {
       ResAddProduto resAddProduto = new ResAddProduto();
