@@ -8,12 +8,16 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import java.math.BigDecimal;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Req-add-produto")
 public class ReqAddProduto {
+
+  @XmlTransient
+  private int id;
 
   @NotEmpty
   @XmlElement(required = true)
@@ -62,4 +66,7 @@ public class ReqAddProduto {
     this.foto = value;
   }
 
+  public int getId() {
+    return id;
+  }
 }
