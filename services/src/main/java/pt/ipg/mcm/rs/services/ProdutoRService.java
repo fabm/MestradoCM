@@ -2,6 +2,7 @@ package pt.ipg.mcm.rs.services;
 
 import pt.ipg.mcm.rs.conversors.produto.GetProdutoDesyncXml2Rest;
 import pt.ipg.mcm.services.ProdutoService;
+import pt.ipg.mcm.xmodel.Categoria;
 import pt.ipg.mcm.xmodel.ReqGetProdutosCategorias;
 
 import javax.inject.Inject;
@@ -18,15 +19,15 @@ public class ProdutoRService {
   @Inject
   private ProdutoService produtoService;
 
+
+  /*
   @GET
   @Path("/porCategoria/{id}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response porCategroia(@PathParam(value = "id") Long id) {
-    ReqGetProdutosCategorias reqGetProdutosCategorias = new ReqGetProdutosCategorias();
-    reqGetProdutosCategorias.setComFoto(false);
-    reqGetProdutosCategorias.setIdCategoria(id);
     return Response.ok(produtoService.getProdutosCategorias(reqGetProdutosCategorias)).build();
   }
+*/
 
   @GET
   @Path("/{id}")

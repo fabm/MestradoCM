@@ -27,21 +27,16 @@ public class CategoriaService {
 
   @WebResult(name = "response")
   @WebMethod(operationName = "add-categoria")
-  public ResAddCategoria addCategoria(@XmlElement(required = true) @WebParam(name = "request") ReqAddCategoria reqAddCategoria) {
+  public ResAddCategoria addCategoria(@XmlElement(required = true) @WebParam(name = "request") Categoria categoria) {
     ResAddCategoria resAddCategoria = new ResAddCategoria();
     try {
       Map<String, String> aliasMap = new HashMap<String, String>();
       aliasMap.put("descricao", "descrição");
-      Validacao.getInstance().valida(reqAddCategoria, aliasMap);
-      CategoriaEntity categoriaEntity = new CategoriaEntity();
-      categoriaEntity.setDescricao(reqAddCategoria.getDescricao());
-      categoriaEntity.setNome(reqAddCategoria.getNome());
-      categoriaDao.addCategoria(categoriaEntity);
+      Validacao.getInstance().valida(categoria, aliasMap);
+      resAddCategoria.setId(categoriaDao.addCategoria(categoria));
       resAddCategoria.setRetorno(new RetornoSoap(1, "Categoria inserida com sucesso"));
     } catch (MestradoException e) {
       resAddCategoria.setRetorno(new RetornoSoap(e));
-    } catch (SQLException e) {
-      resAddCategoria.setRetorno(new RetornoSoap(new MestradoException(Erro.TECNICO)));
     }
     return resAddCategoria;
   }
@@ -51,18 +46,8 @@ public class CategoriaService {
   @ResponseWrapper(localName = "get-all-categorias-response")
   public ResGetAllCategorias getAllCategorias() {
     ResGetAllCategorias resGetAllCategorias = new ResGetAllCategorias();
-    List<CategoriaEntity> allCategorias;
     try {
-      allCategorias = categoriaDao.getAll();
-      List<Categoria> resCategorias = resGetAllCategorias.getCategorias();
-
-      for (CategoriaEntity categoriaEntity : allCategorias) {
-        Categoria categoria = new Categoria();
-        categoria.setDescricao(categoriaEntity.getDescricao());
-        categoria.setNome(categoriaEntity.getNome());
-        categoria.setId(categoriaEntity.getIdCategoria());
-        resCategorias.add(categoria);
-      }
+      resGetAllCategorias.setCategorias(categoriaDao.getAll());
       return resGetAllCategorias;
     } catch (MestradoException e) {
       resGetAllCategorias.setRetorno(new RetornoSoap(e));
@@ -73,16 +58,10 @@ public class CategoriaService {
   public ResCategoriasDesync getCategoriasDeSync(@XmlElement(required = true) @WebParam(name = "versao") Long versao) {
     ResCategoriasDesync resCategoriasDesync = new ResCategoriasDesync();
     try {
-      List<CategoriaEntity> categoriaEntities = categoriaDao.getDesync(versao);
-      List<Categoria> categorias = resCategoriasDesync.getCategorias();
+      List<Categoria> categorias = categoriaDao.getDesync(versao);
       long maxVersao = 0;
-      for (CategoriaEntity categoriaEntity : categoriaEntities) {
-        Categoria categoria = new Categoria();
-        categoria.setDescricao(categoriaEntity.getDescricao());
-        categoria.setNome(categoriaEntity.getDescricao());
-        categoria.setId(categoriaEntity.getIdCategoria());
-        maxVersao = Math.max(maxVersao, categoriaEntity.getVersao());
-        categorias.add(categoria);
+      for (Categoria categoria: categorias) {
+        maxVersao = Math.max(maxVersao, categoria.getVersao());
       }
       resCategoriasDesync.setMaxVersao(maxVersao);
       return resCategoriasDesync;

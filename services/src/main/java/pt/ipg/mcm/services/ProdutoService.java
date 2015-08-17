@@ -63,11 +63,10 @@ public class ProdutoService extends SecureService {
     }
 
     @WebMethod
-    public ResGetProdutosCategorias getProdutosCategorias(@WebParam(name = "req-get-produtos-categorias") @XmlElement(required = true) ReqGetProdutosCategorias
-                                                              reqGetProdutosCategorias) {
+    public ResGetProdutosCategorias getProdutosCategorias(@WebParam(name = "req-get-produtos-categorias") @XmlElement(required = true) Categoria categoria) {
         ResGetProdutosCategorias resGetProdutosCategorias = new ResGetProdutosCategorias();
         try {
-            resGetProdutosCategorias.setProdutoCategoriaList(produtoDao.getProdutos(reqGetProdutosCategorias));
+            resGetProdutosCategorias.setProdutoCategoriaList(produtoDao.getProdutos(categoria));
         } catch (MestradoException e) {
             resGetProdutosCategorias = new ResGetProdutosCategorias();
             resGetProdutosCategorias.setRetorno(new RetornoSoap(e));
@@ -113,6 +112,15 @@ public class ProdutoService extends SecureService {
             return new ResUpdateProduto(new RetornoSoap(e));
         }
         return resUpdateProduto;
+    }
 
+    @WebMethod
+    public ResDeleteProduto deleteProduto(@XmlElement(name = "id")Long id){
+        try {
+            produtoDao.deleteProduto(id);
+            return new ResDeleteProduto(new RetornoSoap(1,"Apagado com sucesso"));
+        } catch (MestradoException e) {
+            return new ResDeleteProduto(new RetornoSoap(e));
+        }
     }
 }

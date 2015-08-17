@@ -5,9 +5,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-/**
- * Created by BrrF on 28-01-2015.
- */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Res-delete-produto")
 public class ResDeleteProduto {
@@ -16,6 +13,13 @@ public class ResDeleteProduto {
 
     @XmlElement(required = true)
     private RetornoSoap retorno;
+
+    public ResDeleteProduto() {
+    }
+
+    public ResDeleteProduto(RetornoSoap retornoSoap) {
+        this.retorno = retornoSoap;
+    }
 
     public Long getId() {
         return id;

@@ -3,6 +3,7 @@ package pt.ipg.mcm.xmodel;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlType(name = "Categoria")
@@ -12,8 +13,14 @@ public class Categoria {
   private String nome;
   @XmlElement(name = "descricao")
   private String descricao;
-  @XmlElement(name = "id")
-  private Long id;
+  @XmlTransient
+  protected Integer id;
+  @XmlTransient
+  private Long versao;
+
+  public Long getVersao() {
+    return versao;
+  }
 
   public String getNome() {
     return nome;
@@ -31,11 +38,8 @@ public class Categoria {
     this.descricao = descricao;
   }
 
-  public Long getId() {
+  public Integer getId() {
     return id;
   }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
 }
