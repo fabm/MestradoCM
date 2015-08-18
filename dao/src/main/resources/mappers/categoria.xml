@@ -16,14 +16,15 @@
     </update>
     -->
 
-    <resultMap id="categoriaMap" type="pt.ipg.mcm.xmodel.Categoria">
+    <resultMap id="categorias" type="pt.ipg.mcm.xmodel.Categoria">
         <result property="id" column="ID_CATEGORIA"/>
         <result property="nome" column="NOME"/>
         <result property="descricao" column="DESCRICAO"/>
+        <result property="versao" column="SYNC"/>
     </resultMap>
 
-    <select id="allCategorias" resultType="categoriaMap">
-      SELECT ID_CATEGORIA,NOME, DESCRICAO FROM CATEGORIA
+    <select id="getCategorias" resultMap="categorias">
+      SELECT ID_CATEGORIA,NOME, DESCRICAO,SYNC FROM CATEGORIA
     </select>
 
     <insert id="addCategoria" statementType="CALLABLE">
