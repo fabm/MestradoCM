@@ -1,3 +1,5 @@
+package pt.ipg.mcm.myBatis.test;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -14,7 +16,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class TestDatabase {
@@ -31,25 +32,55 @@ public class TestDatabase {
 
     @Test
     public void testDatabase() throws IOException, URISyntaxException, IllegalAccessException, IntrospectionException, InvocationTargetException {
-        getCategorias();
+        getCategoria(3L);
+    }
+
+    private void deleteCategoria() {
+        SqlSession session = SQL_SESSION_FACTORY.openSession();
+
+        session.delete("deleteCategoria",201);
+
+        session.commit();
+        session.close();
+    }
+
+    private void getCategoria(Long id){
+        if(id == null){
+            id = 1L;
+        }
+        SqlSession session = SQL_SESSION_FACTORY.openSession();
+
+        printProperties(20, session.<Categoria>selectList("getCategoria", id), Categoria.class);
+
+        session.close();
+
     }
 
     private void getCategorias() {
         SqlSession session = SQL_SESSION_FACTORY.openSession();
 
-        printProperties(20, session.<Categoria>selectList("getCategorias", 1),Categoria.class);
+        printProperties(20, session.<Categoria>selectList("getCategorias", 1), Categoria.class);
 
         session.close();
     }
 
-    private <T> void printProperties(int padding, Iterable<Map<String,Object>> mapIterable) {
-        for (Map<String,Object> map:mapIterable){
+    private void getCategoriasDesync() {
+        SqlSession session = SQL_SESSION_FACTORY.openSession();
+
+        printProperties(20, session.<Categoria>selectList("getCategoriasDesync",0), Categoria.class);
+
+        session.close();
+    }
+
+    private <T> void printProperties(int padding, Iterable<Map<String, Object>> mapIterable) {
+        for (Map<String, Object> map : mapIterable) {
             System.out.println();
             printProperties(padding, map);
         }
     }
-    private <T> void printProperties(int padding, Map<String,Object> o) {
-        for(Map.Entry<String,Object>entry:o.entrySet()){
+
+    private <T> void printProperties(int padding, Map<String, Object> o) {
+        for (Map.Entry<String, Object> entry : o.entrySet()) {
             Object value = entry.getValue();
             String stringed;
             if (value == null) {

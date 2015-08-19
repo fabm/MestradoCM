@@ -72,16 +72,9 @@ public class CategoriaService {
   }
 
   @WebMethod
-  public ResGetCategoria getCategoria(@WebParam(name = "req-get-categoria") @XmlElement(required = true) Integer reqGetCategoria) {
-
+  public ResGetCategoria getCategoria(@WebParam(name = "id") @XmlElement(required = true) Integer id) {
     try {
-      CategoriaEntity categoriaEntity = categoriaDao.getCategoria(reqGetCategoria);
-      ResGetCategoria resGetcategoria = new ResGetCategoria();
-      resGetcategoria.setNome(categoriaEntity.getNome());
-      resGetcategoria.setDescricao(categoriaEntity.getDescricao());
-
-      return resGetcategoria;
-
+      return categoriaDao.getCategoria(id);
     } catch (MestradoException e) {
       ResGetCategoria resGetCategoria = new ResGetCategoria();
       resGetCategoria.setRetorno(new RetornoSoap(e));
@@ -98,18 +91,11 @@ public class CategoriaService {
       Map<String, String> aliasMap = new HashMap<String, String>();
       aliasMap.put("descricao", "descrição");
       Validacao.getInstance().valida(reqUpdateCategoria, aliasMap);
-      CategoriaEntity categoriaEntity = new CategoriaEntity();
-      categoriaEntity.setIdCategoria(reqUpdateCategoria.getIdCategoria());
-      categoriaEntity.setDescricao(reqUpdateCategoria.getDescricao());
-      categoriaEntity.setNome(reqUpdateCategoria.getNome());
-      categoriaDao.updateCategoria(categoriaEntity);
+      categoriaDao.updateCategoria(reqUpdateCategoria);
       resUpdateCategoria.setRetorno(new RetornoSoap(1, "Categoria atualizada com sucesso"));
     } catch (MestradoException e) {
       resUpdateCategoria.setRetorno(new RetornoSoap(e));
-    } catch (SQLException e) {
-      resUpdateCategoria.setRetorno(new RetornoSoap(new MestradoException(Erro.TECNICO)));
     }
-
 
     return resUpdateCategoria;
 
