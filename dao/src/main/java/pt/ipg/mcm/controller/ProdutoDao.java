@@ -9,7 +9,6 @@ import pt.ipg.mcm.xmodel.Categoria;
 import pt.ipg.mcm.xmodel.ProdutoCategoria;
 import pt.ipg.mcm.xmodel.ProdutoXml;
 import pt.ipg.mcm.xmodel.ReqAddProduto;
-import pt.ipg.mcm.xmodel.ReqGetProdutosCategorias;
 import pt.ipg.mcm.xmodel.ReqUpdateProduto;
 import pt.ipg.mcm.xmodel.ResAddProduto;
 import pt.ipg.mcm.xmodel.ResGetProduto;
@@ -22,10 +21,8 @@ import javax.sql.DataSource;
 import java.io.InputStream;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
@@ -156,7 +153,7 @@ public class ProdutoDao {
         SqlSession session = mappedSql.getSqlSession();
         try {
             session.delete("deleteProduto", id);
-        }catch (PersistenceException e){
+        } catch (PersistenceException e) {
             throw new MestradoException(Erro.TECNICO);
         } finally {
             session.close();
