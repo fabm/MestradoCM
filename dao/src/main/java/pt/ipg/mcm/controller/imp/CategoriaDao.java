@@ -23,7 +23,6 @@ public class CategoriaDao {
 
     public Integer addCategoria(final Categoria categoria) {
         SqlSession session = mappedSql.getSqlSession();
-        final HashMap<String, Object> map;
         try {
             session.insert("addCategoria", categoria);
         } finally {
@@ -76,7 +75,7 @@ public class CategoriaDao {
     public List<Categoria> getDesync(final Long versao) throws MestradoException {
         SqlSession session = mappedSql.getSqlSession();
         try {
-            return session.selectList("categoriasDesync", new HashMap<String, Long>() {{
+            return session.selectList("getCategoriasDesync", new HashMap<String, Long>() {{
                 put("sync", versao);
             }});
         } catch (PersistenceException e) {
