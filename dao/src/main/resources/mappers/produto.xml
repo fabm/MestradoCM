@@ -29,7 +29,7 @@
           PRODUTO.ID_CATEGORIA,
           PRODUTO.SYNC
         FROM PRODUTO
-        WHERE PRODUTO.SYNC > ${id}
+        WHERE PRODUTO.SYNC > #{id}
     </select>
 
     <resultMap id="produtoCategoria" type="pt.ipg.mcm.xmodel.ProdutoCategoria">
