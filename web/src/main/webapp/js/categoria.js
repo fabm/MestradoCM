@@ -24,6 +24,7 @@ var divModalConfirmDeleteCategorie = '.modalConfirmDeleteCategorie';
 
 var labelDeleteCategoriaInfo = "#labelDeleteCategoriaInfo";
 
+
 $(btnVerCamposNovaCategoria).click(function () {
     $(divNovaCategoria).show();
     $('#' + txtNomeCategoria).val('');
@@ -104,7 +105,7 @@ function successInserirCategoria(data, status, req) {
         getAllCategories();
     } else {
         $(divErrorMessageInsert).text(message);
-        $(divErrorMessageInsert).show()
+        $(divErrorMessageInsert).show();
     }
 
 }

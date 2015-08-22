@@ -3,7 +3,7 @@
  */
 $(document).ready(novoUtilizadorReady);
 
-//var ftsBtnRegistoNovoUtilizador = '#btnRegistoNovoUtilizador';
+var ftsBtnRegistoNovoUtilizador = '#btnRegistoNovoUtilizador';
 
 
 //ELEMENTOS REGISTO
@@ -20,7 +20,7 @@ var ftsTxtRegistoPassword = 'txtRegistoPassword';
 function novoUtilizadorReady (){
 
     //click add new
-$(ftsBtnRegistoNovoUtilizador).click(registarNvoUtiliz);
+$(ftsBtnRegistoNovoUtilizador).click(insertUtilizador);
 }
 
 
@@ -29,60 +29,56 @@ $(ftsBtnRegistoNovoUtilizador).click(registarNvoUtiliz);
 ///////////////////////////////////////////////////
 ///     REGISTAR NOVO UTILIZADOR
 ///////////////////////////////////////////////////
-function soapInsertNovoUtilizador (nome, morada, porta, dataNascimento, email, contacto, localidade, login, password){
-
-    var soapMsg = '';
-    soapMsg += '<ser:createUserCliente>';
-    soapMsg += '<cliente>';
-    soapMsg += '    <contribuinte>?</contribuinte>';
-    soapMsg += '    <nome> + nome + </nome>';
-    soapMsg += '    <morada>'+morada+'</morada>';
-    soapMsg += '    <porta>'+porta+'</porta>';
-    soapMsg += '    <dataNascimento>'+dataNascimento+'</dataNascimento>';
-    soapMsg += '    <email>'+email+'</email>';
-    soapMsg += '    <contacto>'+contacto+'</contacto>';
-    soapMsg += '    <localidade>'+localidade+'</localidade>';
-    soapMsg += '    <login>'+login+'</login>';
-    soapMsg += '    <password>'+password+'</password>';
-    soapMsg += '</cliente>';
-    soapMsg += '</ser:createUserCliente>';
-
-    var soapFinal =  g_soapBuilder.getSimpleEnvelope(soapMsg);
-    return soapFinal;
-}
-
-function registarNvoUtiliz(){
-
-    var mandatoyFields =  validaCampos(
-                            getVal(ftsTxtRegistoNome),
-                            getVal(ftsTxtRegistoMorada), getVal(ftsTxtRegistoNporta),
-                            getVal(ftsTxtRegistoContribuinte), getVal(ftsTxtRegistoDataNascimento),
-                            getVal(ftsTxtRegistoContacto), getVal(ftsTxtRegistoLocalidade),
-                            getVal(ftsTxtRegistoUsername), getVal(ftsTxtRegistoPassword) );
-
-    if (mandatoyFields !== false){
-        alert('BOTA INSERIR UM CAMPOS ?');
-
-        var soapNewUtilizador = soapInsertNovoUtilizador(getVal(ftsTxtRegistoNome),
-            getVal(ftsTxtRegistoMorada), getVal(ftsTxtRegistoNporta),
-            getVal(ftsTxtRegistoContribuinte), getVal(ftsTxtRegistoDataNascimento),
-            getVal(ftsTxtRegistoContacto), getVal(ftsTxtRegistoLocalidade),
-            getVal(ftsTxtRegistoUsername), getVal(ftsTxtRegistoPassword) );
+function insertUtilizador(){
 
 
-        wsUtilizadores(soapNewUtilizador, successInsertNovoUtilizador, alert('erro insert'));
+    var camposValidos =  validaCampos(
+        getVal('#' + ftsTxtRegistoNome),
+        getVal('#' + ftsTxtRegistoMorada), getVal('#' + ftsTxtRegistoNporta),
+        getVal('#' + ftsTxtRegistoContribuinte), getVal('#' + ftsTxtRegistoDataNascimento),
+        getVal('#' + ftsTxtRegistoContacto), getVal('#' + ftsTxtRegistoLocalidade),
+        getVal('#' + ftsTxtRegistoUsername), getVal('#' + ftsTxtRegistoPassword) );
+
+    if (camposValidos == true){
+        var soapMsg = '';
+        soapMsg += '<ser:createUserCliente>';
+        soapMsg += '<cliente>';
+        soapMsg += '    <contribuinte>'+ getVal('#' + ftsTxtRegistoContribuinte) +'</contribuinte>';
+        soapMsg += '    <nome> '+ getVal('#' + ftsTxtRegistoNome) + '</nome>';
+        soapMsg += '    <morada>'+ getVal('#' + ftsTxtRegistoMorada) +'</morada>';
+        soapMsg += '    <porta>'+ getVal('#' + ftsTxtRegistoNporta) +'</porta>';
+        soapMsg += '    <dataNascimento>'+ getVal('#' + ftsTxtRegistoDataNascimento) +'</dataNascimento>';
+        soapMsg += '    <email>'+ getVal('#' + ftsTxtRegistoNome)  +'</email>';
+        soapMsg += '    <contacto>'+ getVal('#' + ftsTxtRegistoContacto) +'</contacto>';
+        soapMsg += '    <localidade>'+ getVal('#' + ftsTxtRegistoLocalidade) +'</localidade>';
+        soapMsg += '    <login>'+ getVal('#' + ftsTxtRegistoUsername) +'</login>';
+        soapMsg += '    <password>'+ getVal('#' + ftsTxtRegistoPassword)  +'</password>';
+        soapMsg += '</cliente>';
+        soapMsg += '</ser:createUserCliente>';
 
 
-    }else{
-        alert('CAMPOS NULOS  !!!');
+        var soapInsertClientAndUtilizador = g_soapBuilder.getSimpleEnvelope(soapMsg);
+
+        wsUtilizador(soapInsertClientAndUtilizador, successInsUtilizadorAndCliente, tweak.errorCallBack);
+
+
+
     }
+
 }
 
+function successInsUtilizadorAndCliente(data, status, req){
+
+    //  MENSAGEM QUE VEM DO WS (succ or error)
+    var json = $.xml2json(data);
+    var retorno = json.Body.add_categoriaResponse.response.retorno;
+    var codeMessage = retorno.code;
+    var message = retorno.mensagem;
 
 
-function successInsertNovoUtilizador(data, status, req){
-    alert('*** successInsertNovoUtilizador');
-    console.log(data);
+
+
+
 }
 
 
@@ -93,55 +89,70 @@ function successInsertNovoUtilizador(data, status, req){
 ///////////////////////////////////////////////////
 function validaCampos(nome, morada, nporta, nif, dataNascimento, contacto, localidade, username, password){
     var isValid =  true;
-    //var nomeIsValid, moradaIsValid, nportaIsValid, nifIsValid, dataNascimentoIsValid, contactoIsValid, localidadeIsValid, usernameIsValid, passwordIsValid = true;
 
     if (nome === ''){
         $(classFTS(ftsTxtRegistoNome)).addClass('has-error');
         isValid = false;
+    }else{
+        $(classFTS(ftsTxtRegistoNome)).removeClass('has-error');
     }
 
-    if (morada === ''){
+    if (morada == ''){
         $(classFTS(ftsTxtRegistoMorada)).addClass('has-error');
         isValid = false;
+    }else{
+        $(classFTS(ftsTxtRegistoMorada)).removeClass('has-error');
     }
 
     if (nporta === ''){
         $(classFTS(ftsTxtRegistoNporta)).addClass('has-error');
         isValid = false;
+    }else{
+        $(classFTS(ftsTxtRegistoNporta)).removeClass('has-error');
     }
 
     if (nif === ''){
         $(classFTS(ftsTxtRegistoContribuinte)).addClass('has-error');
         isValid = false;
+    }else{
+        $(classFTS(ftsTxtRegistoContribuinte)).removeClass('has-error');
     }
 
     if (dataNascimento === ''){
         $(classFTS(ftsTxtRegistoDataNascimento)).addClass('has-error');
         isValid = false;
+    }else{
+        $(classFTS(ftsTxtRegistoDataNascimento)).removeClass('has-error');
     }
 
     if (contacto === ''){
         $(classFTS(ftsTxtRegistoContacto)).addClass('has-error');
         isValid = false;
+    }else{
+        $(classFTS(ftsTxtRegistoContacto)).removeClass('has-error');
     }
 
     if (localidade === ''){
         $(classFTS(ftsTxtRegistoLocalidade)).addClass('has-error');
         isValid = false;
+    }else{
+        $(classFTS(ftsTxtRegistoLocalidade)).removeClass('has-error');
     }
 
     if (username === ''){
         $(classFTS(ftsTxtRegistoUsername)).addClass('has-error');
         isValid = false;
+    }else{
+        $(classFTS(ftsTxtRegistoUsername)).removeClass('has-error');
     }
 
     if (password === ''){
         $(classFTS(ftsTxtRegistoPassword)).addClass('has-error');
         isValid = false;
+    }else{
+        $(classFTS(ftsTxtRegistoPassword)).removeClass('has-error');
     }
 
-    //if (nomeIsValid == false || moradaIsValid == false || nportaIsValid== false || nifIsValid == false || dataNascimentoIsValid == false || contactoIsValid == false || localidadeIsValid == false || usernameIsValid == false || passwordIsValid == false )
-    //    isValid = false;
 
     return isValid;
 }

@@ -9,9 +9,15 @@ var loginPassword = '';
 //WEB SERVICEs
 var wsURLAuthentication = "/services/Authentication";
 var wsURLEncomendas = '/services/rest/encomenda/minhas/0';
+
 var wsURLCategorias =   '/services/Categoria';
-var wsURLUtilizador = 'http://rafaxps:8080/services/Utilizador';//'services/Utilizador';
-var wsURLLocalidade = 'http://rafa_msi:8080/web/pages/';
+var wsURLProdutos =   '/services/Produto';
+var wsURLUtilizador =   '/services/Utilizador';
+var wsURLCliente =   '/services/Cliente';
+
+
+//var wsURLUtilizador = 'http://rafaxps:8080/services/Utilizador';//'services/Utilizador';
+//var wsURLLocalidade = 'http://rafa_msi:8080/web/pages/';
 
 var basicSiteURL = '';
 
@@ -26,7 +32,7 @@ var g_soapBuilder;
 //////////////////////////////////////////////
 // COOKIES
 var cookieNameLogin64Base = "dataLogin64Base";
-var cookieNameUsernameLogin = "dataUsernameLogin"
+var cookieNameUsernameLogin = "dataUsernameLogin";
 
 
 
@@ -55,14 +61,26 @@ function getVal(fts){
 
 /////////////////////////////////////////////////
 //      WS UTILIZADORES CALL
-function wsUtilizadores (soapMsg, success, error){
+function wsUtilizador (soapMsg, success, error){
     wsCall(wsURLUtilizador, soapMsg, success, error);
+}
+
+/////////////////////////////////////////////////
+//      WS CLIENTE CALL
+function wsCliente (soapMsg, success, error){
+    wsCall(wsURLCliente, soapMsg, success, error);
 }
 
 /////////////////////////////////////////////////
 //      WS CATEGORIAS CALL
 function wsCategorias(soapMsg, success, error){
     wsCall(wsURLCategorias, soapMsg, success, error);
+}
+
+/////////////////////////////////////////////////
+//      WS PRODUTOS CALL
+function wsProdutos(soapMsg, success, error){
+    wsCall(wsURLProdutos, soapMsg, success, error);
 }
 
 /////////////////////////////////////////////////
@@ -109,7 +127,7 @@ function SoapBuilder() {
 
 SoapBuilder.prototype.getSimpleEnvelope = function (bodyContent) {
     var soapMsg = "";
-    soapMsg += "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:web=\"http://webservices.testaut.ii.pt/\">\n";
+    soapMsg += "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ser=\"http://services.mcm.ipg.pt/\">\n";
     soapMsg += "\t<soapenv:Header/>\n";
     soapMsg += "\t<soapenv:Body>\n";
     soapMsg += bodyContent;
