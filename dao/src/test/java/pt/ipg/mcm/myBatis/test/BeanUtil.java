@@ -52,7 +52,7 @@ public class BeanUtil <T>{
             }
             String stringed;
             if (value == null) {
-                stringed = "\u001B[32mnull\u001B[0m";
+                stringed = "(null)";
             } else {
                 stringed = value.toString();
             }

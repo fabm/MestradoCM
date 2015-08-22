@@ -7,7 +7,7 @@ import pt.ipg.mcm.xmodel.Categoria;
 import static pt.ipg.mcm.myBatis.test.SqlUtils.SQL_SESSION_FACTORY;
 
 public class CategoriaTests {
-    private void deleteCategoria(long id) {
+    public void deleteCategoria(long id) {
         SqlSession session = SQL_SESSION_FACTORY.openSession();
 
         session.delete("deleteCategoria",id);
@@ -16,7 +16,7 @@ public class CategoriaTests {
         session.close();
     }
 
-    private void getCategoria(long id){
+    public void getCategoria(long id){
         SqlSession session = SQL_SESSION_FACTORY.openSession();
 
         new BeanUtil<>(Categoria.class,20)
@@ -26,7 +26,7 @@ public class CategoriaTests {
 
     }
 
-    private void getCategorias() {
+    public void getCategorias() {
         SqlSession session = SQL_SESSION_FACTORY.openSession();
 
         new BeanUtil<>(Categoria.class,20)
@@ -35,7 +35,7 @@ public class CategoriaTests {
         session.close();
     }
 
-    private void getCategoriasDesync(long id) {
+    public void getCategoriasDesync(long id) {
         SqlSession session = SQL_SESSION_FACTORY.openSession();
 
         new BeanUtil<>(Categoria.class,20)
