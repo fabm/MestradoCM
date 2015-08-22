@@ -33,4 +33,8 @@ public class ResGetAllCategorias {
   public void setRetorno(RetornoSoap retorno) {
     this.retorno = retorno;
   }
+
+  public void setCategorias(List<Categoria> categorias) {
+    this.categorias = categorias;
+  }
 }

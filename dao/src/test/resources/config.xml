@@ -5,9 +5,12 @@
 <configuration>
     <environments default="development">
         <environment id="development">
-            <transactionManager type="MANAGED"/>
-            <dataSource type="JNDI">
-                <property name="data_source" value="jdbc/mestrado"/>
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED" >
+                <property name="driver" value="oracle.jdbc.OracleDriver"/>
+                <property name="url" value="jdbc:oracle:thin:@//193.137.232.45:1521/test"/>
+                <property name="username" value="bda_1010136"/>
+                <property name="password" value="bda"/>
             </dataSource>
         </environment>
     </environments>

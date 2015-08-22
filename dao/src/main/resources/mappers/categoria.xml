@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="categorias">
+
+    <resultMap id="categorias" type="pt.ipg.mcm.xmodel.Categoria">
+        <result property="id" column="ID_CATEGORIA"/>
+        <result property="nome" column="NOME"/>
+        <result property="descricao" column="DESCRICAO"/>
+        <result property="versao" column="SYNC"/>
+    </resultMap>
+
+    <select id="getCategorias" resultMap="categorias">
+      SELECT ID_CATEGORIA,NOME, DESCRICAO,SYNC FROM CATEGORIA
+    </select>
+
+
+    <select id="getCategoriasDesync" resultMap="categorias">
+      SELECT ID_CATEGORIA,NOME, DESCRICAO,SYNC FROM CATEGORIA
+      WHERE SYNC > #{sync}
+    </select>
+
+    <resultMap id="resGetCategoria" extends="categorias" type="pt.ipg.mcm.xmodel.ResGetCategoria"/>
+
+    <select id="getCategoria" resultMap="resGetCategoria">
+      SELECT CATEGORIA.NOME,
+      CATEGORIA.DESCRICAO
+      FROM CATEGORIA
+      WHERE CATEGORIA.ID_CATEGORIA = #{id}
+    </select>
+
+
+    <insert id="addCategoria" statementType="CALLABLE">
+      call P_ADD_CATEGORIA(#{nome},#{descricao},#{id, mode=OUT, jdbcType=INTEGER})
+    </insert>
+
+    <update id="updateCategoria" statementType="CALLABLE">
+        call P_UPDATE_CATEGORIA(#{id},#{nome},#{descricao})
+    </update>
+
+    <delete id="deleteCategoria" statementType="CALLABLE">
+        DELETE from CATEGORIA
+        WHERE CATEGORIA.ID_CATEGORIA = #{id}
+    </delete>
+</mapper>
+
+

@@ -3,18 +3,15 @@ package pt.ipg.mcm.controller;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
 import pt.ipg.mcm.batis.MappedSql;
-import pt.ipg.mcm.entities.ProdutoEntity;
-import pt.ipg.mcm.entities.VProdutoCategoriaEntity;
 import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
+import pt.ipg.mcm.xmodel.Categoria;
 import pt.ipg.mcm.xmodel.ProdutoCategoria;
 import pt.ipg.mcm.xmodel.ProdutoXml;
 import pt.ipg.mcm.xmodel.ReqAddProduto;
-import pt.ipg.mcm.xmodel.ReqGetProdutosCategorias;
 import pt.ipg.mcm.xmodel.ReqUpdateProduto;
 import pt.ipg.mcm.xmodel.ResAddProduto;
 import pt.ipg.mcm.xmodel.ResGetProduto;
-import pt.ipg.mcm.xmodel.ResUpdateProduto;
 import pt.ipg.mcm.xmodel.RetornoSoap;
 
 import javax.annotation.Resource;
@@ -24,11 +21,8 @@ import javax.sql.DataSource;
 import java.io.InputStream;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
@@ -60,45 +54,9 @@ public class ProdutoDao {
     }
 
     public List<ProdutoXml> getProdutos(final long versao) throws MestradoException {
-/*
-        String sqlString = "SELECT PRODUTO.ID_PRODUTO,\n" +
-            "  PRODUTO.NOME,\n" +
-            "  PRODUTO.PRECO_ATUAL,\n" +
-            "  PRODUTO.FOTO,\n" +
-            "  PRODUTO.ID_CATEGORIA,\n" +
-            "  PRODUTO.SYNC\n" +
-            "FROM PRODUTO\n" +
-            "WHERE PRODUTO.SYNC > ?";
-
-        List<ProdutoEntity> produtoEntities = new ArrayList<ProdutoEntity>();
-        try {
-            Connection connection = mestradoDataSource.getConnection();
-
-            PreparedStatement call = connection.prepareStatement(sqlString);
-            call.setLong(1, versao);
-            ResultSet rs = call.executeQuery();
-
-            while (rs.next()) {
-                ProdutoEntity produtoEntity = new ProdutoEntity();
-                produtoEntity.setIdProduto(rs.getLong(1));
-                produtoEntity.setNome(rs.getString(2));
-                produtoEntity.setPrecoAtual(rs.getBigDecimal(3));
-                produtoEntity.setFoto(rs.getBytes(4));
-                produtoEntity.setIdCategoria(rs.getLong(5));
-                produtoEntity.setSync(rs.getLong(6));
-                produtoEntities.add(produtoEntity);
-            }
-
-        } catch (SQLException e) {
-            throw new MestradoException(Erro.TECNICO);
-        }
-
-
-*/
         List<ProdutoXml> list = mappedSql.getSqlSession().selectList("getProdutos", new HashMap<String, Object>() {{
             put("id", versao);
         }});
-
         return list;
     }
 
@@ -168,23 +126,11 @@ public class ProdutoDao {
 
     }
 
-    private ResultSet getResultProdutos(String strSql, long idCategoria) throws SQLException {
-        Connection connection = mestradoDataSource.getConnection();
-        PreparedStatement call = connection.prepareStatement(strSql.concat("\nWHERE ID_CATEGORIA = ?"));
-        call.setLong(1, idCategoria);
-        return call.executeQuery();
-    }
 
-    private ResultSet getResultProdutos(String strSql) throws SQLException {
-        Connection connection = mestradoDataSource.getConnection();
-        Statement call = connection.createStatement();
-        return call.executeQuery(strSql);
-    }
-
-    public List<ProdutoCategoria> getProdutos(ReqGetProdutosCategorias reqGetProdutosCategorias) throws MestradoException {
+    public List<ProdutoCategoria> getProdutos(Categoria categoria) throws MestradoException {
         SqlSession session = mappedSql.getSqlSession();
         try {
-            return session.selectList("getProdutosCategoria", reqGetProdutosCategorias);
+            return session.selectList("getProdutosCategoria", categoria);
         } catch (PersistenceException e) {
             Logger.getGlobal().severe(e.getMessage());
             throw new MestradoException(Erro.TECNICO);
@@ -202,4 +148,17 @@ public class ProdutoDao {
             session.close();
         }
     }
+
+    public void deleteProduto(Long id) throws MestradoException {
+        SqlSession session = mappedSql.getSqlSession();
+        try {
+            session.delete("deleteProduto", id);
+        } catch (PersistenceException e) {
+            throw new MestradoException(Erro.TECNICO);
+        } finally {
+            session.close();
+        }
+    }
+
+
 }

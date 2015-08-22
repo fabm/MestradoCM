@@ -6,12 +6,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-/**
- * Created by BrrF on 09-02-2015.
- */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Res-get-categoria")
-public class ResGetCategoria {
+public class ResGetCategoria extends Categoria{
 
     @NotNull
     @XmlElement(required = true)
@@ -23,22 +20,6 @@ public class ResGetCategoria {
 
     @XmlElement(required = false)
     private RetornoSoap retorno;
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
 
     public RetornoSoap getRetorno() {
         return retorno;

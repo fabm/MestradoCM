@@ -18,7 +18,7 @@ public class ReqAddCategoria {
 
   @NotEmpty
   @XmlElement(required = true)
-  protected String descricao;
+  private String descricao;
 
   public String getNome() {
     return nome;
