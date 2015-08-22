@@ -3,8 +3,8 @@ package pt.ipg.mcm.rs.services;
 import pt.ipg.mcm.calls.client.model.encomendas.GetMinhasEncomendasRest;
 import pt.ipg.mcm.calls.client.model.encomendas.UpdateEncomendasRestIn;
 import pt.ipg.mcm.calls.client.model.encomendas.UpdateEncomendasRestOut;
+import pt.ipg.mcm.rs.conversors.encomenda.R2SOutEncomendas;
 import pt.ipg.mcm.rs.conversors.encomenda.R2SinEncomendas;
-import pt.ipg.mcm.rs.conversors.encomenda.R2SoutEncomendas;
 import pt.ipg.mcm.rs.conversors.encomenda.ResMinhasEncomendasDetalhe2GetMinhasEncomendas;
 import pt.ipg.mcm.services.EncomendaService;
 import pt.ipg.mcm.xmodel.ReqAddEncomendas;
@@ -64,7 +64,7 @@ public class EncomendaRService {
       encomendaService.setRc(securityContext);
       XInEncomendas xInEncomendas = new R2SinEncomendas(updateEncomendasRestIn).converted();
       XOutEncomendas xOutEncomendas = encomendaService.postEncomendas(xInEncomendas);
-      final UpdateEncomendasRestOut response = new R2SoutEncomendas(xOutEncomendas).converted();
+      final UpdateEncomendasRestOut response = new R2SOutEncomendas(xOutEncomendas).converted();
       return Response.ok(response).build();
     } catch (LoginException e) {
       return Response.status(Response.Status.UNAUTHORIZED).build();

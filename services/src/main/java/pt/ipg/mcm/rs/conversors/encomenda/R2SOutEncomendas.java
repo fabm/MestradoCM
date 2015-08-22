@@ -8,8 +8,8 @@ import pt.ipg.mcm.xmodel.encomendas.XOutEncomendas;
 
 import java.util.List;
 
-public class R2SoutEncomendas extends AbstractConversor<XOutEncomendas,UpdateEncomendasRestOut> {
-  public R2SoutEncomendas(XOutEncomendas inObject) {
+public class R2SOutEncomendas extends AbstractConversor<XOutEncomendas,UpdateEncomendasRestOut> {
+  public R2SOutEncomendas(XOutEncomendas inObject) {
     super(inObject);
   }
 
