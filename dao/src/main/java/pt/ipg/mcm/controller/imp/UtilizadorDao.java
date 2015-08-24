@@ -1,114 +1,67 @@
 package pt.ipg.mcm.controller.imp;
 
 
-import pt.ipg.mcm.controller.SHAUtils;
-import pt.ipg.mcm.entities.PadeiroEntity;
-import pt.ipg.mcm.entities.UtilizadorPadeiroEntity;
-import pt.ipg.mcm.entities.VUtilizadorClienteEntity;
+import org.apache.ibatis.exceptions.PersistenceException;
+import org.apache.ibatis.session.SqlSession;
+import pt.ipg.mcm.batis.MappedSql;
 import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
-import pt.ipg.mcm.xmodel.ResAddUtilizador;
+import pt.ipg.mcm.xmodel.ReqAddUtilizador;
+import pt.ipg.mcm.xmodel.ResGetPadeiro;
+import pt.ipg.mcm.xmodel.UserClienteCreationRequest;
 
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.sql.DataSource;
-import java.security.NoSuchAlgorithmException;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Stateless
 public class UtilizadorDao {
 
-  @Resource(lookup = "jdbc/mestrado")
-  private DataSource mestradoDataSource;
+    @Resource(lookup = "jdbc/mestrado")
+    private DataSource mestradoDataSource;
+
+    @EJB
+    private MappedSql mappedSql;
 
 
-  public void addUtilizador(UtilizadorPadeiroEntity utilizadorPadeiroEntity) throws MestradoException {
-    try {
-      Connection connection = mestradoDataSource.getConnection();
-      ResAddUtilizador resAddUtilizador = new ResAddUtilizador();
+    public void addUtilizador(ReqAddUtilizador reqAddUtilizador) throws MestradoException {
+        SqlSession session = mappedSql.getSqlSession();
+        try {
+            session.insert("addPadeiro", reqAddUtilizador);
+        } catch (PersistenceException e) {
+            Logger.getGlobal().log(Level.SEVERE, e.getMessage(), e);
+            throw new MestradoException(Erro.TECNICO);
+        }
 
-      CallableStatement call;
-      //                             (?,?,?) (LOGIN, PASSWORD, NOME)
-      call = connection.prepareCall("{call P_ADD_UTILIZADOR_PADEIRO(?,?,?)}");
-      call.setString(1, utilizadorPadeiroEntity.getLogin());
-      call.setString(2, utilizadorPadeiroEntity.getPassword());
-      call.setString(3, utilizadorPadeiroEntity.getNome());
-
-      call.executeUpdate();
-    } catch (SQLException e) {
-      throw new MestradoException(Erro.TECNICO);
     }
-
-  }
 
 //OBTER PADEIRO
 
 
-  public PadeiroEntity getPadeiro(long idpadeiro) throws MestradoException {
-    PadeiroEntity padeiroEntity = new PadeiroEntity();
-    try {
-      String sqlString = "SELECT PADEIRO.NOME,\n" +
-          "FROM PADEIRO\n" +
-          "WHERE PADEIRO.ID_PADEIRO = ?";
-
-      Connection connection = mestradoDataSource.getConnection();
-      PreparedStatement call = connection.prepareStatement(sqlString);
-      call.setLong(1, idpadeiro);
-      ResultSet rs = call.executeQuery();
-
-      if (!rs.next()) {
-        throw new MestradoException(Erro.PADEIRO_NAO_ENCONTRADO, idpadeiro);
-      }
-
-      padeiroEntity.setNome(rs.getString(1));
-
-
-    } catch (SQLException e) {
-      throw new MestradoException(Erro.TECNICO);
+    public ResGetPadeiro getPadeiro(long idpadeiro) {
+        SqlSession session = mappedSql.getSqlSession();
+        ResGetPadeiro resGetPadeiro = session.selectOne("getPadeiro", idpadeiro);
+        session.close();
+        return resGetPadeiro;
     }
 
-    return padeiroEntity;
 
-  }
+    public void createUserCliente(UserClienteCreationRequest utilizadorCliente) throws MestradoException {
+        try {
+            SqlSession session = mappedSql.getSqlSession();
+            int count = session.selectOne("countUtilizadorByLogin",utilizadorCliente.getLogin());
 
+            if (count>0) {
+                throw new MestradoException(Erro.LOGIN_JA_EXISTENTE, utilizadorCliente.getLogin());
+            }
 
-  public void createUserCliente(VUtilizadorClienteEntity utilizadorCliente) throws MestradoException {
-    try {
-      Connection connection = mestradoDataSource.getConnection();
-
-      PreparedStatement ps = connection.prepareStatement("SELECT * FROM UTILIZADOR\n" +
-          "WHERE  utilizador.LOGIN = ?");
-
-      ps.setString(1, utilizadorCliente.getLogin());
-
-      if (ps.executeQuery().next()) {
-        throw new MestradoException(Erro.LOGIN_JA_EXISTENTE, utilizadorCliente.getLogin());
-      }
-
-      CallableStatement call = connection.prepareCall("{call P_ADD_UTILIZADOR_CLIENTE(?,?,?,?,?,?,?,?,?,?)}");
-      call.setLong(1, utilizadorCliente.getContribuinte());
-      call.setString(2, utilizadorCliente.getNome());
-      call.setString(3, utilizadorCliente.getMorada());
-      call.setString(4, utilizadorCliente.getNporta());
-      call.setDate(5, new Date(utilizadorCliente.getDatanascimento().getTime()));
-      call.setString(6, utilizadorCliente.getEmail());
-      call.setString(7, utilizadorCliente.getContacto());
-      call.setLong(8, utilizadorCliente.getLocalidade());
-      call.setString(9, utilizadorCliente.getLogin());
-      call.setString(10, SHAUtils.hashingSHA256(utilizadorCliente.getPassword()));
-
-      call.execute();
-    } catch (SQLException e) {
-      e.printStackTrace();
-      throw new MestradoException(Erro.TECNICO);
-    } catch (NoSuchAlgorithmException e) {
-      e.printStackTrace();
-      throw new MestradoException(Erro.TECNICO);
+            session.insert("addCliente",utilizadorCliente);
+        } catch (PersistenceException e) {
+            e.printStackTrace();
+            throw new MestradoException(Erro.TECNICO);
+        }
     }
-  }
 }

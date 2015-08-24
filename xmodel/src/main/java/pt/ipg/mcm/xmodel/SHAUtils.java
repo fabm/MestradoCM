@@ -1,4 +1,4 @@
-package pt.ipg.mcm.controller;
+package pt.ipg.mcm.xmodel;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

@@ -10,12 +10,7 @@ import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.services.authorization.Role;
 import pt.ipg.mcm.services.authorization.SecureService;
 import pt.ipg.mcm.validacao.Validacao;
-import pt.ipg.mcm.xmodel.ReqAddUtilizador;
-import pt.ipg.mcm.xmodel.ResAddUtilizador;
-import pt.ipg.mcm.xmodel.ResCreationUserClient;
-import pt.ipg.mcm.xmodel.ResGetUtilizador;
-import pt.ipg.mcm.xmodel.RetornoSoap;
-import pt.ipg.mcm.xmodel.UserClienteCreationRequest;
+import pt.ipg.mcm.xmodel.*;
 
 import javax.inject.Inject;
 import javax.jws.WebMethod;
@@ -44,13 +39,8 @@ public class UtilizadorService extends SecureService {
       aliasMap.put("idUtilizador", "Utilizador");
       Validacao.getInstance().valida(reqAddUtilizador, aliasMap);
       checkAuthorization(Role.ADMINISTRADOR);
-      UtilizadorPadeiroEntity utilizadorPadeiroEntity = new UtilizadorPadeiroEntity();
 
-      utilizadorPadeiroEntity.setLogin(reqAddUtilizador.getLogin());
-      utilizadorPadeiroEntity.setPassword(reqAddUtilizador.getPassword());
-      utilizadorPadeiroEntity.setNome(reqAddUtilizador.getName());
-
-      utilizadorDao.addUtilizador(utilizadorPadeiroEntity);
+      utilizadorDao.addUtilizador(reqAddUtilizador);
 
       ResAddUtilizador resAddUtilizador = new ResAddUtilizador();
       resAddUtilizador.setRetorno(new RetornoSoap(1, "Padeiro Adicionado Com Sucesso. "));
@@ -66,20 +56,14 @@ public class UtilizadorService extends SecureService {
   }
 
   @WebMethod
-  public ResGetUtilizador getUtilizadorPadeiro(@WebParam(name = "versao") Long versao) {
-    ResGetUtilizador resGetUtilizador = new ResGetUtilizador();
-    try {
-      PadeiroEntity padeiro = utilizadorDao.getPadeiro(versao);
-
-    } catch (MestradoException e) {
-      resGetUtilizador.setRetorno(new RetornoSoap(e));
-    }
-    return resGetUtilizador;
+  public ResGetPadeiro getUtilizadorPadeiro(@WebParam(name = "id") Long id) {
+      return utilizadorDao.getPadeiro(id);
   }
 
   @WebMethod
   public ResCreationUserClient createUserCliente(@WebParam(name = "cliente") UserClienteCreationRequest userClienteCreationRequest) {
     try {
+/*
       VUtilizadorClienteEntity user = new VUtilizadorClienteEntity();
       user.setContribuinte(userClienteCreationRequest.getContribuinte());
       user.setLogin(userClienteCreationRequest.getLogin());
@@ -94,6 +78,9 @@ public class UtilizadorService extends SecureService {
       user.setMorada(userClienteCreationRequest.getMorada());
       utilizadorDao.createUserCliente(user);
       return new ResCreationUserClient();
+*/
+      utilizadorDao.createUserCliente(userClienteCreationRequest);
+      return null;
     } catch (MestradoException e) {
       return new ResCreationUserClient(e);
     }

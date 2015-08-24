@@ -14,22 +14,9 @@ public class ResGetProdutosCategorias {
   @XmlElement(name = "produto-categoria", required = true)
   private List<ProdutoCategoria> produtoCategoriaList;
 
-  @XmlElement(required = false)
-  private RetornoSoap retorno;
 
   public List<ProdutoCategoria> getProdutoCategoriaList() {
-    if (produtoCategoriaList == null) {
-      produtoCategoriaList = new ArrayList<ProdutoCategoria>();
-    }
     return this.produtoCategoriaList;
-  }
-
-  public RetornoSoap getRetorno() {
-    return retorno;
-  }
-
-  public void setRetorno(RetornoSoap retorno) {
-    this.retorno = retorno;
   }
 
   public void setProdutoCategoriaList(List<ProdutoCategoria> produtoCategoriaList) {

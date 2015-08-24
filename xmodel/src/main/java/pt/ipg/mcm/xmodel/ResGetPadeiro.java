@@ -4,28 +4,15 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.List;
 
-/**
- * Created by BrrF on 22-01-2015.
- */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ResGetPadeiro {
-    private RetornoSoap retorno;
+    private String nome;
 
-    private List<ResGetPadeiro> resGetPadeiros;
-
-    public RetornoSoap getRetorno() {
-        return retorno;
+    public String getNome() {
+        return nome;
     }
 
-    public void setRetorno(RetornoSoap retorno) {
-        this.retorno = retorno;
-    }
-
-    public List<ResGetPadeiro> getResGetPadeiros() {
-        return resGetPadeiros;
-    }
-
-    public void setResGetPadeiros(List<ResGetPadeiro> resGetPadeiros) {
-        this.resGetPadeiros = resGetPadeiros;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 }

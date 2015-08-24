@@ -45,7 +45,7 @@
         SELECT NOME_CATEGORIA, DESCRICAO,PRECO_ATUAL,NOME_PRODUTO, ID_PRODUTO
         <if test="comFoto">, FOTO</if>
         FROM V_PRODUTO_CATEGORIA
-        <if test="idCategoria != null">WHERE ID_CATEGORIA = ${categoria}</if>
+        <if test="categoria != null">WHERE ID_CATEGORIA = ${categoria}</if>
     </select>
 
     <resultMap id="resGetProduto" extends="produtoXml" type="pt.ipg.mcm.xmodel.ResGetProduto"/>
@@ -60,13 +60,14 @@
 
     <update id="updateProduto">
         UPDATE PRODUTO
-        SET NOME = '#{nome}', PRECO_ATUAL = #{precoUnitario}, ID_CATEGORIA = #{categoria},
+        SET NOME = #{nome}, PRECO_ATUAL = #{precoUnitario}, ID_CATEGORIA = #{categoria},
         <choose>
             <when test="foto == null">FOTO = NULL</when>
             <otherwise>FOTO = #{foto}</otherwise>
         </choose>
         WHERE ID_PRODUTO = #{idProduto}
     </update>
+
     <delete id="deleteProduto">
         DELETE from PRODUTO
         WHERE ID_PRODUTO = #{id}

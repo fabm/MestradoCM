@@ -32,7 +32,7 @@
 
 
     <insert id="addCategoria" statementType="CALLABLE">
-      call P_ADD_CATEGORIA(#{nome},#{descricao},#{id, mode=OUT, jdbcType=INTEGER})
+        {call P_ADD_CATEGORIA(#{nome},#{descricao},#{id, mode=OUT, jdbcType=INTEGER})}
     </insert>
 
     <update id="updateCategoria" statementType="CALLABLE">

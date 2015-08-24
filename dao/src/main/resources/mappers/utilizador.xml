@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="utilizador">
+    <insert id="addPadeiro" statementType="CALLABLE">
+        {call P_ADD_UTILIZADOR_PADEIRO(
+                #{login},
+                #{password},
+                #{nome})
+        }
+    </insert>
+    <insert id="addCliente" statementType="CALLABLE">
+        {call P_ADD_UTILIZADOR_CLIENTE(
+                #{contribuinte},
+                #{nome},
+                #{morada},
+                #{porta},
+                #{dataNascimento},
+                #{email},
+                #{contacto},
+                #{localidade},
+                #{login},
+                #{passwordHash})
+        }
+    </insert>
+
+    <select id="getPadeiro" resultType="pt.ipg.mcm.xmodel.ResGetPadeiro">
+        SELECT PADEIRO.NOME,
+        FROM PADEIRO
+        WHERE PADEIRO.ID_PADEIRO = #{id}
+    </select>
+
+    <select id="countUtilizadorByLogin">
+        SELECT count(*) num FROM UTILIZADOR
+        WHERE  utilizador.LOGIN = #{id}
+    </select>
+
+</mapper>

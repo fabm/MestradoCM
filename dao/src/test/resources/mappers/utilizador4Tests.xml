@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="utilizador4Tests">
+    <select id="selectUser" resultType="int">
+        SELECT UTILIZADOR.id_utilizador from UTILIZADOR
+        WHERE login = #{login}
+    </select>
+
+    <delete id="deleteUsers">
+        DELETE from utilizador
+        WHERE id_utilizador in
+        <foreach item="item" index="index" collection="ids"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="deleteClients">
+        DELETE from CLIENTE
+        WHERE CLIENTE.UTILIZADOR in
+        <foreach item="item" index="index" collection="ids"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

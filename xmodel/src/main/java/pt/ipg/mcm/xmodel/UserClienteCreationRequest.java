@@ -2,6 +2,7 @@ package pt.ipg.mcm.xmodel;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -93,7 +94,8 @@ public class UserClienteCreationRequest {
     return login;
   }
 
-  public String getPassword() {
-    return password;
+  public String getPasswordHash() throws NoSuchAlgorithmException {
+    return SHAUtils.hashingSHA256(password);
   }
+
 }

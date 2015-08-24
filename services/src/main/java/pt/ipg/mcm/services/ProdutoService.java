@@ -1,10 +1,6 @@
 package pt.ipg.mcm.services;
 
 import pt.ipg.mcm.controller.ProdutoDao;
-import pt.ipg.mcm.entities.CategoriaEntity;
-import pt.ipg.mcm.entities.ProdutoEntity;
-import pt.ipg.mcm.entities.VProdutoCategoriaEntity;
-import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.services.authorization.Role;
 import pt.ipg.mcm.services.authorization.SecureService;
@@ -19,8 +15,6 @@ import javax.jws.WebService;
 import javax.security.auth.login.LoginException;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.ws.WebServiceContext;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,14 +57,10 @@ public class ProdutoService extends SecureService {
     }
 
     @WebMethod
-    public ResGetProdutosCategorias getProdutosCategorias(@WebParam(name = "req-get-produtos-categorias") @XmlElement(required = true) Categoria categoria) {
+    public ResGetProdutosCategorias getProdutosCategorias(@WebParam(name = "req-get-produtos-categorias") @XmlElement(name = "categoria") long categoria) {
         ResGetProdutosCategorias resGetProdutosCategorias = new ResGetProdutosCategorias();
-        try {
-            resGetProdutosCategorias.setProdutoCategoriaList(produtoDao.getProdutos(categoria));
-        } catch (MestradoException e) {
-            resGetProdutosCategorias = new ResGetProdutosCategorias();
-            resGetProdutosCategorias.setRetorno(new RetornoSoap(e));
-        }
+        resGetProdutosCategorias.setProdutoCategoriaList(produtoDao.getProdutosCategoria(categoria));
+        resGetProdutosCategorias = new ResGetProdutosCategorias();
         return resGetProdutosCategorias;
     }
 
@@ -115,10 +105,10 @@ public class ProdutoService extends SecureService {
     }
 
     @WebMethod
-    public ResDeleteProduto deleteProduto(@XmlElement(name = "id")Long id){
+    public ResDeleteProduto deleteProduto(@XmlElement(name = "id") Long id) {
         try {
             produtoDao.deleteProduto(id);
-            return new ResDeleteProduto(new RetornoSoap(1,"Apagado com sucesso"));
+            return new ResDeleteProduto(new RetornoSoap(1, "Apagado com sucesso"));
         } catch (MestradoException e) {
             return new ResDeleteProduto(new RetornoSoap(e));
         }

@@ -85,8 +85,8 @@ public class ProdutoDao {
     public void saveFoto(long id, InputStream inputStream) throws MestradoException {
         try {
             String sqlString = "UPDATE PRODUTO\n" +
-                "SET FOTO = ?\n" +
-                "WHERE ID_PRODUTO = ?";
+                    "SET FOTO = ?\n" +
+                    "WHERE ID_PRODUTO = ?";
             Connection connection = mestradoDataSource.getConnection();
             CallableStatement call = connection.prepareCall(sqlString);
 
@@ -104,8 +104,8 @@ public class ProdutoDao {
 
     public InputStream getFoto(Long id) throws MestradoException {
         String sqlString = "SELECT PRODUTO.FOTO\n" +
-            "FROM PRODUTO\n" +
-            "WHERE PRODUTO.ID_PRODUTO = ?";
+                "FROM PRODUTO\n" +
+                "WHERE PRODUTO.ID_PRODUTO = ?";
 
         try {
             Connection connection = mestradoDataSource.getConnection();
@@ -161,4 +161,16 @@ public class ProdutoDao {
     }
 
 
+    public List<ProdutoCategoria> getProdutosCategoria(final long categoria) {
+        SqlSession session = mappedSql.getSqlSession();
+        List<ProdutoCategoria> list;
+        try {
+            list = session.selectList("getProdutosCategoria", new HashMap<String, Object>() {{
+                put("categoria", categoria);
+            }});
+            return list;
+        } finally {
+            session.close();
+        }
+    }
 }

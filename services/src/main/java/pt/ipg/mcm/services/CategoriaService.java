@@ -1,8 +1,6 @@
 package pt.ipg.mcm.services;
 
 import pt.ipg.mcm.controller.imp.CategoriaDao;
-import pt.ipg.mcm.entities.CategoriaEntity;
-import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.validacao.Validacao;
 import pt.ipg.mcm.xmodel.*;
@@ -14,7 +12,6 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.ws.ResponseWrapper;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

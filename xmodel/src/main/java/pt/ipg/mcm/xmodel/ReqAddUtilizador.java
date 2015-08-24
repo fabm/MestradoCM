@@ -7,10 +7,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-/**
- * Created by BrrF on 19-01-2015.
- */
-
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name="Req-add-utilizador")
 public class ReqAddUtilizador {
