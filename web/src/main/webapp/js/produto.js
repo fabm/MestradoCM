@@ -29,38 +29,56 @@ var labelDeleteProdutoInfo = '#labelDeleteProdutoInfo';
 
 var idProdutoToChangeInDB = 0;
 
+
+var comboboxListCategoriasInProdutos = '.comboboxListCategoriasInProdutos';
+
+
+var tableListProdFinal;
+
 ////////////////////////////////////////////////////////
 //			COMBOBOX SELECT VALUE
 
 
 $(btnVerCamposNovoProduto).click(function () {
     $(divNovoProduto).show();
+    getAllCategoriasInProdutos();
+
+
+    $(ddlCategoriasInProdutos).change(function () {
+        idcategoriaProdut = $(this).data("id");
+    });
+
+    // $(ddlCategoriasInProdutos + ' li a').click(function () {
+    //    var selText = $(this).text();
+    //    $(this).parents('.btn-group').find('.dropdown-toggle').html(selText + ' <span class="caret"></span>');
+    //    idcategoriaProdut = $(this).data("id");
+    //    alert("ID : " + idcategoriaProdut)
+    //});
+
 
 });
 
 
 function pageProdutosReady() {
-    getAllCategoriasInProdutos();
+
+    $(comboboxListCategoriasInProdutos).combobox()
 
     getAllProdutos();
 
     $(tableListAllProdutos).DataTable();
 
 
-    $(".dropdownAllCat li a").click(function () {
-        var selText = $(this).text();
-        $(this).parents('.btn-group').find('.dropdown-toggle').html(selText + ' <span class="caret"></span>');
-        idcategoriaProdut = $(this).data("id");
-        alert("ID : " + idcategoriaProdut)
-    });
+    //$(".dropdownAllCat li a").click(function () {
 
 
     $(btnRegistoNovoProduto).click(function () {
         alert(" CLICK CLICK ");
         inserirProduto();
+
+
     });
 
-
+    $(btnConfirmDeleteProduto).click(deleteProduto);
 
 
 }
@@ -94,13 +112,13 @@ function getAllProdutos() {
     $('.tableListAllProdutos td.delete a').click(function () {
         idProdutoToChangeInDB = $(this).data('id');
 
-        $(labelDeleteProdutoInfo).text('Produto : ' + $(this).data('nome') );
+        $(labelDeleteProdutoInfo).text('Produto : ' + $(this).data('nome'));
         $(modalConfirmDeleteProduto).modal('show');
 
         //showEditElementProduto($(this).data('nome'), $(this).data('precounit'), $(this).data('categoriaid'));
         //alert('DELETE :  ' + idProdutoToChangeInDB);
 
-        $(btnConfirmDeleteProduto).click( deleteProduto );
+
     });
 
 }
@@ -134,25 +152,50 @@ function successGetAllProdutos(data, status, req) {
 
 function inserirProduto() {
 
-    var camposValidos = validaCamposProduto(getVal("#" + txtNomeProduto), getVal("#" + txtPrecoProduto), idcategoriaProdut);
+    var camposValidos = validaCamposProduto(getVal("#" + txtNomeProduto), getVal("#" + txtPrecoProduto), getVal(ddlCategoriasInProdutos));
+
 
     if (camposValidos == true) {
         var soapMsg = '';
 
-        soapMsg += '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.mcm.ipg.pt/">';
-        soapMsg += '<soapenv:Header/>';
-        soapMsg += '<soapenv:Body>';
-        soapMsg += '<ser:addProduto>';
-        soapMsg += '<req-add-produto>';
-        soapMsg += '<nome>' + getVal("#" + txtNomeProduto) + '</nome>';
-        soapMsg += '<preco-unitario>' + getVal("#" + txtPrecoProduto) + '</preco-unitario>';
-        soapMsg += '<categoria>' + idcategoriaProdut + '</categoria>';
-        soapMsg += '</req-add-produto>';
-        soapMsg += '</ser:addProduto>';
-        soapMsg += '</soapenv:Body>';
-        soapMsg += '</soapenv:Envelope>';
+        if (idProdutoToChangeInDB != '0') {
+            //     UPDATE
+            soapMsg = '';
+            soapMsg += '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.mcm.ipg.pt/">';
+            soapMsg += '    <soapenv:Header/>';
+            soapMsg += '<soapenv:Body>';
+            soapMsg += '<ser:updateProduto>';
+            soapMsg += '<req-update-produtp>';
+            soapMsg += '<idProduto> ' + idProdutoToChangeInDB + ' </idProduto>';
+            soapMsg += '<nome>' + getVal("#" + txtNomeProduto) + '</nome>';
+            soapMsg += '<preco-unitario>' + getVal("#" + txtPrecoProduto) + '</preco-unitario>';
+            soapMsg += '<categoria> ' + idcategoriaProdut + ' </categoria>';
+            soapMsg += '</req-update-produtp>';
+            soapMsg += '</ser:updateProduto>';
+            soapMsg += '</soapenv:Body>';
+            soapMsg += '</soapenv:Envelope>';
 
-        wsProdutos(soapMsg, successInserirProduto, tweak.errorCallBack);
+
+        } else {
+            //    INSERT
+            soapMsg = '';
+            soapMsg += ' <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.mcm.ipg.pt/">';
+            soapMsg += ' <soapenv:Header/>';
+            soapMsg += ' <soapenv:Body>';
+            soapMsg += ' <ser:addProduto>';
+            soapMsg += ' <req-add-produto>';
+            soapMsg += ' <nome>' + getVal('#' + txtNomeProduto) + '</nome>';
+            soapMsg += ' <preco-unitario>' + getVal('#' + txtPrecoProduto) + '</preco-unitario>';
+            soapMsg += ' <categoria>' + getVal(ddlCategoriasInProdutos) + '</categoria>';
+            soapMsg += ' </req-add-produto>';
+            soapMsg += ' </ser:addProduto>';
+            soapMsg += ' </soapenv:Body>';
+            soapMsg += ' </soapenv:Envelope>';
+
+
+        }
+
+        wsProdutos(soapMsg, successProduto, tweak.errorCallBack);
 
     }
 
@@ -176,7 +219,26 @@ function showEditElementProduto(nome, precoUnit, idCategoria) {
 }
 
 
-function successInserirProduto(data, status, req) {
+function successProduto(data, status, req) {
+    //LIMPAR && LOAD &&
+    var json = $.xml2json(data);
+    var retorno = json.Body.addProdutoResponse.return.retorno;
+
+    var codeMessage = retorno.codigo;
+    var message = retorno.mensagem;
+
+    if (codeMessage == "1") {
+        $(messageSuccessInsertProduto).text(message);
+        $(messageSuccessInsertProduto).show()
+        cleanProdutosFields()
+
+    } else {
+        $(messageErrorInsertProduto).text(message);
+        $(messageErrorInsertProduto).show()
+
+
+    }
+
 
 }
 
@@ -232,51 +294,56 @@ function successGetAllCategoriasInProdutos(data, status, req) {
 
     var htmlDLLCat = '';
 
+    $(ddlCategoriasInProdutos).append('<option value="" selected> Seleccionar uma Categoria ! </option>');
+
+
     categorias.forEach(function (element, index, array) {
         var id = element.id;
         var nome = element.nome;
+
         var descript = element.descricao;
 
+
         //htmlDLLCat = "<li><a href=\"#\" >" + nome +"</a></li>";
-        htmlDLLCat = '<li><a data-id="' + id + '" href="#" title=' + descript + '>' + nome + '</a></li>';
+        //htmlDLLCat = '<li><a data-id="' + id + '" href="#" title=' + descript + '>' + nome + '</a></li>';
+        htmlDLLCat = '<option value="' + id + '"> ' + nome + ' </option>';
         $(ddlCategoriasInProdutos).append(htmlDLLCat);
     });
 
-    var htmlAddNewCategoria = '';
-    htmlAddNewCategoria += '<li class="divider"></li>';
-    htmlAddNewCategoria += '<li><a href="../pages/categoria.html"><span class="glyphicon glyphicon-plus"></span> Nova </a></li>';
 
-    $(ddlCategoriasInProdutos).append(htmlAddNewCategoria);
+    //var htmlAddNewCategoria = '';
+    //htmlAddNewCategoria += '<li class="divider"></li>';
+    //htmlAddNewCategoria += '<li><a href="../pages/categoria.html"><span class="glyphicon glyphicon-plus"></span> Nova </a></li>';
+
+
 }
 
 
-
-function deleteProduto(){
+function deleteProduto() {
     var soapMsg = '';
 
     soapMsg += '<ser:deleteProduto>';
-    soapMsg += '<id>'+ idProdutoToChangeInDB +'</id>';
+    soapMsg += '<id>' + idProdutoToChangeInDB + '</id>';
     soapMsg += '</ser:deleteProduto>';
 
-    var soapDeleteProd =  g_soapBuilder.getSimpleEnvelope(soapMsg);
+    var soapDeleteProd = g_soapBuilder.getSimpleEnvelope(soapMsg);
 
-    wsProdutos(soapDeleteProd, successDeleteProduto, tweak.errorCallBack );
+    wsProdutos(soapDeleteProd, successDeleteProduto, tweak.errorCallBack);
 
 }
 
-function successDeleteProduto(data, status, req){
+function successDeleteProduto(data, status, req) {
     var json = $.xml2json(data);
     var retorno = json.Body.deleteProdutoResponse.return.retorno;
 
     var codeMessage = retorno.codigo;
     var message = retorno.mensagem;
 
-    if (codeMessage != "1") {
+    if (codeMessage == "1") {
         $(messageSuccessInsertProduto).text(message);
         $(messageSuccessInsertProduto).show()
         $(modalConfirmDeleteProduto).modal('hide');
         cleanProdutosFields()
-        getAllProdutos();
     } else {
         $(messageErrorInsertProduto).text(message);
         $(messageErrorInsertProduto).show()
@@ -285,11 +352,12 @@ function successDeleteProduto(data, status, req){
 }
 
 
-
 function cleanProdutosFields() {
+    getAllProdutos();
     idcategoriaProdut = 0;
     $("#" + txtNomeProduto).val('');
     $("#" + txtPrecoProduto).val('');
+    $(ddlCategoriasInProdutos).val("");
 
     $("#" + txtNomeProduto).removeClass('has-error');
     $("#" + txtPrecoProduto).removeClass('has-error');
@@ -297,7 +365,6 @@ function cleanProdutosFields() {
     idProdutoToChangeInDB = 0;
 
     $(btnRegistoNovoProduto).text('Guardar Novo Produto');
-
 
 
 }
