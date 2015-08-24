@@ -44,12 +44,16 @@ $(btnVerCamposNovoProduto).click(function () {
     getAllCategoriasInProdutos();
 
 
-    $(ddlCategoriasInProdutos + ' li a').click(function () {
-        var selText = $(this).text();
-        $(this).parents('.btn-group').find('.dropdown-toggle').html(selText + ' <span class="caret"></span>');
+    $(ddlCategoriasInProdutos).change(function () {
         idcategoriaProdut = $(this).data("id");
-        alert("ID : " + idcategoriaProdut)
     });
+
+    // $(ddlCategoriasInProdutos + ' li a').click(function () {
+    //    var selText = $(this).text();
+    //    $(this).parents('.btn-group').find('.dropdown-toggle').html(selText + ' <span class="caret"></span>');
+    //    idcategoriaProdut = $(this).data("id");
+    //    alert("ID : " + idcategoriaProdut)
+    //});
 
 
 });
@@ -148,7 +152,7 @@ function successGetAllProdutos(data, status, req) {
 
 function inserirProduto() {
 
-    var camposValidos = validaCamposProduto(getVal("#" + txtNomeProduto), getVal("#" + txtPrecoProduto), idcategoriaProdut);
+    var camposValidos = validaCamposProduto(getVal("#" + txtNomeProduto), getVal("#" + txtPrecoProduto), getVal(ddlCategoriasInProdutos));
 
 
     if (camposValidos == true) {
@@ -175,18 +179,20 @@ function inserirProduto() {
         } else {
             //    INSERT
             soapMsg = '';
-            soapMsg += '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.mcm.ipg.pt/">';
-            soapMsg += '<soapenv:Header/>';
-            soapMsg += '<soapenv:Body>';
-            soapMsg += '<ser:addProduto>';
-            soapMsg += '<req-add-produto>';
-            soapMsg += '<nome>' + getVal("#" + txtNomeProduto) + '</nome>';
-            soapMsg += '<preco-unitario>' + getVal("#" + txtPrecoProduto) + '</preco-unitario>';
-            soapMsg += '<categoria>' + idcategoriaProdut + '</categoria>';
-            soapMsg += '</req-add-produto>';
-            soapMsg += '</ser:addProduto>';
-            soapMsg += '</soapenv:Body>';
-            soapMsg += '</soapenv:Envelope>';
+            soapMsg += ' <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.mcm.ipg.pt/">';
+            soapMsg += ' <soapenv:Header/>';
+            soapMsg += ' <soapenv:Body>';
+            soapMsg += ' <ser:addProduto>';
+            soapMsg += ' <req-add-produto>';
+            soapMsg += ' <nome>' + getVal('#' + txtNomeProduto) + '</nome>';
+            soapMsg += ' <preco-unitario>' + getVal('#' + txtPrecoProduto) + '</preco-unitario>';
+            soapMsg += ' <categoria>' + getVal(ddlCategoriasInProdutos) + '</categoria>';
+            soapMsg += ' </req-add-produto>';
+            soapMsg += ' </ser:addProduto>';
+            soapMsg += ' </soapenv:Body>';
+            soapMsg += ' </soapenv:Envelope>';
+
+
         }
 
         wsProdutos(soapMsg, successProduto, tweak.errorCallBack);
@@ -288,21 +294,28 @@ function successGetAllCategoriasInProdutos(data, status, req) {
 
     var htmlDLLCat = '';
 
+    $(ddlCategoriasInProdutos).append('<option value="" selected> Seleccionar uma Categoria ! </option>');
+
+
     categorias.forEach(function (element, index, array) {
         var id = element.id;
         var nome = element.nome;
+
         var descript = element.descricao;
 
+
         //htmlDLLCat = "<li><a href=\"#\" >" + nome +"</a></li>";
-        htmlDLLCat = '<li><a data-id="' + id + '" href="#" title=' + descript + '>' + nome + '</a></li>';
+        //htmlDLLCat = '<li><a data-id="' + id + '" href="#" title=' + descript + '>' + nome + '</a></li>';
+        htmlDLLCat = '<option value="' + id + '"> ' + nome + ' </option>';
         $(ddlCategoriasInProdutos).append(htmlDLLCat);
     });
 
-    var htmlAddNewCategoria = '';
-    htmlAddNewCategoria += '<li class="divider"></li>';
-    htmlAddNewCategoria += '<li><a href="../pages/categoria.html"><span class="glyphicon glyphicon-plus"></span> Nova </a></li>';
 
-    $(ddlCategoriasInProdutos).append(htmlAddNewCategoria);
+    //var htmlAddNewCategoria = '';
+    //htmlAddNewCategoria += '<li class="divider"></li>';
+    //htmlAddNewCategoria += '<li><a href="../pages/categoria.html"><span class="glyphicon glyphicon-plus"></span> Nova </a></li>';
+
+
 }
 
 
@@ -344,6 +357,7 @@ function cleanProdutosFields() {
     idcategoriaProdut = 0;
     $("#" + txtNomeProduto).val('');
     $("#" + txtPrecoProduto).val('');
+    $(ddlCategoriasInProdutos).val("");
 
     $("#" + txtNomeProduto).removeClass('has-error');
     $("#" + txtPrecoProduto).removeClass('has-error');
