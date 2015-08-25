@@ -1,19 +1,39 @@
 package javax.ejb;
 
+import com.google.inject.Injector;
 import com.google.inject.MembersInjector;
+import com.google.inject.Provider;
 import com.google.inject.TypeLiteral;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
 
+import javax.annotation.PostConstruct;
 import java.lang.reflect.Field;
-import java.util.List;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Map;
 
 public class EJBInjectionListener implements TypeListener {
 
-    private List<Class<?>> ejbClasses;
+    private Provider<Injector> injectorProvider;
 
-    public EJBInjectionListener(List<Class<?>> ejbClasses) {
-        this.ejbClasses = ejbClasses;
+    public EJBInjectionListener(Provider<Injector> injectorProvider) {
+        this.injectorProvider = injectorProvider;
+    }
+
+    public static <I>void runPostConstruct(I instance){
+        for(Method method:instance.getClass().getDeclaredMethods()){
+            if(method.getAnnotation(PostConstruct.class)!=null){
+                method.setAccessible(true);
+                try {
+                    method.invoke(instance);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     @Override
@@ -22,20 +42,12 @@ public class EJBInjectionListener implements TypeListener {
         while (clazz != null) {
             for (Field field : clazz.getDeclaredFields()) {
                 if (field.isAnnotationPresent(EJB.class)) {
-                    MembersInjector<Object> mi = encounter.getMembersInjector(Object.class);
-                    encounter.register(new EJBInjector<I>(field, mi, getEjbClass(field.getType())));
+                    Object ejbInstance = injectorProvider.get().getInstance(field.getType());
+                    EJBInjector<I> ejbInjector = new EJBInjector<I>(field, ejbInstance);
+                    encounter.register(ejbInjector);
                 }
             }
             clazz = clazz.getSuperclass();
         }
-    }
-
-    private Class<?> getEjbClass(Class<?> current){
-        for(Class<?> iterated:ejbClasses){
-            if(iterated.isAssignableFrom(current)){
-                return iterated;
-            }
-        }
-        throw new IllegalStateException("Class not present for EJB "+current);
     }
 }

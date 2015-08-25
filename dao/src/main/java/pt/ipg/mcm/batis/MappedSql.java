@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
+import javax.inject.Inject;
 import java.io.InputStream;
 
 @Singleton

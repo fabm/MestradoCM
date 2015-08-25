@@ -57,7 +57,7 @@ public class ProdutoService extends SecureService {
     }
 
     @WebMethod
-    public ResGetProdutosCategorias getProdutosCategorias(@WebParam(name = "req-get-produtos-categorias") @XmlElement(name = "categoria") long categoria) {
+    public ResGetProdutosCategorias getProdutosCategorias(@WebParam(name = "categoria") long categoria) {
         ResGetProdutosCategorias resGetProdutosCategorias = new ResGetProdutosCategorias();
         resGetProdutosCategorias.setProdutoCategoriaList(produtoDao.getProdutosCategoria(categoria));
         resGetProdutosCategorias = new ResGetProdutosCategorias();

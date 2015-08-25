@@ -30,6 +30,7 @@ public class TestDatabase {
     @Test
     public void testInjectEJB() {
         Injector injector = Guice.createInjector(new EJBModule());
+
         ProdutoDao produtoDao = injector.getInstance(ProdutoDao.class);
         MappedSql mapped = injector.getInstance(MappedSql.class);
         EJBInjector.runPostConstruct(mapped);
@@ -46,6 +47,7 @@ public class TestDatabase {
         req.setIdProduto(1);
         req.setPrecoUnitario(new BigDecimal("10.0"));
         produtoDao.updateProduto(req);
+        sqlSession.commit();
 
         sqlSession.close();
     }
