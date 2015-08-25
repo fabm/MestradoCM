@@ -21,21 +21,6 @@ public class EJBInjectionListener implements TypeListener {
         this.injectorProvider = injectorProvider;
     }
 
-    public static <I>void runPostConstruct(I instance){
-        for(Method method:instance.getClass().getDeclaredMethods()){
-            if(method.getAnnotation(PostConstruct.class)!=null){
-                method.setAccessible(true);
-                try {
-                    method.invoke(instance);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
     @Override
     public <I> void hear(TypeLiteral<I> type, TypeEncounter<I> encounter) {
         Class<?> clazz = type.getRawType();
