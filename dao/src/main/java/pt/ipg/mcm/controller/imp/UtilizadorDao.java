@@ -52,13 +52,13 @@ public class UtilizadorDao {
     public void createUserCliente(UserClienteCreationRequest utilizadorCliente) throws MestradoException {
         try {
             SqlSession session = mappedSql.getSqlSession();
-            int count = session.selectOne("countUtilizadorByLogin",utilizadorCliente.getLogin());
+            int count = session.selectOne("countUtilizadorByLogin", utilizadorCliente.getLogin());
 
             if (count>0) {
                 throw new MestradoException(Erro.LOGIN_JA_EXISTENTE, utilizadorCliente.getLogin());
             }
 
-            session.insert("addCliente",utilizadorCliente);
+            session.insert("addCliente", utilizadorCliente);
         } catch (PersistenceException e) {
             e.printStackTrace();
             throw new MestradoException(Erro.TECNICO);

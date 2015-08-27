@@ -60,7 +60,6 @@ public class ProdutoService extends SecureService {
     public ResGetProdutosCategorias getProdutosCategorias(@WebParam(name = "categoria") long categoria) {
         ResGetProdutosCategorias resGetProdutosCategorias = new ResGetProdutosCategorias();
         resGetProdutosCategorias.setProdutoCategoriaList(produtoDao.getProdutosCategoria(categoria));
-        resGetProdutosCategorias = new ResGetProdutosCategorias();
         return resGetProdutosCategorias;
     }
 

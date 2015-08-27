@@ -26,5 +26,23 @@
             #{item}
         </foreach>
     </delete>
+    <insert id="create4tests" statementType="PREPARED">
+        {call P_ADD_UTILIZADOR_CLIENTE(
+            123123,
+            'kikoxx',
+            'zxcxczxc',
+            '1ºesq',
+            TO_DATE('2015-01-01'),
+            'asdasd@sdasd.pt',
+            '123123',
+            6300,
+            'kikoxx',
+            'ea71c25a7a602246b4c39824b855678894a96f43bb9b71319c39700a1e045222')
+        }
+    </insert>
+    <insert id="userInsert">
+        INSERT INTO UTILIZADOR ( LOGIN, PASSWORD) VALUES ( 'eee', '961b6dd3ede3cb8ecbaacbd68de040cd78eb2ed5889130cceb4c49268ea4d506')
+    </insert>
+
 
 </mapper>

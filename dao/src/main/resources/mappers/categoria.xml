@@ -36,7 +36,7 @@
     </insert>
 
     <update id="updateCategoria" statementType="CALLABLE">
-        call P_UPDATE_CATEGORIA(#{id},#{nome},#{descricao})
+        call P_UPDATE_CATEGORIA(#{idCategoria},#{nome},#{descricao})
     </update>
 
     <delete id="deleteCategoria" statementType="CALLABLE">

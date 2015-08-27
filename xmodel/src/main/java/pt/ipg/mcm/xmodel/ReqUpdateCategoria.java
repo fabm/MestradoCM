@@ -6,9 +6,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-/**
- * Created by BrrF on 24-01-2015.
- */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name="Req-update-categoria")
 public class ReqUpdateCategoria {

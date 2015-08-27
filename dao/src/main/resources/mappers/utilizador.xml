@@ -11,13 +11,13 @@
                 #{nome})
         }
     </insert>
-    <insert id="addCliente" statementType="CALLABLE">
+    <insert id="addCliente" statementType="PREPARED">
         {call P_ADD_UTILIZADOR_CLIENTE(
                 #{contribuinte},
                 #{nome},
                 #{morada},
                 #{porta},
-                #{dataNascimento},
+                TO_DATE(#{strDataNascimento}),
                 #{email},
                 #{contacto},
                 #{localidade},
@@ -32,7 +32,7 @@
         WHERE PADEIRO.ID_PADEIRO = #{id}
     </select>
 
-    <select id="countUtilizadorByLogin">
+    <select id="countUtilizadorByLogin" resultType="int">
         SELECT count(*) num FROM UTILIZADOR
         WHERE  utilizador.LOGIN = #{id}
     </select>

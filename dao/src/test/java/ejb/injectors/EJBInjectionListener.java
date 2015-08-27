@@ -1,17 +1,13 @@
-package javax.ejb;
+package ejb.injectors;
 
 import com.google.inject.Injector;
-import com.google.inject.MembersInjector;
 import com.google.inject.Provider;
 import com.google.inject.TypeLiteral;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
 
-import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Map;
 
 public class EJBInjectionListener implements TypeListener {
 
@@ -28,7 +24,7 @@ public class EJBInjectionListener implements TypeListener {
             for (Field field : clazz.getDeclaredFields()) {
                 if (field.isAnnotationPresent(EJB.class)) {
                     Object ejbInstance = injectorProvider.get().getInstance(field.getType());
-                    EJBInjector<I> ejbInjector = new EJBInjector<I>(field, ejbInstance);
+                    EJBInjector ejbInjector = new EJBInjector(field, ejbInstance);
                     encounter.register(ejbInjector);
                 }
             }

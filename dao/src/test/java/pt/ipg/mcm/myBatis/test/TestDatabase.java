@@ -2,23 +2,23 @@ package pt.ipg.mcm.myBatis.test;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import ejb.injectors.EJBModule;
 import org.apache.ibatis.session.SqlSession;
-import org.hamcrest.MatcherAssert;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import pt.ipg.mcm.batis.MappedSql;
 import pt.ipg.mcm.controller.ProdutoDao;
+import pt.ipg.mcm.controller.imp.UtilizadorDao;
 import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.myBatis.test.sql.ProdutoTests;
 import pt.ipg.mcm.xmodel.*;
 
-import javax.ejb.EJBInjector;
-import javax.ejb.EJBModule;
 import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.List;
+import java.sql.*;
+import java.util.*;
+import java.util.Date;
 
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertNotNull;
@@ -28,12 +28,12 @@ import static org.junit.Assert.assertThat;
 public class TestDatabase {
 
     @Test
-    public void testInjectEJB() {
+    @Ignore
+    public void testProdutoCategoria() {
         Injector injector = Guice.createInjector(new EJBModule());
 
         ProdutoDao produtoDao = injector.getInstance(ProdutoDao.class);
         MappedSql mapped = injector.getInstance(MappedSql.class);
-        EJBInjector.runPostConstruct(mapped);
 
         List<ProdutoCategoria> produtosCategoria = produtoDao.getProdutosCategoria(1);
         assertThat(produtosCategoria.size(), greaterThan(0));
@@ -53,6 +53,39 @@ public class TestDatabase {
     }
 
     @Test
+    @Ignore
+    public void testAddUtilizador() {
+        Injector injector = Guice.createInjector(new EJBModule());
+
+        UtilizadorDao utilizadorDao = injector.getInstance(UtilizadorDao.class);
+        MappedSql mapped = injector.getInstance(MappedSql.class);
+        SqlSession sqlSession = mapped.getSqlSession();
+        UserClienteCreationRequest req = new UserClienteCreationRequest();
+        req.setContribuinte(123123L);
+        req.setNome("kikokk");
+        req.setMorada("zxcxczxc");
+        req.setPorta("1ºesq");
+        req.setDataNascimento(new Date());
+        req.setEmail("asdasd@sdasd.pt");
+        req.setContacto("123123");
+        req.setLocalidade(6300);
+        req.setLogin("wwwww");
+        req.setPassword("mypass");
+
+        try {
+            utilizadorDao.createUserCliente(req);
+            sqlSession.commit();
+        } catch (MestradoException e) {
+            e.printStackTrace();
+        } finally {
+            sqlSession.close();
+        }
+
+    }
+
+
+    @Test
+    @Ignore
     public void testProduto() {
         ReqAddProduto reqAddProduto = new ReqAddProduto();
         reqAddProduto.setCategoria(1);
@@ -75,43 +108,6 @@ public class TestDatabase {
         produto = produtoTestes.getProduto(id);
         assertNull(produto);
 
-    }
-
-    @Test
-    public void testCliente() {
-        SqlSession session = SqlUtils.SQL_SESSION_FACTORY.openSession();
-        UserClienteCreationRequest req = new UserClienteCreationRequest();
-        req.setContribuinte(1234567L);
-        req.setNome("Nome test");
-        req.setMorada("Minha morada");
-        req.setContacto("123456");
-        req.setPorta("2ºEsq");
-        req.setDataNascimento(new GregorianCalendar(1979, Calendar.MAY, 25).getTime());
-        req.setEmail("meuMail@sapo.pt");
-        req.setLocalidade(6300559);
-        req.setLogin("xico");
-        req.setPassword("mypassword");
-
-        session.insert("addCliente", req);
-
-        final List<Long> idsUtilizadores = session.selectList("selectUser", "xico");
-
-        Assert.assertEquals(1, idsUtilizadores.size());
-
-        session.delete("deleteClients", new HashMap<String, Object>() {{
-            put("ids", idsUtilizadores);
-        }});
-        session.delete("deleteUsers", new HashMap<String, Object>() {{
-            put("ids", idsUtilizadores);
-        }});
-
-        List<Object> idsUtilizadoresAfterDelete = session.selectList("selectUser", "xico");
-
-        Assert.assertEquals(0, idsUtilizadoresAfterDelete.size());
-
-        session.commit();
-
-        session.close();
     }
 
 

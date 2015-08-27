@@ -3,6 +3,7 @@ package pt.ipg.mcm.xmodel;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -98,4 +99,12 @@ public class UserClienteCreationRequest {
     return SHAUtils.hashingSHA256(password);
   }
 
+    public String getStrDataNascimento(){
+       return new SimpleDateFormat("yyyy-MM-dd").format(dataNascimento);
+    }
+
+    public void setRetorno(Long retorno){
+
+        System.out.println(retorno);
+    }
 }

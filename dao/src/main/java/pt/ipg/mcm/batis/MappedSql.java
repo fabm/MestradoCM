@@ -1,12 +1,12 @@
 package pt.ipg.mcm.batis;
 
+import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
-import javax.inject.Inject;
 import java.io.InputStream;
 
 @Singleton
@@ -15,8 +15,10 @@ public class MappedSql {
 
     @PostConstruct
     private void init() {
+        LogFactory.useLog4JLogging();
         InputStream inputStream = getClass().getResourceAsStream("/config.xml");
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+
     }
 
     public SqlSession getSqlSession() {

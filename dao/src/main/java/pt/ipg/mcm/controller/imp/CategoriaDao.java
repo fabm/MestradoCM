@@ -37,6 +37,7 @@ public class CategoriaDao {
         try {
             session.update("updateCategoria", reqUpdateCategoria);
         }catch (PersistenceException e){
+            e.printStackTrace();
             throw new MestradoException(Erro.TECNICO);
         } finally {
             session.close();

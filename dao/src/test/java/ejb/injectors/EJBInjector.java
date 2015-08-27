@@ -1,4 +1,4 @@
-package javax.ejb;
+package ejb.injectors;
 
 import com.google.inject.MembersInjector;
 
@@ -7,9 +7,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class EJBInjector<I> implements MembersInjector<I> {
+public class EJBInjector implements MembersInjector {
 
-    public static <I> void runPostConstruct(I instance) {
+    public static void runPostConstruct(Object instance) {
         for (Method method : instance.getClass().getDeclaredMethods()) {
             if (method.getAnnotation(PostConstruct.class) != null) {
                 method.setAccessible(true);
@@ -36,7 +36,7 @@ public class EJBInjector<I> implements MembersInjector<I> {
 
 
     @Override
-    public void injectMembers(I instance) {
+    public void injectMembers(Object instance) {
         try {
             field.set(instance, ejbInstance);
             runPostConstruct(ejbInstance);
