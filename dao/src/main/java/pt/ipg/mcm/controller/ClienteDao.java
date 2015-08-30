@@ -1,5 +1,8 @@
 package pt.ipg.mcm.controller;
 
+import org.apache.ibatis.exceptions.PersistenceException;
+import org.apache.ibatis.session.SqlSession;
+import pt.ipg.mcm.batis.MappedSql;
 import pt.ipg.mcm.controller.ps.PsAddUtilizadorCliente;
 import pt.ipg.mcm.entities.ClienteEntity;
 import pt.ipg.mcm.errors.Erro;
@@ -11,6 +14,7 @@ import pt.ipg.mcm.xmodel.ResGetCliente;
 import pt.ipg.mcm.xmodel.RetornoSoap;
 
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,12 +24,16 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.HashMap;
 
 @Stateless
 public class ClienteDao {
 
   @Resource(lookup = "jdbc/mestrado")
   private DataSource mestradoDataSource;
+
+  @EJB
+  private MappedSql mappedSql;
 
   @PersistenceContext(unitName = "mestrado")
   private EntityManager entityManager;
@@ -95,5 +103,17 @@ public class ClienteDao {
     resGetCliente.setRole(clienteEntity.getProle().intValue());
     resGetCliente.setNome(clienteEntity.getNome());
     return resGetCliente;
+  }
+
+  public void deleteCliente(final long id) throws MestradoException {
+    SqlSession session = mappedSql.getSqlSession();
+    try {
+      session.delete("deleteCliente",id);
+    } catch (PersistenceException e) {
+      e.printStackTrace();
+      throw new MestradoException(Erro.TECNICO);
+    } finally {
+      session.close();
+    }
   }
 }

@@ -91,7 +91,7 @@ public class CategoriaService {
         ResUpdateCategoria resUpdateCategoria = new ResUpdateCategoria();
 
         try {
-            Map<String, String> aliasMap = new HashMap<String, String>();
+            Map<String, String> aliasMap = new HashMap<>();
             aliasMap.put("descricao", "descrição");
             Validacao.getInstance().valida(reqUpdateCategoria, aliasMap);
             categoriaDao.updateCategoria(reqUpdateCategoria);
@@ -102,6 +102,11 @@ public class CategoriaService {
 
         return resUpdateCategoria;
 
+    }
+
+    @WebMethod
+    public RetornoSoap deleteCategoria(@WebParam(name = "id")long id){
+        return categoriaDao.deleteCategoria(id);
     }
 
 }

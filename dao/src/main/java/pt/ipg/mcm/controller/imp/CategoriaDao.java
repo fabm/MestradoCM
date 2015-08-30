@@ -8,9 +8,11 @@ import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.xmodel.Categoria;
 import pt.ipg.mcm.xmodel.ReqUpdateCategoria;
 import pt.ipg.mcm.xmodel.ResGetCategoria;
+import pt.ipg.mcm.xmodel.RetornoSoap;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.jws.WebParam;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
@@ -20,6 +22,19 @@ public class CategoriaDao {
 
     @EJB
     private MappedSql mappedSql;
+
+    public RetornoSoap deleteCategoria(long id) {
+        SqlSession session = mappedSql.getSqlSession();
+        try {
+            session.delete("deleteCategoria", id);
+            return new RetornoSoap(1, "Categoria removida com sucesso");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new RetornoSoap(new MestradoException(Erro.TECNICO));
+        } finally {
+            session.close();
+        }
+    }
 
     public Integer addCategoria(final Categoria categoria) {
         SqlSession session = mappedSql.getSqlSession();
@@ -36,7 +51,7 @@ public class CategoriaDao {
         SqlSession session = mappedSql.getSqlSession();
         try {
             session.update("updateCategoria", reqUpdateCategoria);
-        }catch (PersistenceException e){
+        } catch (PersistenceException e) {
             e.printStackTrace();
             throw new MestradoException(Erro.TECNICO);
         } finally {

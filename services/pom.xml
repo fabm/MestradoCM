@@ -113,10 +113,11 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxws-maven-plugin</artifactId>
+                <version>1.12</version>
                 <executions>
                     <execution>
                         <id>generate-reports-ws-code</id>
-                        <phase>compile</phase>
+                        <phase>generate-test-sources</phase>
                         <goals>
                             <goal>wsimport</goal>
                         </goals>
@@ -126,8 +127,29 @@
                             <wsdlUrls>
                                 <wsdlUrl>http://localhost:8080/services/Produto?wsdl</wsdlUrl>
                                 <wsdlUrl>http://localhost:8080/services/Categoria?wsdl</wsdlUrl>
+                                <wsdlUrl>http://localhost:8080/services/Cliente?wsdl</wsdlUrl>
                             </wsdlUrls>
                             <verbose>true</verbose>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.9.1</version>
+                <executions>
+                    <execution>
+                        <id>add-test-sources</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/jaxws/wsimport</source>
+                            </sources>
                         </configuration>
                     </execution>
                 </executions>

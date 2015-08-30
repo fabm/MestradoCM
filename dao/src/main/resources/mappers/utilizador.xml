@@ -37,4 +37,8 @@
         WHERE  utilizador.LOGIN = #{id}
     </select>
 
+    <delete id="deleteCliente">
+        {call P_DELETE_CLIENTE(#{id})}
+    </delete>
+
 </mapper>

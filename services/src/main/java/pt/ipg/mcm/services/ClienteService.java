@@ -1,5 +1,7 @@
 package pt.ipg.mcm.services;
 
+import org.apache.ibatis.session.SqlSession;
+import pt.ipg.mcm.batis.MappedSql;
 import pt.ipg.mcm.controller.ClienteDao;
 import pt.ipg.mcm.controller.ps.PsAddUtilizadorCliente;
 import pt.ipg.mcm.errors.MestradoException;
@@ -32,6 +34,8 @@ public class ClienteService extends SecureService {
 
   @EJB
   private ClienteDao clienteDao;
+
+
 
   @Resource
   private WebServiceContext webServiceContext;
@@ -92,6 +96,16 @@ public class ClienteService extends SecureService {
     } catch (MestradoException e) {
       return new ResAddClienteUtilizador(e);
     }
+  }
+
+  @WebMethod
+  public RetornoSoap deleteCliente(@WebParam(name = "id") long id){
+      try {
+          clienteDao.deleteCliente(id);
+          return new RetornoSoap(1,"Cliente removido com sucesso");
+      } catch (MestradoException e) {
+          return new RetornoSoap(e);
+      }
   }
 
 
