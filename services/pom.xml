@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>services</artifactId>
-    <packaging>war</packaging>
+    <packaging>pom</packaging>
 
     <properties>
         <version.jersey>2.15</version.jersey>
@@ -82,11 +82,7 @@
             <version>${version.jersey}</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-library</artifactId>
-            <version>1.3</version>
-        </dependency>
+
     </dependencies>
 
 
@@ -109,54 +105,17 @@
                     <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jaxws-maven-plugin</artifactId>
-                <version>1.12</version>
-                <executions>
-                    <execution>
-                        <id>generate-reports-ws-code</id>
-                        <phase>generate-test-sources</phase>
-                        <goals>
-                            <goal>wsimport</goal>
-                        </goals>
-                        <configuration>
-
-                            <packageName>client.tests</packageName>
-                            <wsdlUrls>
-                                <wsdlUrl>http://localhost:8080/services/Produto?wsdl</wsdlUrl>
-                                <wsdlUrl>http://localhost:8080/services/Categoria?wsdl</wsdlUrl>
-                                <wsdlUrl>http://localhost:8080/services/Cliente?wsdl</wsdlUrl>
-                            </wsdlUrls>
-                            <verbose>true</verbose>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.9.1</version>
-                <executions>
-                    <execution>
-                        <id>add-test-sources</id>
-                        <phase>generate-test-sources</phase>
-                        <goals>
-                            <goal>add-test-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>${project.build.directory}/jaxws/wsimport</source>
-                            </sources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>client-tests</id>
+            <modules>
+                <module>client-tests</module>
+            </modules>
+        </profile>
+    </profiles>
 
 
 </project>
