@@ -1,7 +1,6 @@
 package pt.ipg.mcm;
 
 import client.tests.*;
-import org.apache.ibatis.type.JdbcType;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
