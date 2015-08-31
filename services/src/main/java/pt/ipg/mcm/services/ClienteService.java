@@ -39,7 +39,7 @@ public class ClienteService extends SecureService {
   private WebServiceContext webServiceContext;
 
   @WebMethod
-  public ResGetCliente getCliente(@WebParam(name = "clientId") long id) throws LoginException {
+  public ResGetCliente getCliente(@WebParam(name = "id") long id) throws LoginException {
     setWsc(webServiceContext);
     checkAuthorization(Role.ADMINISTRADOR, Role.CLIENTE);
     return clienteDao.getCliente(id);
