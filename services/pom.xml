@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>services</artifactId>
-    <packaging>pom</packaging>
+    <packaging>war</packaging>
 
     <properties>
         <version.jersey>2.15</version.jersey>
@@ -107,15 +107,6 @@
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>client-tests</id>
-            <modules>
-                <module>client-tests</module>
-            </modules>
-        </profile>
-    </profiles>
 
 
 </project>

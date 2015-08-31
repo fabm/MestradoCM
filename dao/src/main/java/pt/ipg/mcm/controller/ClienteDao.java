@@ -16,6 +16,7 @@ import pt.ipg.mcm.xmodel.RetornoSoap;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.jws.WebParam;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
@@ -80,7 +81,6 @@ public class ClienteDao {
       call.setLong(8, reqAddCliente.getLocalidade());
       call.registerOutParameter(9, Types.NUMERIC);
       call.execute();
-
       clienteResponseType.setId(call.getLong(9));
 
       clienteResponseType.setRetorno(new RetornoSoap(1, "Cliente inserido com sucesso"));
@@ -92,17 +92,13 @@ public class ClienteDao {
   }
 
 
-  public ResGetCliente getCliente(ReqGetCliente reqGetCliente) {
-    ClienteEntity clienteEntity = entityManager.find(ClienteEntity.class, reqGetCliente.getId());
-    ResGetCliente resGetCliente = new ResGetCliente();
-    if (clienteEntity == null) {
-      return resGetCliente;
+  public ResGetCliente getCliente(long id) {
+    SqlSession session = mappedSql.getSqlSession();
+    try {
+      return session.selectOne("getCliente", id);
+    } finally {
+      session.close();
     }
-    resGetCliente.setContribuinte(clienteEntity.getContribuinte().longValue());
-    resGetCliente.setMorada(clienteEntity.getMorada());
-    resGetCliente.setRole(clienteEntity.getProle().intValue());
-    resGetCliente.setNome(clienteEntity.getNome());
-    return resGetCliente;
   }
 
   public void deleteCliente(final long id) throws MestradoException {

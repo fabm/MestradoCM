@@ -35,18 +35,14 @@ public class ClienteService extends SecureService {
   @EJB
   private ClienteDao clienteDao;
 
-
-
   @Resource
   private WebServiceContext webServiceContext;
 
-  @WebResult(name = "response")
-  @WebMethod(operationName = "get-cliente")
-  @ResponseWrapper(localName = "get-cliente-response")
-  public ResGetCliente getCliente(@WebParam(name = "request") @XmlElement(required = true) ReqGetCliente reqGetCliente) throws LoginException {
+  @WebMethod
+  public ResGetCliente getCliente(@WebParam(name = "clientId") long id) throws LoginException {
     setWsc(webServiceContext);
     checkAuthorization(Role.ADMINISTRADOR, Role.CLIENTE);
-    return clienteDao.getCliente(reqGetCliente);
+    return clienteDao.getCliente(id);
   }
 
   @WebResult(name = "response")

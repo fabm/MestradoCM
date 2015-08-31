@@ -12,6 +12,7 @@
         </environment>
     </environments>
     <mappers>
+        <mapper resource="mappers/cliente.xml"/>
         <mapper resource="mappers/produto.xml"/>
         <mapper resource="mappers/categoria.xml"/>
         <mapper resource="mappers/utilizador.xml"/>

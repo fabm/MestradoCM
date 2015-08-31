@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="utilizador">
+    <resultMap id="cliente" type="pt.ipg.mcm.xmodel.ResGetCliente">
+        <result property="contribuinte" column="CONTRIBUINTE"/>
+        <result property="nome" column="NOME"/>
+        <result property="morada" column="MORADA"/>
+        <result property="porta" column="NPORTA"/>
+        <result property="dataNascimento" column="DATANASCIMENTO" typeHandler="pt.ipg.mcm.batis.XMLGregorianCalendarTypeHandler"/>
+        <result property="email" column="EMAIL"/>
+        <result property="contacto" column="CONTACTO"/>
+        <result property="localidade" column="LOCALIDADE"/>
+    </resultMap>
+
+    <select id="getCliente" resultMap="cliente">
+        SELECT * FROM CLIENTE WHERE ID_CLIENTE = #{id}
+    </select>
+
+
+</mapper>

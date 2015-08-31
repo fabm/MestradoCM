@@ -19,7 +19,14 @@
         <module>web</module>
     </modules>
 
-
+    <profiles>
+        <profile>
+            <id>client-tests</id>
+            <modules>
+                <module>client-tests</module>
+            </modules>
+        </profile>
+    </profiles>
 
     <dependencyManagement>
         <dependencies>

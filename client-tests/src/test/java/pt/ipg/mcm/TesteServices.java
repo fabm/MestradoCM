@@ -1,6 +1,7 @@
 package pt.ipg.mcm;
 
 import client.tests.*;
+import org.apache.ibatis.type.JdbcType;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -58,7 +59,17 @@ public class TesteServices {
         ClienteService port = cliente.getClientePort();
         authentication(port, "francisco", "francisco");
         RetornoSoap response = port.deleteCliente(601);
-        Assert.assertEquals(Integer.valueOf(1),response.getCodigo());
+        Assert.assertEquals(Integer.valueOf(1), response.getCodigo());
+    }
+
+    @Test
+    @Ignore
+    public void testGetCliente() throws LoginException_Exception {
+        Cliente cliente = new Cliente();
+        ClienteService port = cliente.getClientePort();
+        authentication(port, "francisco", "francisco");
+        ResGetCliente resGetCliente = port.getCliente(1L);
+        Assert.assertNotNull(resGetCliente);
     }
 
 
