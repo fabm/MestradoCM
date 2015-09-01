@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlType;
 public class ProdutoCategoria {
 
 
+    private Long idCategoria;
     @XmlElement(name = "id-produto",required = true)
     private Long idproduto;
     @XmlElement(name = "nome-produto", required = true)
@@ -26,6 +27,13 @@ public class ProdutoCategoria {
     @XmlElement(required = true)
     private byte[] foto;
 
+    public Long getIdCategoria() {
+        return idCategoria;
+    }
+
+    public void setIdCategoria(Long idCategoria) {
+        this.idCategoria = idCategoria;
+    }
 
     public Long getIdproduto() {   return idproduto;  }
 

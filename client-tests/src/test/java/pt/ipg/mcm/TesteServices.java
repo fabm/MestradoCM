@@ -10,8 +10,9 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.BindingProvider;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 
 public class TesteServices {
@@ -27,8 +28,10 @@ public class TesteServices {
     public void testGetProdutoCategoria() {
         ProdutoService produtoPort = new Produto().getProdutoPort();
         authentication(produtoPort, "francisco", "francisco");
-        ResGetProdutosCategorias pc = produtoPort.getProdutosCategorias(1);
-        Assert.assertThat(pc.getProdutoCategoria().size(), greaterThan(0));
+        ResGetProdutosCategorias resGetProdutosCategorias = produtoPort.getProdutosCategorias(1);
+        Long id = resGetProdutosCategorias.getProdutoCategoria().get(0).getIdCategoria();
+        assertThat(resGetProdutosCategorias.getProdutoCategoria().size(), greaterThan(0));
+        assertNotNull(id);
     }
 
     @Test
@@ -42,7 +45,7 @@ public class TesteServices {
         req.setIdCategoria(1);
         req.setNome("nome atualizado");
         ResUpdateCategoria resUpdateCategoria = port.updateCategoria(req);
-        Assert.assertThat(resUpdateCategoria.getRetorno().getCodigo(), equalTo(1));
+        assertThat(resUpdateCategoria.getRetorno().getCodigo(), equalTo(1));
     }
 
     @Test
@@ -71,7 +74,7 @@ public class TesteServices {
         ClienteService port = cliente.getClientePort();
         authentication(port, "francisco", "francisco");
         ResGetCliente resGetCliente = port.getCliente(1L);
-        Assert.assertNotNull(resGetCliente);
+        assertNotNull(resGetCliente);
     }
 
     @Test

@@ -39,10 +39,11 @@
         <result property="precoActual" column="PRECO_ATUAL"/>
         <result property="descricao" column="DESCRICAO"/>
         <result property="foto" column="FOTO"/>
+        <result property="idCategoria" column="ID_CATEGORIA"/>
     </resultMap>
 
     <select id="getProdutosCategoria" resultMap="produtoCategoria">
-        SELECT NOME_CATEGORIA, DESCRICAO,PRECO_ATUAL,NOME_PRODUTO, ID_PRODUTO
+        SELECT NOME_CATEGORIA, DESCRICAO,PRECO_ATUAL,NOME_PRODUTO, ID_PRODUTO, ID_CATEGORIA
         <if test="comFoto">, FOTO</if>
         FROM V_PRODUTO_CATEGORIA
         <if test="categoria != null">WHERE ID_CATEGORIA = ${categoria}</if>

@@ -163,12 +163,10 @@ public class ProdutoDao {
 
     public List<ProdutoCategoria> getProdutosCategoria(final long categoria) {
         SqlSession session = mappedSql.getSqlSession();
-        List<ProdutoCategoria> list;
         try {
-            list = session.selectList("getProdutosCategoria", new HashMap<String, Object>() {{
-                put("categoria", categoria);
+            return session.selectList("getProdutosCategoria",new HashMap<String,Object>(){{
+                put("categoria",categoria);
             }});
-            return list;
         } finally {
             session.close();
         }
