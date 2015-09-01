@@ -37,4 +37,11 @@ public class ResGetAllCategorias {
   public void setCategorias(List<Categoria> categorias) {
     this.categorias = categorias;
   }
+
+  public void setAllVerionsNull(){
+    for (Categoria categoria:categorias){
+      categoria.setVersao(null);
+    }
+  }
+
 }

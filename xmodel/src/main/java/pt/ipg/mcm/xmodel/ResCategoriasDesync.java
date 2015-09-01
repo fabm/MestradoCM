@@ -18,6 +18,14 @@ public class ResCategoriasDesync {
   public ResCategoriasDesync() {
   }
 
+  public List<Categoria> getCategorias() {
+    if (categorias == null) {
+      categorias = new ArrayList<Categoria>();
+    }
+    return categorias;
+  }
+
+
   public ResCategoriasDesync(List<Categoria> categorias){
     this.categorias = categorias;
   }

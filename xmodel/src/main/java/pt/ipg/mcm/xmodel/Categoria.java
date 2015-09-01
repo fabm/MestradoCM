@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import java.util.logging.Logger;
 
 @XmlType(name = "Categoria")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -13,10 +14,11 @@ public class Categoria {
   private String nome;
   @XmlElement(name = "descricao")
   private String descricao;
-  protected Integer id;
+  protected Long id;
   @XmlTransient
   private Long versao;
 
+  @XmlTransient
   public Long getVersao() {
     return versao;
   }
@@ -37,8 +39,11 @@ public class Categoria {
     this.descricao = descricao;
   }
 
-  public Integer getId() {
+  public Long getId() {
     return id;
   }
 
+  public void setVersao(Long versao) {
+    this.versao = versao;
+  }
 }

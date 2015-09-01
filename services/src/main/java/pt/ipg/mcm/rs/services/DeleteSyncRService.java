@@ -1,9 +1,13 @@
 package pt.ipg.mcm.rs.services;
 
+import org.apache.ibatis.session.SqlSession;
+import pt.ipg.mcm.batis.MappedSql;
 import pt.ipg.mcm.calls.client.model.delete.GetRegistosAApagarRest;
+import pt.ipg.mcm.calls.client.model.delete.RegistoAApagarRest;
 import pt.ipg.mcm.rs.conversors.deleted.GetRegistosAApagarSoap2Rest;
 import pt.ipg.mcm.services.SyncDeleteService;
 
+import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

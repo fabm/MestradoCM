@@ -36,9 +36,8 @@ public class CategoriaDao {
         }
     }
 
-    public Integer addCategoria(final Categoria categoria) {
+    public Long addCategoria(final Categoria categoria) {
         SqlSession session = mappedSql.getSqlSession();
-        final HashMap<String, Object> map;
         try {
             session.insert("addCategoria", categoria);
         } finally {

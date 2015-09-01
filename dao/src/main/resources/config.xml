@@ -12,6 +12,7 @@
         </environment>
     </environments>
     <mappers>
+        <mapper resource="mappers/sync.xml"/>
         <mapper resource="mappers/cliente.xml"/>
         <mapper resource="mappers/produto.xml"/>
         <mapper resource="mappers/categoria.xml"/>

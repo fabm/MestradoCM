@@ -12,16 +12,16 @@ public class ResAddCategoria {
 
 
   @XmlElement(required = true)
-  private Integer id;
+  private long id;
 
   @XmlElement(required = true)
   private RetornoSoap retorno;
 
-  public int getId() {
+  public long getId() {
     return id;
   }
 
-  public void setId(int value) {
+  public void setId(long value) {
     this.id = value;
   }
 
