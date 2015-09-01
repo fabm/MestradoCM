@@ -1,5 +1,6 @@
 package pt.ipg.mcm.xmodel;
 
+import pt.ipg.mcm.validacao.Email;
 import pt.ipg.mcm.validacao.NotEmpty;
 
 import javax.validation.constraints.NotNull;
@@ -22,6 +23,7 @@ public class UserClienteCreationRequest {
   private String porta;
   @NotNull
   private Date dataNascimento;
+  @Email
   @NotEmpty
   private String email;
   @NotEmpty

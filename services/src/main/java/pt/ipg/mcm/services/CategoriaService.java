@@ -68,9 +68,7 @@ public class CategoriaService {
         try {
             return categoriaDao.getCategoria(id);
         } catch (MestradoException e) {
-            ResGetCategoria resGetCategoria = new ResGetCategoria();
-            resGetCategoria.setRetorno(new RetornoSoap(e));
-            return resGetCategoria;
+            return new ResGetCategoria(e);
         }
     }
 

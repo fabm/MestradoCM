@@ -41,7 +41,7 @@ public class CategoriaRService {
     @Path("/desync/{versao}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCategorias(@PathParam("versao") Long versao) {
-        return Response.ok(new GetCategoriaDesyncS2R(categoriaService.getCategoriasDeSync(versao))).build();
+        return Response.ok(new GetCategoriaDesyncS2R(categoriaService.getCategoriasDeSync(versao)).converted()).build();
     }
 
 

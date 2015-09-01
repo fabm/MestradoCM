@@ -51,6 +51,11 @@ public class Validacao {
         String name = path.iterator().next().getName();
         name = getAlias(name, aliasMap);
         throw new MestradoException(Erro.CAMPO_VAZIO, name);
+      }else if(ann.annotationType() == Email.class){
+        Path path = cv.getPropertyPath();
+        String name = path.iterator().next().getName();
+        name = getAlias(name, aliasMap);
+        throw new MestradoException(Erro.FORMATO_INVALIDO, name);
       }
     }
   }

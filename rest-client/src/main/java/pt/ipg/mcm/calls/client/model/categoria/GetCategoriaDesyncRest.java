@@ -9,12 +9,12 @@ public class GetCategoriaDesyncRest {
   private long maxVersao;
 
   public List<CategoriaRest> createCategorias() {
-    categorias = new ArrayList<CategoriaRest>();
+    categorias = new ArrayList<>();
     return categorias;
   }
   public List<CategoriaRest> getCategorias() {
     if (categorias == null) {
-      categorias = new ArrayList<CategoriaRest>();
+      categorias = new ArrayList<>();
     }
     return categorias;
   }

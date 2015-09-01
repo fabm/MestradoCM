@@ -81,7 +81,7 @@ public class TesteServices {
         UtilizadorService port = utilizador.getUtilizadorPort();
         UserClienteCreationRequest req = new UserClienteCreationRequest();
         req.setNome("meu nome");
-        req.setLogin("kiko3");
+        req.setLogin("kiko5");
         req.setLocalidade(6300);
         req.setPorta("3esq");
         req.setContacto("999999999");
@@ -91,15 +91,15 @@ public class TesteServices {
             dataNascimento.setDay(25);
             dataNascimento.setMonth(1);
             dataNascimento.setYear(2000);
-            dataNascimento.setHour(1);
-            dataNascimento.setMinute(1);
-            dataNascimento.setSecond(1);
+            dataNascimento.setHour(0);
+            dataNascimento.setMinute(0);
+            dataNascimento.setSecond(0);
             req.setDataNascimento(dataNascimento);
         } catch (DatatypeConfigurationException e) {
             e.printStackTrace();
         }
         req.setEmail("x@x.pt");
-        req.setPassword("kiko2");
+        req.setPassword("kiko4");
         req.setMorada("A minha morada");
         ResCreationUserClient resCreationUserClient = port.createUserCliente(req);
         Assert.assertEquals(1,resCreationUserClient.getCodigo().intValue());

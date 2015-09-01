@@ -1,5 +1,7 @@
 package pt.ipg.mcm.xmodel;
 
+import pt.ipg.mcm.errors.MestradoException;
+
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -19,6 +21,9 @@ public class ResGetCategoria {
 
     public ResGetCategoria(){
 
+    }
+    public ResGetCategoria(MestradoException e){
+        retorno = new RetornoSoap(e);
     }
 
     public Long getVersaoMax() {
