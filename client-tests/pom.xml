@@ -44,6 +44,7 @@
                                 <wsdlUrl>http://localhost:8080/services/Produto?wsdl</wsdlUrl>
                                 <wsdlUrl>http://localhost:8080/services/Categoria?wsdl</wsdlUrl>
                                 <wsdlUrl>http://localhost:8080/services/Cliente?wsdl</wsdlUrl>
+                                <wsdlUrl>http://localhost:8080/services/Utilizador?wsdl</wsdlUrl>
                             </wsdlUrls>
                             <verbose>true</verbose>
                         </configuration>

@@ -5,6 +5,9 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.BindingProvider;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -69,6 +72,37 @@ public class TesteServices {
         authentication(port, "francisco", "francisco");
         ResGetCliente resGetCliente = port.getCliente(1L);
         Assert.assertNotNull(resGetCliente);
+    }
+
+    @Test
+    @Ignore
+    public void testAddUtilizadorCliente() throws LoginException_Exception {
+        Utilizador utilizador = new Utilizador();
+        UtilizadorService port = utilizador.getUtilizadorPort();
+        UserClienteCreationRequest req = new UserClienteCreationRequest();
+        req.setNome("meu nome");
+        req.setLogin("kiko3");
+        req.setLocalidade(6300);
+        req.setPorta("3esq");
+        req.setContacto("999999999");
+        req.setContribuinte(123123123L);
+        try {
+            final XMLGregorianCalendar dataNascimento = DatatypeFactory.newInstance().newXMLGregorianCalendar();
+            dataNascimento.setDay(25);
+            dataNascimento.setMonth(1);
+            dataNascimento.setYear(2000);
+            dataNascimento.setHour(1);
+            dataNascimento.setMinute(1);
+            dataNascimento.setSecond(1);
+            req.setDataNascimento(dataNascimento);
+        } catch (DatatypeConfigurationException e) {
+            e.printStackTrace();
+        }
+        req.setEmail("x@x.pt");
+        req.setPassword("kiko2");
+        req.setMorada("A minha morada");
+        ResCreationUserClient resCreationUserClient = port.createUserCliente(req);
+        Assert.assertEquals(1,resCreationUserClient.getCodigo().intValue());
     }
 
 

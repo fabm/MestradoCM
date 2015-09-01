@@ -7,6 +7,7 @@ import pt.ipg.mcm.services.UtilizadorService;
 import pt.ipg.mcm.xmodel.ResCreationUserClient;
 
 import javax.inject.Inject;
+import javax.security.auth.login.LoginException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;

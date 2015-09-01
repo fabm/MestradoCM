@@ -36,9 +36,6 @@ public class ClienteDao {
   @EJB
   private MappedSql mappedSql;
 
-  @PersistenceContext(unitName = "mestrado")
-  private EntityManager entityManager;
-
   public void addClienteUtilizador(PsAddUtilizadorCliente psAddUtilizadorCliente) throws MestradoException {
     try {
       Connection connection = mestradoDataSource.getConnection();

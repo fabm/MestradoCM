@@ -17,7 +17,7 @@
                 #{nome},
                 #{morada},
                 #{porta},
-                TO_DATE(#{strDataNascimento}),
+                #{dataNascimento},
                 #{email},
                 #{contacto},
                 #{localidade},

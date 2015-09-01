@@ -50,11 +50,11 @@ public class UtilizadorDao {
 
 
     public void createUserCliente(UserClienteCreationRequest utilizadorCliente) throws MestradoException {
+        SqlSession session = mappedSql.getSqlSession();
         try {
-            SqlSession session = mappedSql.getSqlSession();
             int count = session.selectOne("countUtilizadorByLogin", utilizadorCliente.getLogin());
 
-            if (count>0) {
+            if (count > 0) {
                 throw new MestradoException(Erro.LOGIN_JA_EXISTENTE, utilizadorCliente.getLogin());
             }
 
@@ -62,6 +62,8 @@ public class UtilizadorDao {
         } catch (PersistenceException e) {
             e.printStackTrace();
             throw new MestradoException(Erro.TECNICO);
+        } finally {
+          session.close();
         }
     }
 }

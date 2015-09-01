@@ -1,5 +1,8 @@
 package pt.ipg.mcm.xmodel;
 
+import pt.ipg.mcm.validacao.NotEmpty;
+
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import java.security.NoSuchAlgorithmException;
@@ -8,15 +11,26 @@ import java.util.Date;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class UserClienteCreationRequest {
+
+  @NotNull
   private Long contribuinte;
+  @NotEmpty
   private String nome;
+  @NotEmpty
   private String morada;
+  @NotEmpty
   private String porta;
+  @NotNull
   private Date dataNascimento;
+  @NotEmpty
   private String email;
+  @NotEmpty
   private String contacto;
+  @NotNull
   private Integer localidade;
+  @NotEmpty
   private String login;
+  @NotEmpty
   private String password;
 
   public void setContribuinte(Long contribuinte) {

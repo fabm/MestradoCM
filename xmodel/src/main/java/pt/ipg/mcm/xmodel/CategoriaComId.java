@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.PROPERTY)
 public class CategoriaComId extends Categoria{
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 }

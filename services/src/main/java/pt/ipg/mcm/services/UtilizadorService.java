@@ -63,24 +63,11 @@ public class UtilizadorService extends SecureService {
   @WebMethod
   public ResCreationUserClient createUserCliente(@WebParam(name = "cliente") UserClienteCreationRequest userClienteCreationRequest) {
     try {
-/*
-      VUtilizadorClienteEntity user = new VUtilizadorClienteEntity();
-      user.setContribuinte(userClienteCreationRequest.getContribuinte());
-      user.setLogin(userClienteCreationRequest.getLogin());
-      user.setPassword(userClienteCreationRequest.getPassword());
-      user.setContribuinte(userClienteCreationRequest.getContribuinte());
-      user.setNome(userClienteCreationRequest.getNome());
-      user.setDatanascimento(userClienteCreationRequest.getDataNascimento());
-      user.setContacto(userClienteCreationRequest.getContacto());
-      user.setNporta(userClienteCreationRequest.getPorta());
-      user.setEmail(userClienteCreationRequest.getEmail());
-      user.setLocalidade(userClienteCreationRequest.getLocalidade());
-      user.setMorada(userClienteCreationRequest.getMorada());
-      utilizadorDao.createUserCliente(user);
-      return new ResCreationUserClient();
-*/
+      Map<String, String> aliasMap = new HashMap<String, String>();
+      aliasMap.put("dataNascimento", "data de nascimento");
+      Validacao.getInstance().valida(userClienteCreationRequest, aliasMap);
       utilizadorDao.createUserCliente(userClienteCreationRequest);
-      return null;
+      return new ResCreationUserClient();
     } catch (MestradoException e) {
       return new ResCreationUserClient(e);
     }
