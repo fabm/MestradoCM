@@ -150,8 +150,8 @@ public class EncomendaDao {
       Connection connection = mestradoDataSource.getConnection();
 
       String sqlString = "SELECT DATA_ENTREGA, ENCOMENDA_ASSOCIADA, CALENDARIO, DATA_CRIACAO, ESTADO,\n" +
-          "OBSERVACOES, DATA_PREVISTA, ID_ENCOMENDA, QUANTIDADE_ENCOMENDADA, PRODUTO_ENCOMENDADO, \n" +
-          "PRODUTO, PRECO_ATUAL, ID_CATEGORIA \n" +
+          "OBSERVACOES, ID_ENCOMENDA, QUANTIDADE_ENCOMENDADA, PRODUTO_ENCOMENDADO, \n" +
+          " PRECO_ATUAL, ID_CATEGORIA \n" +
           "FROM V_ENCOMENDAS_LOGIN\n" +
           "WHERE LOGIN = ? and SYNC > ? ";
 
@@ -169,17 +169,17 @@ public class EncomendaDao {
         vEncomendasLoginEntity.setDataCriacao(rs.getTimestamp(4));
         vEncomendasLoginEntity.setEstado(rs.getLong(5));
         vEncomendasLoginEntity.setObservacoes(rs.getString(6));
-        vEncomendasLoginEntity.setDataPrevista(rs.getTimestamp(7));
-        vEncomendasLoginEntity.setIdEncomenda(rs.getLong(8));
-        vEncomendasLoginEntity.setQuantidadeEncomendada(rs.getInt(9));
-        vEncomendasLoginEntity.setProdutoEncomendado(rs.getLong(10));
-        vEncomendasLoginEntity.setProduto(rs.getString(11));
-        vEncomendasLoginEntity.setPrecoAtual(rs.getBigDecimal(12));
-        vEncomendasLoginEntity.setIdCategoria(rs.getBigDecimal(13));
+        vEncomendasLoginEntity.setIdEncomenda(rs.getLong(7));
+        vEncomendasLoginEntity.setQuantidadeEncomendada(rs.getInt(8));
+        vEncomendasLoginEntity.setProdutoEncomendado(rs.getLong(9));
+        vEncomendasLoginEntity.setPrecoAtual(rs.getBigDecimal(10));
+        vEncomendasLoginEntity.setIdCategoria(rs.getBigDecimal(11));
         vEncomendaEntities.add(vEncomendasLoginEntity);
       }
     } catch (SQLException e) {
+      e.printStackTrace();
       throw new MestradoException(Erro.TECNICO);
+
     }
     return vEncomendaEntities;
   }

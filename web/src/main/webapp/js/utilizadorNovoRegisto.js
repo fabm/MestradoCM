@@ -19,15 +19,23 @@ var ftsTxtRegistoPassword = 'txtRegistoPassword';
 
 function novoUtilizadorReady() {
 
+    $('#' + ftsTxtRegistoDataNascimento).daterangepicker({
+        singleDatePicker: true,
+        format: 'YYYY-MM-DD'
+    });
+    //format: 'DD/MM/YYYY'
+    //startDate: moment().subtract(6, 'days')
+    //$('.txtRegistoDataNascimento').datepicker();
+
     //click add new
-    $(ftsBtnRegistoNovoUtilizador).click(insertUtilizador);
+    $(ftsBtnRegistoNovoUtilizador).click(insertClienteUtilizador);
 }
 
 
 ///////////////////////////////////////////////////
 ///     REGISTAR NOVO UTILIZADOR
 ///////////////////////////////////////////////////
-function insertUtilizador() {
+function insertClienteUtilizador() {
 
 
     var camposValidos = validaCampos(
@@ -46,25 +54,42 @@ function insertUtilizador() {
         var dataOriginal = getVal('#' + ftsTxtRegistoDataNascimento);
         var dataFinal = dataOriginal + dataComplemento;
         var soapMsg = '';
-        soapMsg += '<ser:createUserCliente>';
-        soapMsg += '<cliente>';
-        soapMsg += '    <contribuinte>' + getVal('#' + ftsTxtRegistoContribuinte) + '</contribuinte>';
-        soapMsg += '    <nome> ' + getVal('#' + ftsTxtRegistoNome) + '</nome>';
-        soapMsg += '    <morada>' + getVal('#' + ftsTxtRegistoMorada) + '</morada>';
-        soapMsg += '    <porta>' + getVal('#' + ftsTxtRegistoNporta) + '</porta>';
-        soapMsg += '    <dataNascimento>' + dataFinal + '</dataNascimento>';
-        soapMsg += '    <email>' + getVal('#' + ftsTxtRegistoNome) + '</email>';
-        soapMsg += '    <contacto>' + getVal('#' + ftsTxtRegistoContacto) + '</contacto>';
-        soapMsg += '    <localidade>' + getVal('#' + ftsTxtRegistoLocalidade) + '</localidade>';
-        soapMsg += '    <login>' + getVal('#' + ftsTxtRegistoUsername) + '</login>';
-        soapMsg += '    <password>' + getVal('#' + ftsTxtRegistoPassword) + '</password>';
-        soapMsg += '</cliente>';
-        soapMsg += '</ser:createUserCliente>';
+        //soapMsg += '<ser:createUserCliente>';
+        //soapMsg += '<cliente>';
+        //soapMsg += '    <contribuinte>' + getVal('#' + ftsTxtRegistoContribuinte) + '</contribuinte>';
+        //soapMsg += '    <nome> ' + getVal('#' + ftsTxtRegistoNome) + '</nome>';
+        //soapMsg += '    <morada>' + getVal('#' + ftsTxtRegistoMorada) + '</morada>';
+        //soapMsg += '    <porta>' + getVal('#' + ftsTxtRegistoNporta) + '</porta>';
+        //soapMsg += '    <dataNascimento>' + dataFinal + '</dataNascimento>';
+        //soapMsg += '    <email>' + getVal('#' + ftsTxtRegistoNome) + '</email>';
+        //soapMsg += '    <contacto>' + getVal('#' + ftsTxtRegistoContacto) + '</contacto>';
+        //soapMsg += '    <localidade>' + getVal('#' + ftsTxtRegistoLocalidade) + '</localidade>';
+        //soapMsg += '    <login>' + getVal('#' + ftsTxtRegistoUsername) + '</login>';
+        //soapMsg += '    <password>' + getVal('#' + ftsTxtRegistoPassword) + '</password>';
+        //soapMsg += '</cliente>';
+        //soapMsg += '</ser:createUserCliente>';
+
+
+        soapMsg += '<ser:addClienteUtilizador>';
+        soapMsg += '<request>';
+        soapMsg += '    <contribuinte>'+ getVal('#' + ftsTxtRegistoContribuinte) +'</contribuinte>';
+        soapMsg += '    <nome>'+ getVal('#' + ftsTxtRegistoNome) +'</nome>';
+        soapMsg += '    <morada>'+ getVal('#' + ftsTxtRegistoMorada) +'</morada>';
+        soapMsg += '    <porta>'+ getVal('#' + ftsTxtRegistoNporta) +'</porta>';
+        soapMsg += '    <data-nascimento>'+ dataFinal +'</data-nascimento>';
+        soapMsg += '    <email>'+ getVal('#' + ftsTxtRegistoNome) +'</email>';
+        soapMsg += '    <contacto>'+ getVal('#' + ftsTxtRegistoContacto) +'</contacto>';
+        soapMsg += '    <localidade>'+ getVal('#' + ftsTxtRegistoLocalidade) +'</localidade>';
+        soapMsg += '    <login>'+ getVal('#' + ftsTxtRegistoUsername) +'</login>';
+        soapMsg += '    <password>'+ getVal('#' + ftsTxtRegistoPassword) +'</password>';
+        soapMsg += '</request>';
+        soapMsg += '</ser:addClienteUtilizador>';
 
 
         var soapInsertClientAndUtilizador = g_soapBuilder.getSimpleEnvelope(soapMsg);
 
-        wsUtilizador(soapInsertClientAndUtilizador, successInsUtilizadorAndCliente, tweak.errorCallBack);
+        //wsUtilizador(soapInsertClientAndUtilizador, successInsUtilizadorAndCliente, tweak.errorCallBack);
+        wsCliente(soapInsertClientAndUtilizador, successInsUtilizadorAndCliente, tweak.errorCallBack);
 
 
     }
@@ -74,13 +99,9 @@ function insertUtilizador() {
 function successInsUtilizadorAndCliente(data, status, req) {
 
     //  MENSAGEM QUE VEM DO WS (succ or error)
-    //var json = $.xml2json(data);
-    //var retorno = json.Body.add_categoriaResponse.response.retorno;
-    //var codeMessage = retorno.code;
-    //var message = retorno.mensagem;
 
     var json = $.xml2json(data);
-    var retorno = json.Body.createUserClienteResponse.return;
+    var retorno = json.Body.addClienteUtilizadorResponse.return;
 
     var codeMessage = retorno.codigo;
     var message = retorno.mensagem;
@@ -95,6 +116,8 @@ function successInsUtilizadorAndCliente(data, status, req) {
         //$(messageErrorInsertProduto).text(message);
         //$(messageErrorInsertProduto).show()
         alert(message);
+        clientCleanFields();
+
     }
 
 
@@ -172,4 +195,20 @@ function validaCampos(nome, morada, nporta, nif, dataNascimento, contacto, local
 
 
     return isValid;
+}
+
+///////////////////////////////////////////////////
+///     CLEAN FIELDs
+///////////////////////////////////////////////////
+function clientCleanFields(){
+
+    $('#' + ftsTxtRegistoNome).val('');
+    $('#' + ftsTxtRegistoMorada).val('');
+    $('#' + ftsTxtRegistoNporta).val('');
+    $('#' + ftsTxtRegistoContribuinte).val('');
+    $('#' + ftsTxtRegistoDataNascimento).val('');
+    $('#' + ftsTxtRegistoContacto).val('');
+    $('#' + ftsTxtRegistoLocalidade).val('');
+    $('#' + ftsTxtRegistoUsername).val('');
+    $('#' + ftsTxtRegistoPassword).val('');
 }

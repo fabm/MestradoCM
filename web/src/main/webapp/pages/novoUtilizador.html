@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>O teu pão - Novo Cliente </title>
+    <title>A tua padaria</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -28,6 +28,10 @@
 
     <!-- Custom Fonts -->
     <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- DATA PICK -->
+
+
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -71,7 +75,7 @@
                             </div>
 
                             <div class="form-group txtRegistoDataNascimento">
-                                <input class="form-control" placeholder="Data de Nascimento" name="txtRegistoDataNascimento" id="txtRegistoDataNascimento" type="text">
+                                <input class="form-control" data-provide="datepicker" placeholder="Data de Nascimento" name="txtRegistoDataNascimento" id="txtRegistoDataNascimento" type="text">
                             </div>
 
                             <div class="form-group txtRegistoContacto">
@@ -94,7 +98,7 @@
 
 
                             <div class="form-group txtRegistoPassword">
-                                <button type="button" class="btn btn-success btn-lg" id="btnRegistoNovoUtilizador" >Registar</button>
+                                <button type="button" class="btn btn-success btn-lg" id="btnRegistoNovoUtilizador"  style="width: 100%;">Registar</button>
                             </div>
 
                         </fieldset>
@@ -115,11 +119,20 @@
 <!-- Metis Menu Plugin JavaScript -->
 <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
 
+
+
 <!-- Custom Theme JavaScript -->
+
+
+
+
+
 <script src="../dist/js/sb-admin-2.js"></script>
-
-
 <script src="../js/jquery.xml2json.js"></script>
+<!--    DATA PICK   -->
+<script type="text/javascript" src="../js/moment.js"></script>
+<script type="text/javascript" src="../js/daterangepicker.js"></script>
+
 
 <script src="../js/globalScripts.js"></script>
 <script src="../js/testBasicAuthentication.js"></script>

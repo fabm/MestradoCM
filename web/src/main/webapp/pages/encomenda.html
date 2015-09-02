@@ -29,12 +29,17 @@
     <!-- Custom Fonts -->
     <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
     <![endif]-->
+
+
+    <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap/latest/css/bootstrap.css"/>
+
 
 </head>
 
@@ -311,7 +316,7 @@
                         <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Encomendas<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="encomenda.html">Nova</a>
+                                <a href="">Nova</a>
                             </li>
                             <li>
                                 <a href="#">Ver </a>
@@ -333,13 +338,102 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header divPageTitle">Dashboard BODY</h1>
+                <h1 class="page-header divPageTitle">Nova Encomenda</h1>
+                <label>Data de Entrega : </label>
+                <input class="dtapickEncomenda" type="text" id="txtDtaEntregaEncomenda" data-provide="datepicker">
             </div>
-            <!-- /.col-lg-12 -->
+            <li class="divider"></li>
 
 
-            <div class=" registoNovoUtilizador">
-                novo utilizador
+            <div class="col-lg-12">
+
+                <div class="panel panel-default">
+
+
+                    <div class="alert alert-success messageSuccessInsertEncomenda" style="display: none">
+                        Encomenda Adicionada com Sucesso.
+                    </div>
+
+                    <div class="alert alert-danger alert-dismissable messageErrorInsertEncomenda" style="display: none">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        ERRO ao tentar inserir a Encomenda.
+                    </div>
+
+
+                    <div class="panel-heading">
+                        Produtos a Encomendas
+                    </div>
+                    <div class="panel-body">
+
+                        <!--<table class="tableListProdutosAEncomendar">-->
+                        <!--<thead>-->
+                        <!--<th></th>-->
+                        <!--<th>Nome</th>-->
+                        <!--<th>Quantidade</th>-->
+                        <!--<th>Data Entrega</th>-->
+                        <!--</thead>-->
+                        <!--<tbody>-->
+                        <!--<tr>-->
+                        <!--<td> <input type="checkbox" name="vehicle" value="Bike"> </td>-->
+                        <!--<td> nome produto </td>-->
+                        <!--<td> <input type="text" name="quantidadeProduto" value="quantidade">  </td>-->
+                        <!--<td> <input type="text" name="dataEntrega" value="Data Entrega">  </td>-->
+                        <!--</tr>-->
+
+
+                        <!--</tbody>-->
+
+                        <!--</table>-->
+
+
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover tableListProdutosAEncomendar">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nome</th>
+                                    <th>Categ.</th>
+                                    <th>quantidade</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>Larry</td>
+                                    <td>the Bird</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+
+
+            <div class="col-lg-12">
+
+
+                <div class="well">
+
+                    <h4>Guardar Encomenda</h4>
+                    <input type="button" id="btnGuardarEncomenda" value="Guardar Encomenda">
+                </div>
+
+
             </div>
 
 
@@ -362,6 +456,22 @@
 <!-- Metis Menu Plugin JavaScript -->
 <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
 
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.css">
+
+
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.js"></script>
+
+<!-- DATEPICK -->
+<!--<script type="text/javascript" src="../js/moment.js"></script>-->
+<!--<script type="text/javascript" src="../js/daterangepicker.js"></script>-->
+
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css"/>
+
+
 <!-- Morris Charts JavaScript -->
 <!--script src="../bower_components/raphael/raphael-min.js"></script>
 <script src="../bower_components/morrisjs/morris.min.js"></script>
@@ -370,10 +480,10 @@
 <!-- Custom Theme JavaScript -->
 
 <script src="../dist/js/sb-admin-2.js"></script>
-
 <script src="../js/globalScripts.js"></script>
 <script src="../js/loadTemplates.js"></script>
-<script src="../js/utilizadorNovoRegisto.js"></script>
+<script src="../js/encomenda.js"></script>
+<script src="../js/jquery.xml2json.js"></script>
 
 
 </body>

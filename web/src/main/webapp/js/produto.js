@@ -18,7 +18,7 @@ var txtPrecoProduto = 'txtPrecoProduto';
 
 var tableListAllProdutos = '.tableListAllProdutos';
 
-var idcategoriaProdut = '0';
+//var idcategoriaProdut = '0';
 
 var messageSuccessInsertProduto = '.messageSuccessInsertProduto';
 var messageErrorInsertProduto = '.messageErrorInsertProduto';
@@ -44,9 +44,9 @@ $(btnVerCamposNovoProduto).click(function () {
     getAllCategoriasInProdutos();
 
 
-    $(ddlCategoriasInProdutos).change(function () {
-        idcategoriaProdut = $(this).data("id");
-    });
+    //$(ddlCategoriasInProdutos).change(function () {
+    //    idcategoriaProdut = $(this).data("id");
+    //});
 
     // $(ddlCategoriasInProdutos + ' li a').click(function () {
     //    var selText = $(this).text();
@@ -65,7 +65,9 @@ function pageProdutosReady() {
 
     getAllProdutos();
 
-    $(tableListAllProdutos).DataTable();
+    dataTablePortuguese(tableListAllProdutos)
+    //$(tableListAllProdutos).DataTable();
+
 
 
     //$(".dropdownAllCat li a").click(function () {
@@ -169,7 +171,7 @@ function inserirProduto() {
             soapMsg += '<idProduto> ' + idProdutoToChangeInDB + ' </idProduto>';
             soapMsg += '<nome>' + getVal("#" + txtNomeProduto) + '</nome>';
             soapMsg += '<preco-unitario>' + getVal("#" + txtPrecoProduto) + '</preco-unitario>';
-            soapMsg += '<categoria> ' + idcategoriaProdut + ' </categoria>';
+            soapMsg += '<categoria> ' + getVal(ddlCategoriasInProdutos) + ' </categoria>';
             soapMsg += '</req-update-produtp>';
             soapMsg += '</ser:updateProduto>';
             soapMsg += '</soapenv:Body>';
@@ -222,7 +224,13 @@ function showEditElementProduto(nome, precoUnit, idCategoria) {
 function successProduto(data, status, req) {
     //LIMPAR && LOAD &&
     var json = $.xml2json(data);
-    var retorno = json.Body.addProdutoResponse.return.retorno;
+    var retorno = '';
+
+    if (idProdutoToChangeInDB != 0)
+        retorno = json.Body.updateProdutoResponse.return.retorno;
+    else
+        retorno = json.Body.addProdutoResponse.return.retorno;
+
 
     var codeMessage = retorno.codigo;
     var message = retorno.mensagem;
@@ -354,7 +362,7 @@ function successDeleteProduto(data, status, req) {
 
 function cleanProdutosFields() {
     getAllProdutos();
-    idcategoriaProdut = 0;
+    //idcategoriaProdut = 0;
     $("#" + txtNomeProduto).val('');
     $("#" + txtPrecoProduto).val('');
     $(ddlCategoriasInProdutos).val("");

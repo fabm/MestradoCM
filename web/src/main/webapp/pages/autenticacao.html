@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+    <title>A tua padaria</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -42,9 +42,6 @@
                     <h3 class="panel-title">Please Sign In</h3>
                 </div>
 
-                <div class="alert alert-danger alertErrorLogin">
-                    Erro desconhecido no login.
-                </div>
 
                 <div class="panel-body">
                     <fieldset>
@@ -56,17 +53,15 @@
                             <input class="form-control" placeholder="Password" name="password" id="txtPasswordLogin"
                                    type="password" value="">
                         </div>
-                        <div class="checkbox">
-                            <label>
-                                <input name="remember" type="checkbox" value="Remember Me">Remember Me
-                            </label>
-                        </div>
+
                         <!-- Change this to a button or input when using this as a form -->
                         <!--<a href="index.html" class="btn btn-lg btn-success btn-block" id="btnLoginAuthentication">Login</a>-->
                         <!--<a class="btn btn-lg btn-success btn-block" id="btnLoginAuthenticationlogin">Login</a>-->
                         <button type="button" class="btn btn-lg btn-block btn-success" id="btnLoginAuthentication">
                             Login
                         </button>
+                        <br>
+                        <a href="novoUtilizador.html"> Novo registo </a>
                     </fieldset>
                 </div>
             </div>
@@ -88,8 +83,6 @@
 <script src="../js/jquery.xml2json.js"></script>
 <script src="../js/globalScripts.js"></script>
 <script src="../js/basicAuthentication.js"></script>
-<script src="../js/testBasicAuthentication.js"></script>
-
 
 <script>
     var btnLoginAuthentication = "#btnLoginAuthentication";
@@ -117,6 +110,8 @@
                 $(location).attr('href', 'http://rafa_msi:8080/web/pages/index.html');
 
             }
+        }else{
+
         }
 
 

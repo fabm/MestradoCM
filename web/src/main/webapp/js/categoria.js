@@ -49,7 +49,9 @@ $('#' + btnSaveCategoria).click(function () {
 
 function pageReady() {
     getAllCategories();
-    $(tableListAllCategories).DataTable();
+
+    dataTablePortuguese(tableListAllCategories);
+
 
 }
 
