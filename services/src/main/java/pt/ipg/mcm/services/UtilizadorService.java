@@ -32,7 +32,7 @@ public class UtilizadorService extends SecureService {
 
 
   @WebMethod
-  public ResAddUtilizador addUtilizador(@WebParam(name = "req-add-utilizador") @XmlElement(required = true) ReqAddUtilizador reqAddUtilizador) throws
+  public ResAddUtilizador addUtilizadorPadeiro(@WebParam(name = "req-add-utilizador") @XmlElement(required = true) ReqAddUtilizador reqAddUtilizador) throws
       LoginException {
     try {
       Map<String, String> aliasMap = new HashMap<String, String>();
