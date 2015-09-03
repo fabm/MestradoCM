@@ -4,39 +4,38 @@ import pt.ipg.mcm.calls.client.DateHelper;
 import pt.ipg.mcm.calls.client.model.encomendas.EncomendaRest;
 import pt.ipg.mcm.calls.client.model.encomendas.ProdutoEncomendadoRest;
 import pt.ipg.mcm.rs.conversors.AbstractConversor;
-import pt.ipg.mcm.xmodel.encomendas.EncomendaSoapIn;
-import pt.ipg.mcm.xmodel.encomendas.ProdutoSoapIn;
+import pt.ipg.mcm.xmodel.encomendas.EncomendaIn;
+import pt.ipg.mcm.xmodel.encomendas.ProdutoAEncomendar;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class R2SinEncomenda extends AbstractConversor<EncomendaRest, EncomendaSoapIn> {
+public class R2SinEncomenda extends AbstractConversor<EncomendaRest, EncomendaIn> {
 
   public R2SinEncomenda(EncomendaRest inObject) {
     super(inObject);
   }
 
   @Override
-  public EncomendaSoapIn converted() {
+  public EncomendaIn converted() {
     return toEncomedaSoapIn();
   }
 
-  private EncomendaSoapIn toEncomedaSoapIn() {
-    List<ProdutoSoapIn> produtoSoapInList = new ArrayList<ProdutoSoapIn>();
+  private EncomendaIn toEncomedaSoapIn() {
+    List<ProdutoAEncomendar> produtoAEncomendarList = new ArrayList<ProdutoAEncomendar>();
     for (ProdutoEncomendadoRest produtoEncomendadoRest: source.getProdutoEncomendadoRests()) {
-      produtoSoapInList.add(new R2SinProdutoEncomendado(produtoEncomendadoRest).converted());
+      produtoAEncomendarList.add(new R2SinProdutoEncomendado(produtoEncomendadoRest).converted());
     }
 
-    EncomendaSoapIn encomendaSoapIn = new EncomendaSoapIn();
-    encomendaSoapIn.setXInProdutos(produtoSoapInList);
+    EncomendaIn encomendaIn = new EncomendaIn();
+    encomendaIn.setProdutoAEncomendarList(produtoAEncomendarList);
     try {
-      encomendaSoapIn.setDataEntrega(new DateHelper(DateHelper.Format.COMPACT).toDate(source.getDate()));
-      encomendaSoapIn.setClientId(source.getClientId());
+      encomendaIn.setDataEntrega(new DateHelper(DateHelper.Format.COMPACT).toDate(source.getDate()));
     } catch (ParseException e) {
       throw new IllegalStateException(e);
     }
-    return encomendaSoapIn;
+    return encomendaIn;
   }
 
 

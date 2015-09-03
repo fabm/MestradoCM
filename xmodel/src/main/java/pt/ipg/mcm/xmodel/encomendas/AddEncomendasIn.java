@@ -7,17 +7,17 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class XInEncomendas {
+public class AddEncomendasIn {
 
   @XmlElementWrapper(name = "encomendas")
   @XmlElement(name = "encomenda")
-  private List<EncomendaSoapIn> encomendaSoapIns;
+  private List<EncomendaIn> encomendaInList;
 
-  public List<EncomendaSoapIn> getEncomendaSoapIns() {
-    return encomendaSoapIns;
+  public List<EncomendaIn> getEncomendaInList() {
+    return encomendaInList;
   }
 
-  public void setEncomendaSoapIns(List<EncomendaSoapIn> encomendaSoapIns) {
-    this.encomendaSoapIns = encomendaSoapIns;
+  public void setEncomendaInList(List<EncomendaIn> encomendaIns) {
+    this.encomendaInList = encomendaIns;
   }
 }

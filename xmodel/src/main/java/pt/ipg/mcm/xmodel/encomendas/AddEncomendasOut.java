@@ -11,21 +11,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class XOutEncomendas extends RetornoSoap {
+public class AddEncomendasOut extends RetornoSoap {
 
-  public XOutEncomendas(MestradoException e) {
+  public AddEncomendasOut(MestradoException e) {
     super(e);
   }
 
-  public XOutEncomendas() {
-    XOutEncomendas = new ArrayList<XOutEncomenda>();
+  public AddEncomendasOut() {
+    EncomendaOuts = new ArrayList<EncomendaOut>();
   }
 
   @XmlElementWrapper(name = "encomendas")
   @XmlElement(name = "encomenda")
-  private List<XOutEncomenda> XOutEncomendas;
+  private List<EncomendaOut> EncomendaOuts;
 
-  public List<XOutEncomenda> getXOutEncomendas() {
-    return XOutEncomendas;
+  public List<EncomendaOut> getEncomendaOuts() {
+    return EncomendaOuts;
   }
 }

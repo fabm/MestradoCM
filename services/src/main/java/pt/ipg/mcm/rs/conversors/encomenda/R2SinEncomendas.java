@@ -3,30 +3,30 @@ package pt.ipg.mcm.rs.conversors.encomenda;
 import pt.ipg.mcm.calls.client.model.encomendas.EncomendaRest;
 import pt.ipg.mcm.calls.client.model.encomendas.UpdateEncomendasRestIn;
 import pt.ipg.mcm.rs.conversors.AbstractConversor;
-import pt.ipg.mcm.xmodel.encomendas.EncomendaSoapIn;
-import pt.ipg.mcm.xmodel.encomendas.XInEncomendas;
+import pt.ipg.mcm.xmodel.encomendas.EncomendaIn;
+import pt.ipg.mcm.xmodel.encomendas.AddEncomendasIn;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class R2SinEncomendas extends AbstractConversor<UpdateEncomendasRestIn, XInEncomendas> {
+public class R2SinEncomendas extends AbstractConversor<UpdateEncomendasRestIn, AddEncomendasIn> {
   public R2SinEncomendas(UpdateEncomendasRestIn inObject) {
     super(inObject);
   }
 
   @Override
-  public XInEncomendas converted() {
+  public AddEncomendasIn converted() {
     return toXInEncomendas();
   }
 
-  public XInEncomendas toXInEncomendas() {
-    XInEncomendas xInEncomendas = new XInEncomendas();
-    List<EncomendaSoapIn> encomendaSoapInList = new ArrayList<EncomendaSoapIn>();
+  public AddEncomendasIn toXInEncomendas() {
+    AddEncomendasIn addEncomendasIn = new AddEncomendasIn();
+    List<EncomendaIn> encomendaInList = new ArrayList<EncomendaIn>();
     for (EncomendaRest encomendaRest : source.getEncomendas()) {
-      encomendaSoapInList.add(new R2SinEncomenda(encomendaRest).converted());
+      encomendaInList.add(new R2SinEncomenda(encomendaRest).converted());
     }
-    xInEncomendas.setEncomendaSoapIns(encomendaSoapInList);
-    return xInEncomendas;
+    addEncomendasIn.setEncomendaInList(encomendaInList);
+    return addEncomendasIn;
   }
 
 }

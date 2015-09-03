@@ -106,7 +106,7 @@ public class TesteServices {
         req.setPassword("kiko4");
         req.setMorada("A minha morada");
         ResCreationUserClient resCreationUserClient = port.createUserCliente(req);
-        Assert.assertEquals(1,resCreationUserClient.getCodigo().intValue());
+        Assert.assertEquals(1, resCreationUserClient.getCodigo().intValue());
     }
 
     @Test
@@ -124,6 +124,37 @@ public class TesteServices {
         assertNotNull(minhaEncomenda.getId());
         assertNotNull(minhaEncomenda.getPreco());
         assertNotNull(minhasEncomendas);
+    }
+
+    @Test
+    @Ignore
+    public void testAddEncomendas() throws LoginException_Exception, DatatypeConfigurationException {
+        Encomenda encomenda = new Encomenda();
+        EncomendaService port = encomenda.getEncomendaPort();
+        authentication(port, "bruno", "bruno");
+
+        AddEncomendasIn addEcnomendas = new AddEncomendasIn();
+        EncomendaIn encomendaIn = new EncomendaIn();
+        final XMLGregorianCalendar dataEntrega = DatatypeFactory.newInstance().newXMLGregorianCalendar();
+        dataEntrega.setDay(25);
+        dataEntrega.setMonth(1);
+        dataEntrega.setYear(2016);
+        dataEntrega.setHour(0);
+        dataEntrega.setMinute(0);
+        dataEntrega.setSecond(0);
+        encomendaIn.setDataEntrega(dataEntrega);
+
+        ProdutoAEncomendar produtoAEncomendar = new ProdutoAEncomendar();
+        produtoAEncomendar.setIdProduto(1);
+        produtoAEncomendar.setQuantidade(1);
+
+        encomendaIn.setProdutos(new EncomendaIn.Produtos());
+        encomendaIn.getProdutos().getProduto().add(produtoAEncomendar);
+
+        addEcnomendas.setEncomendas(new AddEncomendasIn.Encomendas());
+        addEcnomendas.getEncomendas().getEncomenda().add(encomendaIn);
+        AddEncomendasOut addEncomendasOut = port.addEncomendas(addEcnomendas);
+        Assert.assertEquals(1,addEncomendasOut.getCodigo().intValue());
     }
 
 }

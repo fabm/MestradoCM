@@ -13,11 +13,22 @@
 
     <select id="getMinhasEncomendas" resultMap="encomenda">
         SELECT DATA_ENTREGA, ENCOMENDA_ASSOCIADA, CALENDARIO, DATA_CRIACAO, ESTADO,
-        OBSERVACOES, ID_ENCOMENDA, QUANTIDADE_ENCOMENDADA, PRODUTO_ENCOMENDADO,
-         PRECO_ATUAL, ID_CATEGORIA
+        OBSERVACOES, ID_ENCOMENDA, QUANTIDADE_ENCOMENDADA, PRODUTO_ENCOMENDADO, PRECO_ATUAL, ID_CATEGORIA
         FROM V_ENCOMENDAS_LOGIN
         WHERE LOGIN = #{login} and SYNC > #{sync}
     </select>
 
+    <insert id="addEncomenda" statementType="CALLABLE">
+        {CALL P_ADD_ENCOMENDA(
+                #{login},
+                #{dataEntrega},
+                #{calendario, jdbcType=NUMERIC, javaType=long, mode=OUT},
+                #{idEncomenda, jdbcType=NUMERIC, javaType=long, mode=OUT},
+                #{encomendaAssociada})
+        }
+    </insert>
+    <insert id="addProdutoEncomenda" statementType="CALLABLE">
+        {CALL P_ADD_PRODUTO_ENCOMENDA(#{quantidade},#{serverId},#{idProduto})}
+    </insert>
 
 </mapper>
