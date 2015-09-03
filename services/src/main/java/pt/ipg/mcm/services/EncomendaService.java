@@ -127,20 +127,8 @@ public class EncomendaService extends SecureService {
     setWsc(webServiceContext);
     checkAuthorization(Role.CLIENTE);
     String login = getSecurityCommon().getUserPrincipal().getName();
-    ResMinhasEncomendas resMinhasEncomendas = new ResMinhasEncomendas();
-
-    List<MinhaEncomenda> minhasEncomendas = new ArrayList<MinhaEncomenda>();
-    resMinhasEncomendas.setMinhasEncomendasList(minhasEncomendas);
     try {
-      for (VEncomendasLoginEntity vEncomendasLoginEntity : encomendaDao.getMinhasEncomendas(login, id)) {
-        MinhaEncomenda minhaEncomenda = new MinhaEncomenda();
-        minhaEncomenda.setDataPrevista(vEncomendasLoginEntity.getDataEntrega());
-        minhaEncomenda.setId(vEncomendasLoginEntity.getIdEncomenda());
-        minhaEncomenda.setPreco(vEncomendasLoginEntity.getPrecoAtual());
-        minhasEncomendas.add(minhaEncomenda);
-      }
-      resMinhasEncomendas.getMinhasEncomendasList();
-      return resMinhasEncomendas;
+      return new ResMinhasEncomendas(encomendaDao.getMinhasEncomendas(login,id));
     } catch (MestradoException e) {
       return new ResMinhasEncomendas(e);
     }

@@ -1,20 +1,21 @@
 package pt.ipg.mcm.controller;
 
+import org.apache.ibatis.exceptions.PersistenceException;
+import org.apache.ibatis.session.SqlSession;
+import pt.ipg.mcm.batis.MappedSql;
 import pt.ipg.mcm.entities.EncomendaEntity;
 import pt.ipg.mcm.entities.EncomendaProdutoEntity;
 import pt.ipg.mcm.entities.VEncomendasLoginEntity;
 import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
-import pt.ipg.mcm.xmodel.EncomendaDetalheXml;
-import pt.ipg.mcm.xmodel.ProdutoEncomendadoComPreco;
-import pt.ipg.mcm.xmodel.ResMinhasEncomendas;
-import pt.ipg.mcm.xmodel.ResMinhasEncomendasDetalhe;
+import pt.ipg.mcm.xmodel.*;
 import pt.ipg.mcm.xmodel.encomendas.ProdutoSoapIn;
 import pt.ipg.mcm.xmodel.encomendas.EncomendaSoapIn;
 import pt.ipg.mcm.xmodel.encomendas.XOutEncomendas;
 import pt.ipg.mcm.xmodel.encomendas.XOutEncomenda;
 
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.sql.DataSource;
 import java.sql.CallableStatement;
@@ -25,6 +26,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Stateless
@@ -32,6 +34,9 @@ public class EncomendaDao {
 
   @Resource(lookup = "jdbc/mestrado")
   private DataSource mestradoDataSource;
+
+  @EJB
+  private MappedSql mappedSql;
 
   public void inserirEncomenda(EncomendaEntity encomendaEntity, String login) throws MestradoException {
 
@@ -144,44 +149,19 @@ public class EncomendaDao {
   }
 
 
-  public List<VEncomendasLoginEntity> getMinhasEncomendas(String login, long idSync) throws MestradoException {
-    List<VEncomendasLoginEntity> vEncomendaEntities = new ArrayList<VEncomendasLoginEntity>();
+  public List<MinhaEncomenda> getMinhasEncomendas(final String login, final long idSync) throws MestradoException {
+    SqlSession session = mappedSql.getSqlSession();
     try {
-      Connection connection = mestradoDataSource.getConnection();
-
-      String sqlString = "SELECT DATA_ENTREGA, ENCOMENDA_ASSOCIADA, CALENDARIO, DATA_CRIACAO, ESTADO,\n" +
-          "OBSERVACOES, ID_ENCOMENDA, QUANTIDADE_ENCOMENDADA, PRODUTO_ENCOMENDADO, \n" +
-          " PRECO_ATUAL, ID_CATEGORIA \n" +
-          "FROM V_ENCOMENDAS_LOGIN\n" +
-          "WHERE LOGIN = ? and SYNC > ? ";
-
-      PreparedStatement ps = connection.prepareStatement(sqlString);
-
-      ps.setString(1, login);
-      ps.setLong(2, idSync);
-      ResultSet rs = ps.executeQuery();
-
-      while (rs.next()) {
-        VEncomendasLoginEntity vEncomendasLoginEntity = new VEncomendasLoginEntity();
-        vEncomendasLoginEntity.setDataEntrega(rs.getTimestamp(1));
-        vEncomendasLoginEntity.setEncomendaAssociada(rs.getLong(2));
-        vEncomendasLoginEntity.setCalendario(rs.getLong(3));
-        vEncomendasLoginEntity.setDataCriacao(rs.getTimestamp(4));
-        vEncomendasLoginEntity.setEstado(rs.getLong(5));
-        vEncomendasLoginEntity.setObservacoes(rs.getString(6));
-        vEncomendasLoginEntity.setIdEncomenda(rs.getLong(7));
-        vEncomendasLoginEntity.setQuantidadeEncomendada(rs.getInt(8));
-        vEncomendasLoginEntity.setProdutoEncomendado(rs.getLong(9));
-        vEncomendasLoginEntity.setPrecoAtual(rs.getBigDecimal(10));
-        vEncomendasLoginEntity.setIdCategoria(rs.getBigDecimal(11));
-        vEncomendaEntities.add(vEncomendasLoginEntity);
-      }
-    } catch (SQLException e) {
+      return session.selectList("getMinhasEncomendas",new HashMap<String,Object>(){{
+        put("login",login);
+        put("sync",idSync);
+      }});
+    } catch (Exception e) {
       e.printStackTrace();
       throw new MestradoException(Erro.TECNICO);
-
+    }finally {
+      session.close();
     }
-    return vEncomendaEntities;
   }
 
 

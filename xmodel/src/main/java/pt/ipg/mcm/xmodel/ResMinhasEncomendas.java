@@ -9,22 +9,20 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ResMinhasEncomendas extends RetornoSoap {
 
-    public  ResMinhasEncomendas(){
+    public ResMinhasEncomendas() {
 
     }
 
-  private List<MinhaEncomenda> minhasEncomendasList;
+    private List<MinhaEncomenda> minhasEncomendasList;
 
     public ResMinhasEncomendas(MestradoException e) {
         super(e);
 
     }
 
-    public List<MinhaEncomenda> getMinhasEncomendasList() {
-    return minhasEncomendasList;
-  }
+    public ResMinhasEncomendas(List<MinhaEncomenda> minhasEncomendasList) {
+        super(1,"Encomendas devolvidas com sucesso");
+        this.minhasEncomendasList = minhasEncomendasList;
+    }
 
-  public void setMinhasEncomendasList(List<MinhaEncomenda> minhasEncomendasList) {
-    this.minhasEncomendasList = minhasEncomendasList;
-  }
 }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="encomendas">
+
+    <resultMap id="encomenda" type="pt.ipg.mcm.xmodel.MinhaEncomenda">
+        <result property="id" column="ID_ENCOMENDA"/>
+        <result property="preco" column="PRECO_ATUAL"/>
+        <result property="dataPrevista" column="DATA_ENTREGA" />
+    </resultMap>
+
+    <select id="getMinhasEncomendas" resultMap="encomenda">
+        SELECT DATA_ENTREGA, ENCOMENDA_ASSOCIADA, CALENDARIO, DATA_CRIACAO, ESTADO,
+        OBSERVACOES, ID_ENCOMENDA, QUANTIDADE_ENCOMENDADA, PRODUTO_ENCOMENDADO,
+         PRECO_ATUAL, ID_CATEGORIA
+        FROM V_ENCOMENDAS_LOGIN
+        WHERE LOGIN = #{login} and SYNC > #{sync}
+    </select>
+
+
+</mapper>

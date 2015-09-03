@@ -1,6 +1,7 @@
 package pt.ipg.mcm;
 
 import client.tests.*;
+import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -19,8 +20,8 @@ public class TesteServices {
 
     private void authentication(Object port, String username, String password) {
         BindingProvider bp = (BindingProvider) port;
-        bp.getRequestContext().put(BindingProvider.USERNAME_PROPERTY, "francisco");
-        bp.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, "francisco");
+        bp.getRequestContext().put(BindingProvider.USERNAME_PROPERTY, username);
+        bp.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, password);
     }
 
     @Test
@@ -108,5 +109,21 @@ public class TesteServices {
         Assert.assertEquals(1,resCreationUserClient.getCodigo().intValue());
     }
 
+    @Test
+    @Ignore
+    public void testGetMinhasEncomendas() throws LoginException_Exception {
+        Encomenda encomenda = new Encomenda();
+        EncomendaService port = encomenda.getEncomendaPort();
+        authentication(port, "bruno", "bruno");
+        ResMinhasEncomendas minhasEncomendas = port.getMinhasEncomendas(0);
+        minhasEncomendas.getMinhasEncomendasList();
+
+        assertThat(minhasEncomendas.getMinhasEncomendasList().size(), greaterThan(0));
+        MinhaEncomenda minhaEncomenda = minhasEncomendas.getMinhasEncomendasList().get(0);
+        assertNotNull(minhaEncomenda.getDataPrevista());
+        assertNotNull(minhaEncomenda.getId());
+        assertNotNull(minhaEncomenda.getPreco());
+        assertNotNull(minhasEncomendas);
+    }
 
 }
