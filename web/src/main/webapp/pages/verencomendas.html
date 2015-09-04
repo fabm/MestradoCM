@@ -29,6 +29,7 @@
     <!-- Custom Fonts -->
     <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -61,6 +62,7 @@
                     <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-messages">
+
                     <li>
                         <a href="#">
                             <div>
@@ -314,12 +316,13 @@
                                 <a href="encomenda.html">Nova</a>
                             </li>
                             <li>
-                                <a href="#">Ver </a>
+                                <a href="">Ver </a>
                             </li>
 
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
+
 
 
                 </ul>
@@ -333,14 +336,40 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header divPageTitle">Dashboard BODY</h1>
+                <h1 class="page-header divPageTitle">Ver Encomendas</h1>
             </div>
-            <!-- /.col-lg-12 -->
 
 
-            <div class=" registoNovoUtilizador">
-                novo utilizador
+            <div class="col-lg-12 divListAllCategories">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Encomendas
+                    </div>
+                    <div class="panel-body">
+
+                        <table class="tableListMinhasEncomendas">
+                            <thead>
+                            <th>idEncomenda</th>
+                            <th>Preço</th>
+                            <th>Data Prevista</th>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="panel-footer">
+                        <button type="button" class="btn btn-default" id="btnVerCamposNovaCategoria"> Nova Categoria
+                        </button>
+                    </div>
+                </div>
             </div>
+
+
+
+
+
+            <!-- /.modal -->
 
 
         </div>
@@ -362,6 +391,14 @@
 <!-- Metis Menu Plugin JavaScript -->
 <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
 
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.css">
+
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.js"></script>
+
+
 <!-- Morris Charts JavaScript -->
 <!--script src="../bower_components/raphael/raphael-min.js"></script>
 <script src="../bower_components/morrisjs/morris.min.js"></script>
@@ -370,9 +407,10 @@
 <!-- Custom Theme JavaScript -->
 
 <script src="../dist/js/sb-admin-2.js"></script>
-
+<script src="../js/jquery.xml2json.js"></script>
 <script src="../js/globalScripts.js"></script>
 <script src="../js/loadTemplates.js"></script>
+<script src="../js/verEncomendas.js"></script>
 
 
 </body>

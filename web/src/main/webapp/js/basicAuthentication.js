@@ -18,15 +18,8 @@ function getBasicAuthentication(loginName, loginPassword){
     var soapBasicAuthentication = soapMsg;//g_soapBuilder.getSimpleEnvelope(soapMsg);
 
 
-    //if (getCookie(cookieNameLogin64Base).length != 0){
-    //    base64Login = getCookie(cookieNameLogin64Base);
-    //}else{
-    //    base64Login= btoa(loginName +":"+loginPassword);
-    //
-    //}
 
-
-    base64Login= btoa(loginName +":"+loginPassword);
+    base64Login = btoa(loginName +":"+loginPassword);
 
     $.ajax
     ({
@@ -41,7 +34,8 @@ function getBasicAuthentication(loginName, loginPassword){
         data: soapBasicAuthentication,
         success: successAuthentication,
         error: function (){
-            alert('authentication error!');
+            alert('User sem privilégios suficientes !');
+
         }
     });
 
