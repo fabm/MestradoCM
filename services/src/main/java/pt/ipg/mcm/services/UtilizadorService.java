@@ -32,25 +32,17 @@ public class UtilizadorService extends SecureService {
 
 
   @WebMethod
-  public ResAddUtilizador addUtilizadorPadeiro(@WebParam(name = "req-add-utilizador") @XmlElement(required = true) ReqAddUtilizador reqAddUtilizador) throws
+  public RetornoSoap addUtilizadorPadeiro(@WebParam(name = "req-add-utilizador") @XmlElement(required = true) ReqAddUtilizador reqAddUtilizador) throws
       LoginException {
     try {
       Map<String, String> aliasMap = new HashMap<String, String>();
-      aliasMap.put("idUtilizador", "Utilizador");
+      aliasMap.put("idUtilizador", "utilizador");
       Validacao.getInstance().valida(reqAddUtilizador, aliasMap);
       checkAuthorization(Role.ADMINISTRADOR);
 
-      utilizadorDao.addUtilizador(reqAddUtilizador);
-
-      ResAddUtilizador resAddUtilizador = new ResAddUtilizador();
-      resAddUtilizador.setRetorno(new RetornoSoap(1, "Padeiro Adicionado Com Sucesso. "));
-
-      return resAddUtilizador;
-
-    } catch (MestradoException e) {
-      ResAddUtilizador resAddUtilizador = new ResAddUtilizador();
-      resAddUtilizador.setRetorno(new RetornoSoap(e));
-      return resAddUtilizador;
+      return utilizadorDao.addUtilizador(reqAddUtilizador);
+    } catch (Exception e) {
+      return new RetornoSoap(e);
     }
 
   }
@@ -68,7 +60,7 @@ public class UtilizadorService extends SecureService {
       Validacao.getInstance().valida(userClienteCreationRequest, aliasMap);
       utilizadorDao.createUserCliente(userClienteCreationRequest);
       return new ResCreationUserClient();
-    } catch (MestradoException e) {
+    } catch (Exception e) {
       return new ResCreationUserClient(e);
     }
   }

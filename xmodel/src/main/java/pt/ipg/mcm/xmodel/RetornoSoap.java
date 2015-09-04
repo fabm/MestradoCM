@@ -1,5 +1,6 @@
 package pt.ipg.mcm.xmodel;
 
+import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -18,6 +19,11 @@ public class RetornoSoap {
   public RetornoSoap(int codigo, String mensagem) {
     this.codigo = codigo;
     this.mensagem = mensagem;
+  }
+
+  public RetornoSoap(Exception e){
+    this(new MestradoException(Erro.TECNICO));
+    e.printStackTrace();
   }
 
   public RetornoSoap(MestradoException e) {

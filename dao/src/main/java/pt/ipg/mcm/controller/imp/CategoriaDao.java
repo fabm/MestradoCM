@@ -28,9 +28,6 @@ public class CategoriaDao {
         try {
             session.delete("deleteCategoria", id);
             return new RetornoSoap(1, "Categoria removida com sucesso");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new RetornoSoap(new MestradoException(Erro.TECNICO));
         } finally {
             session.close();
         }
@@ -40,19 +37,16 @@ public class CategoriaDao {
         SqlSession session = mappedSql.getSqlSession();
         try {
             session.insert("addCategoria", categoria);
+            return categoria.getId();
         } finally {
             session.close();
         }
-        return categoria.getId();
     }
 
     public void updateCategoria(ReqUpdateCategoria reqUpdateCategoria) throws MestradoException {
         SqlSession session = mappedSql.getSqlSession();
         try {
             session.update("updateCategoria", reqUpdateCategoria);
-        } catch (PersistenceException e) {
-            e.printStackTrace();
-            throw new MestradoException(Erro.TECNICO);
         } finally {
             session.close();
         }
@@ -69,8 +63,6 @@ public class CategoriaDao {
                 throw new MestradoException(Erro.CATEGORIA_NAO_ENCONTRADO, idCategoria);
             }
             return resGetCategoria;
-        } catch (PersistenceException e) {
-            throw new MestradoException(Erro.TECNICO);
         } finally {
             session.close();
         }
@@ -80,9 +72,6 @@ public class CategoriaDao {
         SqlSession session = mappedSql.getSqlSession();
         try {
             return session.selectList("getCategorias");
-        } catch (PersistenceException e) {
-            Logger.getGlobal().severe(e.getMessage());
-            throw new MestradoException(Erro.TECNICO);
         } finally {
             session.close();
         }

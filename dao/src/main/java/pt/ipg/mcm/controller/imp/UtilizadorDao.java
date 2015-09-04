@@ -6,9 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import pt.ipg.mcm.batis.MappedSql;
 import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
-import pt.ipg.mcm.xmodel.ReqAddUtilizador;
-import pt.ipg.mcm.xmodel.ResGetPadeiro;
-import pt.ipg.mcm.xmodel.UserClienteCreationRequest;
+import pt.ipg.mcm.xmodel.*;
 
 import javax.annotation.Resource;
 import javax.ejb.EJB;
@@ -20,22 +18,14 @@ import java.util.logging.Logger;
 @Stateless
 public class UtilizadorDao {
 
-    @Resource(lookup = "jdbc/mestrado")
-    private DataSource mestradoDataSource;
-
     @EJB
     private MappedSql mappedSql;
 
 
-    public void addUtilizador(ReqAddUtilizador reqAddUtilizador) throws MestradoException {
+    public RetornoSoap addUtilizador(ReqAddUtilizador reqAddUtilizador) {
         SqlSession session = mappedSql.getSqlSession();
-        try {
-            session.insert("addPadeiro", reqAddUtilizador);
-        } catch (PersistenceException e) {
-            Logger.getGlobal().log(Level.SEVERE, e.getMessage(), e);
-            throw new MestradoException(Erro.TECNICO);
-        }
-
+        session.insert("addPadeiro", reqAddUtilizador);
+        return new RetornoSoap(1, "Padeiro criado com sucesso");
     }
 
 //OBTER PADEIRO
@@ -49,6 +39,8 @@ public class UtilizadorDao {
     }
 
 
+
+
     public void createUserCliente(UserClienteCreationRequest utilizadorCliente) throws MestradoException {
         SqlSession session = mappedSql.getSqlSession();
         try {
@@ -59,11 +51,8 @@ public class UtilizadorDao {
             }
 
             session.insert("addCliente", utilizadorCliente);
-        } catch (PersistenceException e) {
-            e.printStackTrace();
-            throw new MestradoException(Erro.TECNICO);
         } finally {
-          session.close();
+            session.close();
         }
     }
 }

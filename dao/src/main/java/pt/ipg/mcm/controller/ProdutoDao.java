@@ -1,59 +1,38 @@
 package pt.ipg.mcm.controller;
 
-import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
 import pt.ipg.mcm.batis.MappedSql;
 import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
-import pt.ipg.mcm.xmodel.Categoria;
-import pt.ipg.mcm.xmodel.ProdutoCategoria;
-import pt.ipg.mcm.xmodel.ProdutoXml;
-import pt.ipg.mcm.xmodel.ReqAddProduto;
-import pt.ipg.mcm.xmodel.ReqUpdateProduto;
-import pt.ipg.mcm.xmodel.ResAddProduto;
-import pt.ipg.mcm.xmodel.ResGetProduto;
-import pt.ipg.mcm.xmodel.RetornoSoap;
+import pt.ipg.mcm.xmodel.*;
 
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.sql.DataSource;
 import java.io.InputStream;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Stateless
 public class ProdutoDao {
-    @Resource(lookup = "jdbc/mestrado")
-    private DataSource mestradoDataSource;
 
     @EJB
     private MappedSql mappedSql;
 
-    public ResAddProduto addProduto(ReqAddProduto reqAddProduto) throws MestradoException {
-        ResAddProduto resAddProduto = new ResAddProduto();
-        SqlSession sqlSession = mappedSql.getSqlSession();
+    public ResAddProduto addProduto(ReqAddProduto reqAddProduto) {
 
+        SqlSession sqlSession = mappedSql.getSqlSession();
         try {
             sqlSession.insert("insertProduto", reqAddProduto);
-            resAddProduto.setId(reqAddProduto.getId());
-        } catch (PersistenceException e) {
-            Logger.getGlobal().severe(e.getMessage());
-            throw new MestradoException(Erro.TECNICO);
+            return new ResAddProduto(reqAddProduto.getId());
         } finally {
             sqlSession.close();
         }
-        resAddProduto.setRetorno(new RetornoSoap(1, "Produto inserido com sucesso"));
 
-        return resAddProduto;
     }
 
-    public List<ProdutoXml> getProdutos(final long versao) throws MestradoException {
+    public List<ProdutoXml> getProdutos(final long versao) {
         List<ProdutoXml> list = mappedSql.getSqlSession().selectList("getProdutos", new HashMap<String, Object>() {{
             put("id", versao);
         }});
@@ -62,11 +41,10 @@ public class ProdutoDao {
 
     public ResGetProduto getProduto(final long idProduto) throws MestradoException {
 
-        ResGetProduto resGetProduto;
+        SqlSession session = mappedSql.getSqlSession();
         try {
 
-            SqlSession session = mappedSql.getSqlSession();
-            resGetProduto = session.selectOne("getProduto", new HashMap<String, Object>() {{
+            ResGetProduto resGetProduto = session.selectOne("getProduto", new HashMap<String, Object>() {{
                 put("id", idProduto);
             }});
 
@@ -74,66 +52,36 @@ public class ProdutoDao {
                 throw new MestradoException(Erro.PRODUTO_NAO_ENCONTRADO, idProduto);
             }
 
-        } catch (PersistenceException e) {
-            Logger.getGlobal().severe(e.getMessage());
-            throw new MestradoException(Erro.TECNICO);
+            return resGetProduto;
+        } finally {
+            session.close();
         }
 
-        return resGetProduto;
-    }
-
-    public void saveFoto(long id, InputStream inputStream) throws MestradoException {
-        try {
-            String sqlString = "UPDATE PRODUTO\n" +
-                    "SET FOTO = ?\n" +
-                    "WHERE ID_PRODUTO = ?";
-            Connection connection = mestradoDataSource.getConnection();
-            CallableStatement call = connection.prepareCall(sqlString);
-
-            call.setLong(2, id);
-
-            int qt = call.executeUpdate();
-
-            if (qt == 0) {
-                throw new MestradoException(Erro.TECNICO);
-            }
-        } catch (SQLException e) {
-            throw new MestradoException(Erro.TECNICO);
-        }
     }
 
     public InputStream getFoto(Long id) throws MestradoException {
-        String sqlString = "SELECT PRODUTO.FOTO\n" +
-                "FROM PRODUTO\n" +
-                "WHERE PRODUTO.ID_PRODUTO = ?";
+
+        SqlSession session = mappedSql.getSqlSession();
 
         try {
-            Connection connection = mestradoDataSource.getConnection();
+            InputStream foto = session.selectOne("getFoto", id);
 
-            CallableStatement call = connection.prepareCall(sqlString);
-
-            call.setLong(1, id);
-            ResultSet rs = call.executeQuery();
-
-            if (!rs.next()) {
+            if (foto == null) {
                 throw new MestradoException(Erro.PRODUTO_NAO_ENCONTRADO, id);
             }
 
-            return rs.getBinaryStream(1);
-        } catch (SQLException e) {
-            throw new MestradoException(Erro.TECNICO);
+            return foto;
+        } finally {
+            session.close();
         }
 
     }
 
 
-    public List<ProdutoCategoria> getProdutos(Categoria categoria) throws MestradoException {
+    public List<ProdutoCategoria> getProdutos(Categoria categoria) {
         SqlSession session = mappedSql.getSqlSession();
         try {
             return session.selectList("getProdutosCategoria", categoria);
-        } catch (PersistenceException e) {
-            Logger.getGlobal().severe(e.getMessage());
-            throw new MestradoException(Erro.TECNICO);
         } finally {
             session.close();
         }
@@ -149,12 +97,10 @@ public class ProdutoDao {
         }
     }
 
-    public void deleteProduto(Long id) throws MestradoException {
+    public void deleteProduto(Long id){
         SqlSession session = mappedSql.getSqlSession();
         try {
             session.delete("deleteProduto", id);
-        } catch (PersistenceException e) {
-            throw new MestradoException(Erro.TECNICO);
         } finally {
             session.close();
         }
@@ -164,11 +110,15 @@ public class ProdutoDao {
     public List<ProdutoCategoria> getProdutosCategoria(final long categoria) {
         SqlSession session = mappedSql.getSqlSession();
         try {
-            return session.selectList("getProdutosCategoria",new HashMap<String,Object>(){{
-                put("categoria",categoria);
+            return session.selectList("getProdutosCategoria", new HashMap<String, Object>() {{
+                put("categoria", categoria);
             }});
         } finally {
             session.close();
         }
+    }
+
+    public void saveFoto(long id, InputStream is) {
+
     }
 }

@@ -5,6 +5,7 @@
 <configuration>
     <settings>
         <setting name="jdbcTypeForNull" value="NULL" />
+        <setting name="cacheEnabled" value="false"/>
     </settings>
     <environments default="development">
         <environment id="development">
@@ -15,6 +16,7 @@
         </environment>
     </environments>
     <mappers>
+        <mapper resource="mappers/localidade.xml"/>
         <mapper resource="mappers/encomenda.xml"/>
         <mapper resource="mappers/sync.xml"/>
         <mapper resource="mappers/cliente.xml"/>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="localidade">
+
+    <resultMap id="localidade" type="pt.ipg.mcm.xmodel.Localidade">
+        <result property="id" column="ID_LOCALIDADE"/>
+        <result property="localidade" column="LOCALIDADE"/>
+        <result property="codigoPostal" column="CODIGO_POSTAL"/>
+    </resultMap>
+
+    <select id="getAllLocalidades" resultMap="localidade">
+        SELECT ID_LOCALIDADE, LOCALIDADE, CODIGO_POSTAL FROM V_LOCALIDADE_ORD
+    </select>
+
+    <select id="getLocalidadesFiltradas" resultMap="localidade">
+        SELECT ID_LOCALIDADE, LOCALIDADE, CODIGO_POSTAL FROM V_LOCALIDADE_ORD
+    </select>
+
+    <select id="getLocalidadesFiltradasPaginada" resultMap="localidade"><![CDATA[
+            SELECT * FROM (
+              SELECT paged.*, rownum rnum FROM (
+                SELECT ID_LOCALIDADE, LOCALIDADE, CODIGO_POSTAL FROM V_LOCALIDADE_ORD
+                WHERE LOCALIDADE LIKE #{filtro}
+              ) paged
+              WHERE rownum < ((#{pagina} * #{quantidade}) + 1))
+            WHERE rnum >= (((#{pagina}-1) * #{quantidade}) + 1)
+        ]]>
+    </select>
+
+    <select id="getLocalidadesPaginadas" resultMap="localidade">
+        <![CDATA[
+            SELECT * FROM (
+              SELECT paged.*, rownum rnum FROM (
+                SELECT ID_LOCALIDADE, LOCALIDADE, CODIGO_POSTAL FROM V_LOCALIDADE_ORD
+              ) paged
+              WHERE rownum < ((#{pagina} * #{quantidade}) + 1))
+            WHERE rnum >= (((#{pagina}-1) * #{quantidade}) + 1)
+        ]]>
+    </select>
+
+
+</mapper>

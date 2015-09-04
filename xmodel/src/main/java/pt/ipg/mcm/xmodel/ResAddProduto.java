@@ -15,6 +15,14 @@ public class ResAddProduto {
   @XmlElement(required = false)
   private RetornoSoap retorno;
 
+  public ResAddProduto() {
+  }
+
+  public ResAddProduto(long id) {
+    this.id = id;
+    this.retorno = new RetornoSoap(1,"Produto inserido com sucesso");
+  }
+
   public long getId() {
     return id;
   }

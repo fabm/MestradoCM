@@ -13,6 +13,7 @@ public class Encomenda2EncomendaIdsRest extends AbstractConversor<EncomendaOut,E
   public EncomendaIdsRest converted() {
     EncomendaIdsRest encomendaIdsRest = new EncomendaIdsRest();
     encomendaIdsRest.setServerId(source.getServerId());
+    encomendaIdsRest.setClientId(source.getClientId());
     return encomendaIdsRest;
   }
 }

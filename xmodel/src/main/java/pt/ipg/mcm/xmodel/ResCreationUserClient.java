@@ -7,6 +7,10 @@ public class ResCreationUserClient extends RetornoSoap {
     super(e);
   }
 
+  public ResCreationUserClient(Exception e) {
+    super(e);
+  }
+
   public ResCreationUserClient() {
     super(1,"Registo feito com sucesso");
   }

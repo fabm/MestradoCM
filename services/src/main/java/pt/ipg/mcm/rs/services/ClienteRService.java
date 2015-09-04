@@ -2,6 +2,7 @@ package pt.ipg.mcm.rs.services;
 
 import pt.ipg.mcm.services.ClienteService;
 import pt.ipg.mcm.xmodel.ReqAddClienteUtilizador;
+import pt.ipg.mcm.xmodel.UserClienteCreationRequest;
 
 import javax.inject.Inject;
 import javax.security.auth.login.LoginException;
@@ -24,7 +25,7 @@ public class ClienteRService {
   @POST
   @Path("/registar")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response addEncomenda(ReqAddClienteUtilizador reqAddClienteUtilizador, @Context SecurityContext securityContext) {
+  public Response addCliente(UserClienteCreationRequest reqAddClienteUtilizador, @Context SecurityContext securityContext) {
     try {
       clienteService.setRc(securityContext);
       return Response.ok(clienteService.addClienteUtilizador(reqAddClienteUtilizador)).build();
@@ -32,24 +33,5 @@ public class ClienteRService {
       return Response.status(Response.Status.UNAUTHORIZED).build();
     }
   }
-
-  @GET
-  @Path("/teste")
-  @Produces(MediaType.APPLICATION_JSON)
-  public Response teste() {
-    ReqAddClienteUtilizador reqAddClienteUtilizador = new ReqAddClienteUtilizador();
-    reqAddClienteUtilizador.setContribuinte(1234);
-    reqAddClienteUtilizador.setNome("Francisco Monteiro");
-    reqAddClienteUtilizador.setMorada("Guarda");
-    reqAddClienteUtilizador.setPorta("2Esq");
-    reqAddClienteUtilizador.setDataNascimento(new Date());
-    reqAddClienteUtilizador.setEmail("francisco@sapo.pt");
-    reqAddClienteUtilizador.setContacto("969999999");
-    reqAddClienteUtilizador.setLocalidade(6300559);
-    reqAddClienteUtilizador.setLogin("francisco");
-    reqAddClienteUtilizador.setPassword("francisco");
-    return Response.ok(reqAddClienteUtilizador).build();
-  }
-
 
 }

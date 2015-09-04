@@ -15,10 +15,7 @@ public class ResDeleteProduto {
     private RetornoSoap retorno;
 
     public ResDeleteProduto() {
-    }
-
-    public ResDeleteProduto(RetornoSoap retornoSoap) {
-        this.retorno = retornoSoap;
+        this.retorno = new RetornoSoap(1,"Apagado com sucesso");
     }
 
     public Long getId() {

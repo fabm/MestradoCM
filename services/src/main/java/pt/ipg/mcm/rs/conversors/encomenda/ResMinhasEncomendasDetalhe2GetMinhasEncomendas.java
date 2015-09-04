@@ -21,7 +21,6 @@ public class ResMinhasEncomendasDetalhe2GetMinhasEncomendas extends AbstractConv
     for (EncomendaDetalheXml encomendaDetalheXml:source.getListaEncomendasDetalheXmls()){
       list.add(new EncomendaDetalheXml2Rest(encomendaDetalheXml).converted());
     }
-    getMinhasEncomendasRest.setMaxSync(source.getMaxSync());
     return getMinhasEncomendasRest;
   }
 }

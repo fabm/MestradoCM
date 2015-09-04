@@ -1,5 +1,7 @@
 package pt.ipg.mcm.xmodel;
 
+import pt.ipg.mcm.errors.MestradoException;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -10,10 +12,11 @@ import javax.xml.bind.annotation.XmlType;
 public class ResUpdateProduto {
 
     public ResUpdateProduto() {
+        new RetornoSoap(1, "Produto atualizado com sucesso");
     }
 
-    public ResUpdateProduto(RetornoSoap retorno) {
-        this.retorno = retorno;
+    public ResUpdateProduto(MestradoException e) {
+        this.retorno = new RetornoSoap(e);
     }
 
     @XmlElement(required = true)
@@ -23,7 +26,4 @@ public class ResUpdateProduto {
         return retorno;
     }
 
-    public void setRetorno(RetornoSoap retorno) {
-        this.retorno = retorno;
-    }
 }

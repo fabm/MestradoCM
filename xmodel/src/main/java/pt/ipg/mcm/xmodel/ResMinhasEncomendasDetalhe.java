@@ -1,37 +1,35 @@
 package pt.ipg.mcm.xmodel;
 
-import pt.ipg.mcm.errors.MestradoException;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import java.util.List;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-public class ResMinhasEncomendasDetalhe extends RetornoSoap {
-  private List<EncomendaDetalheXml> listaEncomendasDetalheXmls;
-  private long maxSync;
+@XmlAccessorType(XmlAccessType.NONE)
+public class ResMinhasEncomendasDetalhe {
+    private List<EncomendaDetalheXml> listaEncomendasDetalheXml;
 
-  public ResMinhasEncomendasDetalhe() {
-    super();
-  }
+    public ResMinhasEncomendasDetalhe() {
+    }
 
-  public ResMinhasEncomendasDetalhe(MestradoException e) {
-    super(e);
-  }
+    public ResMinhasEncomendasDetalhe(List<EncomendaDetalheXml> encomendaDetalheXmlList) {
+        this.listaEncomendasDetalheXml = encomendaDetalheXmlList;
+    }
 
-  public List<EncomendaDetalheXml> getListaEncomendasDetalheXmls() {
-    return listaEncomendasDetalheXmls;
-  }
+    @XmlElement
+    public List<EncomendaDetalheXml> getListaEncomendasDetalheXmls() {
+        return listaEncomendasDetalheXml;
+    }
 
-  public void setListaEncomendasDetalheXmls(List<EncomendaDetalheXml> listaEncomendasDetalheXmls) {
-    this.listaEncomendasDetalheXmls = listaEncomendasDetalheXmls;
-  }
+    @XmlElement
+    public long getMaxSync() {
+        long syncMax = 0;
+        for (EncomendaDetalheXml encomendaDetalheXml : listaEncomendasDetalheXml) {
+            if (encomendaDetalheXml.getSync() > syncMax) {
+                syncMax = encomendaDetalheXml.getSync();
+            }
+        }
+        return syncMax;
+    }
 
-  public long getMaxSync() {
-    return maxSync;
-  }
-
-  public void setMaxSync(long maxSync) {
-    this.maxSync = maxSync;
-  }
 }

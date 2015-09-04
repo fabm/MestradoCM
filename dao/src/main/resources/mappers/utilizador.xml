@@ -11,20 +11,7 @@
                 #{nome})
         }
     </insert>
-    <insert id="addCliente" statementType="PREPARED">
-        {call P_ADD_UTILIZADOR_CLIENTE(
-                #{contribuinte},
-                #{nome},
-                #{morada},
-                #{porta},
-                #{dataNascimento},
-                #{email},
-                #{contacto},
-                #{localidade},
-                #{login},
-                #{passwordHash})
-        }
-    </insert>
+
 
     <select id="getPadeiro" resultType="pt.ipg.mcm.xmodel.ResGetPadeiro">
         SELECT PADEIRO.NOME,
@@ -32,13 +19,5 @@
         WHERE PADEIRO.ID_PADEIRO = #{id}
     </select>
 
-    <select id="countUtilizadorByLogin" resultType="int">
-        SELECT count(*) num FROM UTILIZADOR
-        WHERE  utilizador.LOGIN = #{id}
-    </select>
-
-    <delete id="deleteCliente">
-        {call P_DELETE_CLIENTE(#{id})}
-    </delete>
 
 </mapper>

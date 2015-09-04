@@ -11,7 +11,8 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.BindingProvider;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
@@ -128,6 +129,24 @@ public class TesteServices {
 
     @Test
     @Ignore
+    public void testGetMinhasEncomendasDetalhe() throws LoginException_Exception {
+        Encomenda encomenda = new Encomenda();
+        EncomendaService port = encomenda.getEncomendaPort();
+        authentication(port, "bruno", "bruno");
+        ResMinhasEncomendasDetalhe minhasEncomendasDetalhe = port.getMinhasEncomendasDetalhe(0);
+        minhasEncomendasDetalhe.getListaEncomendasDetalheXmls();
+
+        assertThat(minhasEncomendasDetalhe.getListaEncomendasDetalheXmls().size(), greaterThan(0));
+        EncomendaDetalheXml minhaEncomenda = minhasEncomendasDetalhe.getListaEncomendasDetalheXmls().get(0);
+        assertNotNull(minhaEncomenda.getDataCriacao());
+        assertNotNull(minhaEncomenda.getId());
+        assertNotNull(minhaEncomenda.getDataEntrega());
+        assertNotNull(minhaEncomenda.getEstado());
+        assertThat(minhaEncomenda.getProdutosEncomendados().size(),greaterThan(0));
+    }
+
+    @Test
+    @Ignore
     public void testAddEncomendas() throws LoginException_Exception, DatatypeConfigurationException {
         Encomenda encomenda = new Encomenda();
         EncomendaService port = encomenda.getEncomendaPort();
@@ -155,6 +174,22 @@ public class TesteServices {
         addEcnomendas.getEncomendas().getEncomenda().add(encomendaIn);
         AddEncomendasOut addEncomendasOut = port.addEncomendas(addEcnomendas);
         Assert.assertEquals(1,addEncomendasOut.getCodigo().intValue());
+    }
+
+    @Test
+    @Ignore
+    public void testLocalidades() {
+
+        Localidade_Service localidade_service = new Localidade_Service();
+        LocalidadeService port = localidade_service.getLocalidadePort();
+
+        ResGetAllLocalidades all = port.getAllLocalidades();
+
+        Assert.assertFalse(all.getLocalidades().getLocalidade().isEmpty());
+
+        ResGetAllLocalidades localidades = port.getLocalidadesComFiltroEPagina("GUA", 1);
+
+        localidades=port.getLocalidadesComPagina(2);
     }
 
 }

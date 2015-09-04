@@ -34,129 +34,40 @@ import java.util.List;
 @WebService(serviceName = "Encomenda", portName = "EncomendaPort")
 public class EncomendaService extends SecureService {
 
-  @EJB
-  private EncomendaDao encomendaDao;
+    @EJB
+    private EncomendaDao encomendaDao;
 
-  @Resource
-  private WebServiceContext webServiceContext;
+    @Resource
+    private WebServiceContext webServiceContext;
 
-  @WebMethod
-  public ResAddEncomenda addEncomenda(@WebParam(name = "addEncomenda") ReqAddEncomenda reqAddEncomenda) throws LoginException {
-    setWsc(webServiceContext);
-    checkAuthorization(Role.CLIENTE);
 
-    String login = getSecurityCommon().getUserPrincipal().getName();
-
-    EncomendaEntity encomendaEntity = new EncomendaEntity();
-
-    CalendarioEntity calendarioEncomeda = new CalendarioEntity();
-
-    calendarioEncomeda.setDataprevista(new Timestamp(reqAddEncomenda.getDataEntrega().getTime()));
-
-    encomendaEntity.setCalendarioEntity(calendarioEncomeda);
-
-    for (ProdutoEncomendado produtoEncomendado : reqAddEncomenda.getProdutoList()) {
-      EncomendaProdutoEntity encomendaProdutoEntity = new EncomendaProdutoEntity();
-      encomendaProdutoEntity.setEncomenda(encomendaEntity);
-
-      ProdutoEntity produtoEntity = new ProdutoEntity();
-      produtoEntity.setIdProduto(produtoEncomendado.getIdProduto());
-      encomendaProdutoEntity.setProduto(produtoEntity);
-
-      encomendaProdutoEntity.setQuantidade(produtoEncomendado.getQuantidade());
-      encomendaEntity.getEncomendaProdutoEntityList().add(encomendaProdutoEntity);
+    @WebMethod
+    public ResMinhasEncomendas getMinhasEncomendasTodas() throws LoginException {
+        return getMinhasEncomendas(0);
     }
 
-    try {
-      encomendaDao.inserirEncomenda(encomendaEntity, login);
-      return new ResAddEncomenda(encomendaEntity.getIdEncomenda(), new RetornoSoap(1, "Encomenda inserida com sucesso"));
-    } catch (MestradoException e) {
-      return new ResAddEncomenda(new RetornoSoap(e));
-    }
-  }
-
-  @WebMethod
-  public ResAddEncomendas addEncomendasDeprecated(@WebParam(name = "addEncomendas") ReqAddEncomendas reqAddEncomendas) throws LoginException {
-    setWsc(webServiceContext);
-    checkAuthorization(Role.CLIENTE);
-
-    String login = getSecurityCommon().getUserPrincipal().getName();
-
-    List<EncomendaEntity> encomendaEntityList = new ArrayList<EncomendaEntity>();
-
-    for (EncomendaXmlSemPreco encomendaXml : reqAddEncomendas.getEncomendas()) {
-      EncomendaEntity encomendaEntity = new EncomendaEntity();
-
-      CalendarioEntity calendarioEncomeda = new CalendarioEntity();
-
-      calendarioEncomeda.setDataprevista(new Timestamp(encomendaXml.getDataEntrega().getTime()));
-
-      encomendaEntity.setCalendarioEntity(calendarioEncomeda);
-
-      for (ProdutoEncomendado produtoEncomendado : encomendaXml.getProdutoList()) {
-        EncomendaProdutoEntity encomendaProdutoEntity = new EncomendaProdutoEntity();
-        encomendaProdutoEntity.setEncomenda(encomendaEntity);
-
-        ProdutoEntity produtoEntity = new ProdutoEntity();
-        produtoEntity.setIdProduto(produtoEncomendado.getIdProduto());
-        encomendaProdutoEntity.setProduto(produtoEntity);
-
-        encomendaProdutoEntity.setQuantidade(produtoEncomendado.getQuantidade());
-        encomendaEntity.getEncomendaProdutoEntityList().add(encomendaProdutoEntity);
-      }
-
-      encomendaEntityList.add(encomendaEntity);
-    }
-    try {
-      List<Long> ids = encomendaDao.inserirEncomendas(encomendaEntityList, login);
-      return new ResAddEncomendas(ids);
-    } catch (MestradoException e) {
-      return new ResAddEncomendas(e);
-    }
-  }
-
-  @WebMethod
-  public ResMinhasEncomendas getMinhasEncomendasTodas() throws LoginException {
-    return getMinhasEncomendas(0);
-  }
-
-  @WebMethod
-  public ResMinhasEncomendas getMinhasEncomendas(@WebParam(name = "idSync") long id) throws LoginException {
-    setWsc(webServiceContext);
-    checkAuthorization(Role.CLIENTE);
-    String login = getSecurityCommon().getUserPrincipal().getName();
-    try {
-      return new ResMinhasEncomendas(encomendaDao.getMinhasEncomendas(login,id));
-    } catch (MestradoException e) {
-      return new ResMinhasEncomendas(e);
+    @WebMethod
+    public ResMinhasEncomendas getMinhasEncomendas(@WebParam(name = "idSync") long id) throws LoginException {
+        setWsc(webServiceContext);
+        checkAuthorization(Role.CLIENTE);
+        String login = getSecurityCommon().getUserPrincipal().getName();
+        return new ResMinhasEncomendas(encomendaDao.getMinhasEncomendas(login, id));
     }
 
-  }
-
-  @WebMethod
-  public ResMinhasEncomendasDetalhe getMinhasEncomendasDetalhe(@WebParam(name = "idSync") long id) throws LoginException {
-    setWsc(webServiceContext);
-    checkAuthorization(Role.CLIENTE);
-    String login = getSecurityCommon().getUserPrincipal().getName();
-
-    try {
-      return encomendaDao.getMinhasEncomendasSync(login, id);
-    } catch (MestradoException e) {
-      return new ResMinhasEncomendasDetalhe(e);
+    @WebMethod
+    public ResMinhasEncomendasDetalhe getMinhasEncomendasDetalhe(@WebParam(name = "idSync") long id) throws LoginException {
+        setWsc(webServiceContext);
+        checkAuthorization(Role.CLIENTE);
+        String login = getSecurityCommon().getUserPrincipal().getName();
+        return encomendaDao.getMinhasEncomendasSync(login, id);
     }
 
-  }
-
-  @WebMethod
-  public AddEncomendasOut addEncomendas(@WebParam(name = "addEncomendas")AddEncomendasIn addEncomendasIn) throws LoginException {
-    setWsc(webServiceContext);
-    checkAuthorization(Role.CLIENTE);
-    String login = getSecurityCommon().getUserPrincipal().getName();
-    try {
-      return encomendaDao.addEncomendas(addEncomendasIn.getEncomendaInList(), login);
-    } catch (MestradoException e) {
-      return new AddEncomendasOut(e);
+    @WebMethod
+    public AddEncomendasOut addEncomendas(@WebParam(name = "addEncomendas") AddEncomendasIn addEncomendasIn) throws LoginException {
+        setWsc(webServiceContext);
+        checkAuthorization(Role.CLIENTE);
+        String login = getSecurityCommon().getUserPrincipal().getName();
+        return encomendaDao.addEncomendas(addEncomendasIn.getEncomendaInList(), login);
     }
-  }
 
 }

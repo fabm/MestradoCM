@@ -48,7 +48,6 @@ public class IterfacesTest {
   @Path("/teste")
   @Produces(MediaType.APPLICATION_JSON)
   public Response getEncomendasMinhas() {
-    ResMinhasEncomendasDetalhe resMinhasEncomendas = new ResMinhasEncomendasDetalhe();
 
     EncomendaDetalheXml encomendaDetalheXml = new EncomendaDetalheXml();
     encomendaDetalheXml.setId(1);
@@ -66,8 +65,9 @@ public class IterfacesTest {
     lista.add(produtoComPreco);
     encomendaDetalheXml.setProdutosEncomendados(lista);
 
-    resMinhasEncomendas.setListaEncomendasDetalheXmls(new ArrayList<EncomendaDetalheXml>());
-    resMinhasEncomendas.getListaEncomendasDetalheXmls().add(encomendaDetalheXml);
+    final ArrayList<EncomendaDetalheXml> encomendaDetalheXmlList = new ArrayList<>();
+    ResMinhasEncomendasDetalhe resMinhasEncomendas = new ResMinhasEncomendasDetalhe(encomendaDetalheXmlList);
+    encomendaDetalheXmlList.add(encomendaDetalheXml);
 
     GetMinhasEncomendasRest minhasEncomendasRest = new ResMinhasEncomendasDetalhe2GetMinhasEncomendas(resMinhasEncomendas)
         .converted();

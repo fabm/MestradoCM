@@ -4,10 +4,6 @@ import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by BrrF on 30-01-2015.
- */
-
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Res-get-all-localidades")
 public class ResGetAllLocalidades {
@@ -18,6 +14,14 @@ public class ResGetAllLocalidades {
 
     @XmlElement(required = true)
     private RetornoSoap retorno;
+
+    public ResGetAllLocalidades(List<Localidade> localidades) {
+        this.localidades = localidades;
+        retorno = new RetornoSoap(1,null);
+    }
+
+    public ResGetAllLocalidades() {
+    }
 
     public List<Localidade> getLocalidades() {
         if (localidades == null){

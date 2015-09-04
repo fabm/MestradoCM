@@ -6,7 +6,15 @@ import javax.xml.bind.annotation.XmlAccessorType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EncomendaOut {
   private long serverId;
+  private int clientId;
 
+  public int getClientId() {
+    return clientId;
+  }
+
+  public void setClientId(int clientId) {
+    this.clientId = clientId;
+  }
   public EncomendaOut(long idEncomenda) {
     this.serverId = idEncomenda;
   }

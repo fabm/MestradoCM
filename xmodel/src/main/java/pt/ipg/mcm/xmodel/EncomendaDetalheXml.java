@@ -12,6 +12,7 @@ public class EncomendaDetalheXml {
   private int estado;
   private Date dataEntrega;
   private String observacoes;
+  private long sync;
   private List<ProdutoEncomendadoComPreco> produtosEncomendados;
 
   public long getId() {
@@ -60,5 +61,13 @@ public class EncomendaDetalheXml {
 
   public void setProdutosEncomendados(List<ProdutoEncomendadoComPreco> produtosEncomendados) {
     this.produtosEncomendados = produtosEncomendados;
+  }
+
+  public long getSync() {
+    return sync;
+  }
+
+  public void setSync(long sync) {
+    this.sync = sync;
   }
 }

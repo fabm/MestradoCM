@@ -18,6 +18,20 @@
         WHERE LOGIN = #{login} and SYNC > #{sync}
     </select>
 
+    <resultMap id="encomendaDetalhe" type="pt.ipg.mcm.xmodel.EncomendaDetalheXml">
+        <result property="id" column="ID_ENCOMENDA"/>
+        <result property="dataCriacao" column="DATA_CRIACAO"/>
+        <result property="estado" column="ESTADO" />
+        <result property="dataEntrega" column="DATA_ENTREGA" />
+        <result property="observacoes" column="OBSERVACOES" />
+    </resultMap>
+
+    <select id="getMihasEncomendasDetalhe" resultMap="encomendaDetalhe">
+        SELECT ID_ENCOMENDA, DATA_CRIACAO, ESTADO, OBSERVACOES,DATA_ENTREGA, SYNC
+        from V_ENCOMENDAS_CLIENTE
+        WHERE LOGIN = #{login} and SYNC > #{sync}
+    </select>
+
     <insert id="addEncomenda" statementType="CALLABLE">
         {CALL P_ADD_ENCOMENDA(
                 #{login},
@@ -30,5 +44,17 @@
     <insert id="addProdutoEncomenda" statementType="CALLABLE">
         {CALL P_ADD_PRODUTO_ENCOMENDA(#{quantidade},#{serverId},#{idProduto})}
     </insert>
+
+    <resultMap id="produtoEncomendadoCP" type="pt.ipg.mcm.xmodel.ProdutoEncomendadoComPreco">
+        <result property="idProduto" column="ID_PRODUTO"/>
+        <result property="quantidade" column="QUANTIDADE"/>
+        <result property="preco" column="PRECO_UNITARIO" />
+    </resultMap>
+
+    <select id="produtoComPreco" resultMap="produtoEncomendadoCP">
+        SELECT ID_PRODUTO, PRECO_UNITARIO, QUANTIDADE FROM ENCOMENDA_PRODUTO
+        WHERE ID_ENCOMENDA = #{id}
+    </select>
+
 
 </mapper>

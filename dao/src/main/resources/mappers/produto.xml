@@ -74,5 +74,17 @@
         WHERE ID_PRODUTO = #{id}
     </delete>
 
+    <select id="getFoto" >
+        SELECT PRODUTO.FOTO
+        FROM PRODUTO
+        WHERE PRODUTO.ID_PRODUTO = #{id}
+    </select>
+
+    <update id="saveFoto">
+        UPDATE PRODUTO
+        SET FOTO = #{foto,javaType=java.io.InputStream,typeHandler=pt.ipg.mcm.batis.BinaryStreamHandler}
+        WHERE ID_PRODUTO = ${id}
+    </update>
+
 </mapper>
 

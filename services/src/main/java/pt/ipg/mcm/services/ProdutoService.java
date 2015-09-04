@@ -69,11 +69,7 @@ public class ProdutoService extends SecureService {
         ResGetProdutos resGetProdutos = new ResGetProdutos();
 
         List<ProdutoXml> produtos;
-        try {
-            produtos = produtoDao.getProdutos(versao);
-        } catch (MestradoException e) {
-            return new ResGetProdutos(new RetornoSoap(e));
-        }
+        produtos = produtoDao.getProdutos(versao);
         long versaoMax = 0;
 
         for (ProdutoXml produtoXml : produtos) {
@@ -89,27 +85,20 @@ public class ProdutoService extends SecureService {
     @WebMethod
     public ResUpdateProduto updateProduto(@WebParam(name = "req-update-produtp") @XmlElement(required = true) ReqUpdateProduto reqUpdateProduto) {
 
-        ResUpdateProduto resUpdateProduto = new ResUpdateProduto();
-
         try {
             Map<String, String> aliasMap = new HashMap<>();
             aliasMap.put("descricao", "descrição");
             Validacao.getInstance().valida(reqUpdateProduto, aliasMap);
             produtoDao.updateProduto(reqUpdateProduto);
-            resUpdateProduto.setRetorno(new RetornoSoap(1, "Produto atualizado com sucesso"));
+            return new ResUpdateProduto();
         } catch (MestradoException e) {
-            return new ResUpdateProduto(new RetornoSoap(e));
+            return new ResUpdateProduto(e);
         }
-        return resUpdateProduto;
     }
 
     @WebMethod
     public ResDeleteProduto deleteProduto(@XmlElement(name = "id") Long id) {
-        try {
-            produtoDao.deleteProduto(id);
-            return new ResDeleteProduto(new RetornoSoap(1, "Apagado com sucesso"));
-        } catch (MestradoException e) {
-            return new ResDeleteProduto(new RetornoSoap(e));
-        }
+        produtoDao.deleteProduto(id);
+        return new ResDeleteProduto();
     }
 }
