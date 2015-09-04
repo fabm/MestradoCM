@@ -100,7 +100,9 @@ function wsEncomendas(soapMsg, success, error) {
 function wsCall(url, data, success, error) {
     //console.log(new WebServiceCall(url, data, success, error));
 
-    base64Login = btoa("francisco:francisco");
+    //base64Login = btoa("bruno:bruno");
+    //base64Login = btoa("francisco:francisco");
+    base64Login = getCookie('dataLogin64Base');
 
     $.ajax({
         type: "POST",
@@ -230,7 +232,7 @@ function dataTablePortuguese(htmlElement) {
                 "sFirst": "Primeiro",
                 "sPrevious": "Anterior",
                 "sNext": "Seguinte",
-                "sLast": "Ùltimo"
+                "sLast": "Último"
             }
         }
     });

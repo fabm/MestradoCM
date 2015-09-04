@@ -37,19 +37,28 @@ function encomendaReady() {
 
             //    soap encomendas
 
-            sProdEnc += '<produtoEncomendadoList>';
-            sProdEnc += '<idProduto>'+idProd+'</idProduto>';
-            sProdEnc += '<quantidade>'+quantidade+'</quantidade>';
-            sProdEnc += '</produtoEncomendadoList>';
+            //sProdEnc += '<produtoEncomendadoList>';
+            //sProdEnc += '<idProduto>'+idProd+'</idProduto>';
+            //sProdEnc += '<quantidade>'+quantidade+'</quantidade>';
+            //sProdEnc += '</produtoEncomendadoList>';
+
+            sProdEnc += '<produtos>';
+            sProdEnc += '    <produto>';
+            sProdEnc += '        <quantidade>'+ quantidade+'</quantidade>';
+            sProdEnc += '        <idProduto>'+idProd+'</idProduto>';
+            sProdEnc += '    </produto>';
+            sProdEnc += '</produtos>';
+
 
 
         });
 
 
 
-        var idCliente = '1'
+        //var idCliente = '1'
         var dtaEntrega = $(txtDtaEntregaEncomenda).val();
-        novaEncomenda(idCliente, dtaEntrega, sProdEnc)
+        //novaEncomenda(idCliente, dtaEntrega, sProdEnc)
+        novaEncomenda(dtaEntrega, sProdEnc)
 
 
     });
@@ -60,37 +69,44 @@ function encomendaReady() {
 ////////////////////////////////////////////////
 //  NOVA ENCOMENDA
 ////////////////////////////////////////////////
-function novaEncomenda(idCliente, dtaEntrega, produtoEncomendadoList) {
+//function novaEncomenda(idCliente, dtaEntrega, produtoEncomendadoList) {
+function novaEncomenda(dtaEntrega, produtoEncomendadoList) {
     var soapMsg = '';
-    //soapMsg += '<ser:addEncomendas>';
-    //soapMsg += '<addEncomendas>';
-    //soapMsg += '    <encomendas>';
-    //soapMsg += '        <idCliente>' + idCliente + '</idCliente>';
-    //soapMsg += '        <dataEntrega>' + dtaEntrega + '</dataEntrega>';
-    //
+
+    //soapMsg += '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.mcm.ipg.pt/">';
+    //soapMsg += '<soapenv:Header/>';
+    //soapMsg += '<soapenv:Body>';
+    //soapMsg += '    <ser:addEncomendas>';
+    //soapMsg += '        <addEncomendas>';
+    //soapMsg += '            <encomendas>';
+    //soapMsg += '            <idCliente>'+idCliente+'</idCliente>';
+    //soapMsg += '            <dataEntrega>'+dtaEntrega+'</dataEntrega>'; //2015-09-11T12:08:56.235-07:00
     //soapMsg +=              produtoEncomendadoList
-    //
-    //soapMsg += '</encomendas>';
-    //soapMsg += '</addEncomendas>';
-    //soapMsg += '</ser:addEncomendas>';
+    //soapMsg += '            </encomendas>';
+    //soapMsg += '        </addEncomendas>';
+    //soapMsg += '    </ser:addEncomendas>';
+    //soapMsg += '</soapenv:Body>';
+    //soapMsg += '</soapenv:Envelope>';
+
+
 
     soapMsg += '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.mcm.ipg.pt/">';
     soapMsg += '<soapenv:Header/>';
     soapMsg += '<soapenv:Body>';
-    soapMsg += '    <ser:addEncomendas>';
-    soapMsg += '        <addEncomendas>';
-    soapMsg += '            <encomendas>';
-    soapMsg += '            <idCliente>'+idCliente+'</idCliente>';
-    soapMsg += '            <dataEntrega>'+dtaEntrega+'</dataEntrega>'; //2015-09-11T12:08:56.235-07:00
-    soapMsg +=              produtoEncomendadoList
-    soapMsg += '            </encomendas>';
-    soapMsg += '        </addEncomendas>';
-    soapMsg += '    </ser:addEncomendas>';
+    soapMsg += '<ser:addEncomendas>';
+    soapMsg += '<addEncomendas>';
+    soapMsg += '    <encomendas>';
+    soapMsg += '        <encomenda>';
+    soapMsg += '        <dataEntrega>'+ dtaEntrega+'</dataEntrega>';
+    soapMsg +=             produtoEncomendadoList
+    soapMsg += '        </encomenda>';
+    soapMsg += '    </encomendas>';
+    soapMsg += '</addEncomendas>';
+    soapMsg += '</ser:addEncomendas>';
     soapMsg += '</soapenv:Body>';
     soapMsg += '</soapenv:Envelope>';
 
-    //var sNovaEncomenda =  g_soapBuilder.getSimpleEnvelope(soapMsg);
-    //
+
     console.log(soapMsg);
 
     wsEncomendas(soapMsg, successNovaEncomenda, tweak.errorCallBack);
