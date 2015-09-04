@@ -1,37 +1,44 @@
 package pt.ipg.mcm.xmodel;
 
+import pt.ipg.mcm.errors.MestradoException;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Res-add-padeiro")
 public class ResAddPadeiro {
 
-  private Long id;
+    private Long id;
 
-  private RetornoSoap retorno;
+    private RetornoSoap retorno;
 
-  public ResAddPadeiro() {
-  }
+    public ResAddPadeiro() {
+    }
 
-  public ResAddPadeiro(RetornoSoap retorno) {
-    this.retorno = retorno;
-  }
 
-  public long getId() {
-    return id;
-  }
+    public ResAddPadeiro(Long id) {
+        this.id = id;
+        retorno = new RetornoSoap(1, "Padeiro inserido com sucesso");
+    }
 
-  public void setId(long id) {
-    this.id = id;
-  }
+    public ResAddPadeiro(MestradoException e) {
+        this.retorno = new RetornoSoap(e);
+    }
 
-  public RetornoSoap getRetorno() {
-    return retorno;
-  }
+    public long getId() {
+        return id;
+    }
 
-  public void setRetorno(RetornoSoap retorno) {
-    this.retorno = retorno;
-  }
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public RetornoSoap getRetorno() {
+        return retorno;
+    }
+
+    public void setRetorno(RetornoSoap retorno) {
+        this.retorno = retorno;
+    }
 }

@@ -1,4 +1,4 @@
-package pt.ipg.mcm.controller.imp;
+package pt.ipg.mcm.controller;
 
 
 import org.apache.ibatis.exceptions.PersistenceException;
@@ -22,23 +22,21 @@ public class UtilizadorDao {
     private MappedSql mappedSql;
 
 
-    public RetornoSoap addUtilizador(ReqAddUtilizador reqAddUtilizador) {
+    public ResAddPadeiro addPadeiro(ReqAddUtilizador reqAddPadeiro) {
         SqlSession session = mappedSql.getSqlSession();
-        session.insert("addPadeiro", reqAddUtilizador);
-        return new RetornoSoap(1, "Padeiro criado com sucesso");
+        session.insert("addPadeiro", reqAddPadeiro);
+        return new ResAddPadeiro(reqAddPadeiro.getId());
     }
-
-//OBTER PADEIRO
-
 
     public ResGetPadeiro getPadeiro(long idpadeiro) {
         SqlSession session = mappedSql.getSqlSession();
-        ResGetPadeiro resGetPadeiro = session.selectOne("getPadeiro", idpadeiro);
-        session.close();
-        return resGetPadeiro;
+        ResGetPadeiro resGetPadeiro;
+        try {
+            return session.selectOne("getPadeiro", idpadeiro);
+        } finally {
+            session.close();
+        }
     }
-
-
 
 
     public void createUserCliente(UserClienteCreationRequest utilizadorCliente) throws MestradoException {

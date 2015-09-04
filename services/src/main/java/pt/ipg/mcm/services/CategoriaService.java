@@ -1,6 +1,6 @@
 package pt.ipg.mcm.services;
 
-import pt.ipg.mcm.controller.imp.CategoriaDao;
+import pt.ipg.mcm.controller.CategoriaDao;
 import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.validacao.Validacao;
 import pt.ipg.mcm.xmodel.*;

@@ -1,11 +1,9 @@
 package pt.ipg.mcm.xmodel;
 
+import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.validacao.NotEmpty;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name="Req-add-utilizador")
@@ -23,6 +21,9 @@ public class ReqAddUtilizador {
     @NotEmpty
     @XmlElement(required = true)
     private String nome;
+
+    @XmlTransient
+    private Long id;
 
     public String getLogin() {
         return login;
@@ -48,4 +49,11 @@ public class ReqAddUtilizador {
         this.nome = name;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

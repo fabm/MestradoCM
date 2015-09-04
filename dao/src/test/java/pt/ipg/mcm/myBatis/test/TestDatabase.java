@@ -4,19 +4,16 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import ejb.injectors.EJBModule;
 import org.apache.ibatis.session.SqlSession;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import pt.ipg.mcm.batis.MappedSql;
 import pt.ipg.mcm.controller.ProdutoDao;
-import pt.ipg.mcm.controller.imp.UtilizadorDao;
+import pt.ipg.mcm.controller.UtilizadorDao;
 import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.myBatis.test.sql.ProdutoTests;
 import pt.ipg.mcm.xmodel.*;
 
 import java.math.BigDecimal;
-import java.sql.*;
 import java.util.*;
 import java.util.Date;
 

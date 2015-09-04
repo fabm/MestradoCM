@@ -142,7 +142,7 @@ public class TesteServices {
         assertNotNull(minhaEncomenda.getId());
         assertNotNull(minhaEncomenda.getDataEntrega());
         assertNotNull(minhaEncomenda.getEstado());
-        assertThat(minhaEncomenda.getProdutosEncomendados().size(),greaterThan(0));
+        assertThat(minhaEncomenda.getProdutosEncomendados().size(), greaterThan(0));
     }
 
     @Test
@@ -173,7 +173,7 @@ public class TesteServices {
         addEcnomendas.setEncomendas(new AddEncomendasIn.Encomendas());
         addEcnomendas.getEncomendas().getEncomenda().add(encomendaIn);
         AddEncomendasOut addEncomendasOut = port.addEncomendas(addEcnomendas);
-        Assert.assertEquals(1,addEncomendasOut.getCodigo().intValue());
+        Assert.assertEquals(1, addEncomendasOut.getCodigo().intValue());
     }
 
     @Test
@@ -191,5 +191,25 @@ public class TesteServices {
 
         localidades=port.getLocalidadesComPagina(2);
     }
+
+    @Test
+    @Ignore
+    public void testAddPadeiro() throws LoginException_Exception {
+
+        Utilizador utilizador = new Utilizador();
+        UtilizadorService port = utilizador.getUtilizadorPort();
+
+        authentication(port,"francisco","francisco");
+
+        ReqAddUtilizador req = new ReqAddUtilizador();
+        req.setLogin("testPadeiro");
+        req.setNome("testPadeiro");
+        req.setPassword("testPadeiro");
+        ResAddPadeiro res = port.addPadeiro(req);
+        Assert.assertNotNull(res.getId());
+
+    }
+
+
 
 }

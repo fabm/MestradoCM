@@ -18,7 +18,7 @@ public class TestSHA {
         Assert.assertEquals(method1, method2);
 
 
-        System.out.println(getMethod1("bruno"));
+        System.out.println(getMethod1("manel"));
     }
 
     private byte[] getDigest(String password) throws NoSuchAlgorithmException {

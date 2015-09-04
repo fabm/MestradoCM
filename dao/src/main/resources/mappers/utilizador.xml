@@ -8,7 +8,9 @@
         {call P_ADD_UTILIZADOR_PADEIRO(
                 #{login},
                 #{password},
-                #{nome})
+                #{nome},
+                #{id, mode=OUT, jdbcType=NUMERIC, javaType=long})
+
         }
     </insert>
 

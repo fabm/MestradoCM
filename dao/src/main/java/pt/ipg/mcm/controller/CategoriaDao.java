@@ -1,4 +1,4 @@
-package pt.ipg.mcm.controller.imp;
+package pt.ipg.mcm.controller;
 
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
