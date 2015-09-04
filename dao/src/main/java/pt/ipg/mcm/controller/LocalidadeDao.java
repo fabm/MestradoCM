@@ -2,25 +2,13 @@ package pt.ipg.mcm.controller;
 
 import org.apache.ibatis.session.SqlSession;
 import pt.ipg.mcm.batis.MappedSql;
-import pt.ipg.mcm.entities.LocalidadeEntity;
-import pt.ipg.mcm.errors.Erro;
-import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.xmodel.Localidade;
 import pt.ipg.mcm.xmodel.ResGetAllLocalidades;
 
-import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.sql.DataSource;
-import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Stateless
 public class LocalidadeDao {

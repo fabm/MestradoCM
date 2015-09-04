@@ -19,9 +19,6 @@ public class SyncDeleteDao {
         SqlSession session = mappedSql.getSqlSession();
         try {
             return new RegistosAApagar(session.<RegistoAApagar>selectList("getRegistosAApagar", versao));
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new MestradoException(Erro.TECNICO);
         } finally {
             session.close();
         }
