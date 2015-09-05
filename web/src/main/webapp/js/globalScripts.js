@@ -238,3 +238,11 @@ function dataTablePortuguese(htmlElement) {
     });
 
 }
+
+
+function dataTableSemPesquisa(htmlElement) {
+    $(htmlElement).DataTable({
+        bFilter: false,
+        bInfo: false
+    });
+}
