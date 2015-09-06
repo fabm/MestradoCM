@@ -33,10 +33,15 @@ public class ProdutoDao {
     }
 
     public List<ProdutoXml> getProdutos(final long versao) {
-        List<ProdutoXml> list = mappedSql.getSqlSession().selectList("getProdutos", new HashMap<String, Object>() {{
-            put("id", versao);
-        }});
-        return list;
+        final SqlSession session = mappedSql.getSqlSession();
+        try {
+            List<ProdutoXml> list = session.selectList("getProdutos", new HashMap<String, Object>() {{
+                put("id", versao);
+            }});
+            return list;
+        } finally {
+            session.close();
+        }
     }
 
     public ResGetProduto getProduto(final long idProduto) throws MestradoException {

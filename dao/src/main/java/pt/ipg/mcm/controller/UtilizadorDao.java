@@ -24,13 +24,16 @@ public class UtilizadorDao {
 
     public ResAddPadeiro addPadeiro(ReqAddUtilizador reqAddPadeiro) {
         SqlSession session = mappedSql.getSqlSession();
-        session.insert("addPadeiro", reqAddPadeiro);
-        return new ResAddPadeiro(reqAddPadeiro.getId());
+        try {
+            session.insert("addPadeiro", reqAddPadeiro);
+            return new ResAddPadeiro(reqAddPadeiro.getId());
+        } finally {
+            session.close();
+        }
     }
 
     public ResGetPadeiro getPadeiro(long idpadeiro) {
         SqlSession session = mappedSql.getSqlSession();
-        ResGetPadeiro resGetPadeiro;
         try {
             return session.selectOne("getPadeiro", idpadeiro);
         } finally {
