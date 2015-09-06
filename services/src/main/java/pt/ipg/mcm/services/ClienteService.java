@@ -25,42 +25,21 @@ public class ClienteService extends SecureService {
     @EJB
     private ClienteDao clienteDao;
 
-    @Resource
-    private WebServiceContext webServiceContext;
-
-    @WebMethod
-    public ResGetCliente getCliente(@WebParam(name = "id") long id) throws LoginException {
-        setWsc(webServiceContext);
-        checkAuthorization(Role.ADMINISTRADOR, Role.CLIENTE);
-        return clienteDao.getCliente(id);
-    }
-
-
     @WebMethod
     public RetornoSoap addClienteUtilizador(
             @WebParam(name = "request")
             @XmlElement(required = true)
             UserClienteCreationRequest userClienteCreationRequest) throws LoginException {
 
-        setWsc(webServiceContext);
-        checkAuthorization(Role.ADMINISTRADOR, Role.CONVIDADO);
-
         try {
             Validacao.getInstance().valida(userClienteCreationRequest, new HashMap<String, String>() {{
                 put("dataNascimento", "date de nascimento");
             }});
 
-            clienteDao.createUserCliente(userClienteCreationRequest);
-            return new RetornoSoap(1, "Registo efectuado com sucesso");
+            return clienteDao.createUserCliente(userClienteCreationRequest);
         } catch (MestradoException e) {
             return new RetornoSoap(e);
         }
-    }
-
-    @WebMethod
-    public RetornoSoap deleteCliente(@WebParam(name = "id") long id) {
-        clienteDao.deleteCliente(id);
-        return new RetornoSoap(1, "Cliente removido com sucesso");
     }
 
 

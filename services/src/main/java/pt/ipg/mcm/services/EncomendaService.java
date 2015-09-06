@@ -1,22 +1,11 @@
 package pt.ipg.mcm.services;
 
 import pt.ipg.mcm.controller.EncomendaDao;
-import pt.ipg.mcm.entities.CalendarioEntity;
-import pt.ipg.mcm.entities.EncomendaEntity;
-import pt.ipg.mcm.entities.EncomendaProdutoEntity;
-import pt.ipg.mcm.entities.ProdutoEntity;
-import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.services.authorization.Role;
 import pt.ipg.mcm.services.authorization.SecureService;
-import pt.ipg.mcm.xmodel.EncomendaXmlSemPreco;
-import pt.ipg.mcm.xmodel.ProdutoEncomendado;
-import pt.ipg.mcm.xmodel.ReqAddEncomenda;
-import pt.ipg.mcm.xmodel.ReqAddEncomendas;
-import pt.ipg.mcm.xmodel.ResAddEncomenda;
-import pt.ipg.mcm.xmodel.ResAddEncomendas;
 import pt.ipg.mcm.xmodel.ResMinhasEncomendas;
 import pt.ipg.mcm.xmodel.ResMinhasEncomendasDetalhe;
-import pt.ipg.mcm.xmodel.RetornoSoap;
+import pt.ipg.mcm.xmodel.encomendas.AddAndUpdateEncomendasIn;
 import pt.ipg.mcm.xmodel.encomendas.AddEncomendasIn;
 import pt.ipg.mcm.xmodel.encomendas.AddEncomendasOut;
 
@@ -27,9 +16,6 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.security.auth.login.LoginException;
 import javax.xml.ws.WebServiceContext;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 @WebService(serviceName = "Encomenda", portName = "EncomendaPort")
 public class EncomendaService extends SecureService {
@@ -69,5 +55,14 @@ public class EncomendaService extends SecureService {
         String login = getSecurityCommon().getUserPrincipal().getName();
         return encomendaDao.addEncomendas(addEncomendasIn.getEncomendaInList(), login);
     }
+
+    @WebMethod
+    public AddEncomendasOut addEUpdateEncomendas(@WebParam(name = "addAndUpdateEncomendas") AddAndUpdateEncomendasIn addAndUpdateEncomendasIn) throws LoginException {
+        setWsc(webServiceContext);
+        checkAuthorization(Role.CLIENTE);
+        String login = getSecurityCommon().getUserPrincipal().getName();
+        return encomendaDao.addAndUpdateEncomendasIn(addAndUpdateEncomendasIn, login);
+    }
+
 
 }

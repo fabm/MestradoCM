@@ -1,6 +1,7 @@
 package pt.ipg.mcm.services;
 
 
+import pt.ipg.mcm.controller.ClienteDao;
 import pt.ipg.mcm.controller.PadeiroDao;
 import pt.ipg.mcm.controller.UtilizadorDao;
 import pt.ipg.mcm.errors.MestradoException;
@@ -29,6 +30,9 @@ public class UtilizadorService extends SecureService {
     @Inject
     private PadeiroDao padeiroDao;
 
+    @Inject
+    private ClienteDao clienteDao;
+
     @Resource
     private WebServiceContext webServiceContext;
 
@@ -54,5 +58,20 @@ public class UtilizadorService extends SecureService {
     public ResGetPadeiro getUtilizadorPadeiro(@WebParam(name = "id") Long id) {
         return utilizadorDao.getPadeiro(id);
     }
+
+    @WebMethod
+    public ResGetCliente getCliente(@WebParam(name = "id") long id) throws LoginException {
+        setWsc(webServiceContext);
+        checkAuthorization(Role.ADMINISTRADOR, Role.CLIENTE);
+        return clienteDao.getCliente(id);
+    }
+
+    @WebMethod
+    public RetornoSoap deleteCliente(@WebParam(name = "id") long id) {
+        setWsc(webServiceContext);
+        clienteDao.deleteCliente(id);
+        return new RetornoSoap(1, "Cliente removido com sucesso");
+    }
+
 
 }

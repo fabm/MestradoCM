@@ -13,6 +13,7 @@ import javax.xml.ws.BindingProvider;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
@@ -62,8 +63,8 @@ public class TesteServices {
     @Test
     @Ignore
     public void testDeleteCliente() {
-        Cliente cliente = new Cliente();
-        ClienteService port = cliente.getClientePort();
+        Utilizador utilizador = new Utilizador();
+        UtilizadorService port = utilizador.getUtilizadorPort();
         authentication(port, "francisco", "francisco");
         RetornoSoap response = port.deleteCliente(601);
         Assert.assertEquals(Integer.valueOf(1), response.getCodigo());
@@ -72,8 +73,8 @@ public class TesteServices {
     @Test
     @Ignore
     public void testGetCliente() throws LoginException_Exception {
-        Cliente cliente = new Cliente();
-        ClienteService port = cliente.getClientePort();
+        Utilizador utilizador = new Utilizador();
+        UtilizadorService port = utilizador.getUtilizadorPort();
         authentication(port, "francisco", "francisco");
         ResGetCliente resGetCliente = port.getCliente(1L);
         assertNotNull(resGetCliente);
@@ -82,11 +83,11 @@ public class TesteServices {
     @Test
     @Ignore
     public void testAddUtilizadorCliente() throws LoginException_Exception {
-        Utilizador utilizador = new Utilizador();
-        UtilizadorService port = utilizador.getUtilizadorPort();
+        Cliente cliente = new Cliente();
+        ClienteService port = cliente.getClientePort();
         UserClienteCreationRequest req = new UserClienteCreationRequest();
         req.setNome("meu nome");
-        req.setLogin("kiko5");
+        req.setLogin("kikoNovo");
         req.setLocalidade(6300);
         req.setPorta("3esq");
         req.setContacto("999999999");
@@ -106,7 +107,7 @@ public class TesteServices {
         req.setEmail("x@x.pt");
         req.setPassword("kiko4");
         req.setMorada("A minha morada");
-        ResCreationUserClient resCreationUserClient = port.createUserCliente(req);
+        RetornoSoap resCreationUserClient = port.addClienteUtilizador(req);
         Assert.assertEquals(1, resCreationUserClient.getCodigo().intValue());
     }
 
@@ -185,11 +186,11 @@ public class TesteServices {
 
         ResGetAllLocalidades all = port.getAllLocalidades();
 
-        Assert.assertFalse(all.getLocalidades().getLocalidade().isEmpty());
+        assertFalse(all.getLocalidades().getLocalidade().isEmpty());
 
         ResGetAllLocalidades localidades = port.getLocalidadesComFiltroEPagina("GUA", 1);
 
-        localidades=port.getLocalidadesComPagina(2);
+        localidades = port.getLocalidadesComPagina(2);
     }
 
     @Test
@@ -199,7 +200,7 @@ public class TesteServices {
         Utilizador utilizador = new Utilizador();
         UtilizadorService port = utilizador.getUtilizadorPort();
 
-        authentication(port,"francisco","francisco");
+        authentication(port, "francisco", "francisco");
 
         ReqAddUtilizador req = new ReqAddUtilizador();
         req.setLogin("testPadeiro");
@@ -210,6 +211,50 @@ public class TesteServices {
 
     }
 
+    @Test
+    @Ignore
+    public void testUpdate() throws LoginException_Exception, DatatypeConfigurationException {
+        Encomenda encomenda = new Encomenda();
+        EncomendaService port = encomenda.getEncomendaPort();
+        authentication(port, "bruno", "bruno");
 
+
+        AddEncomendasIn addEcnomendas = new AddEncomendasIn();
+        EncomendaIn encomendaIn = new EncomendaIn();
+
+
+        final XMLGregorianCalendar dataEntrega = DatatypeFactory.newInstance().newXMLGregorianCalendar();
+        dataEntrega.setDay(25);
+        dataEntrega.setMonth(1);
+        dataEntrega.setYear(2016);
+        dataEntrega.setHour(0);
+        dataEntrega.setMinute(0);
+        dataEntrega.setSecond(0);
+        encomendaIn.setDataEntrega(dataEntrega);
+
+        ProdutoAEncomendar produtoAEncomendar = new ProdutoAEncomendar();
+        produtoAEncomendar.setIdProduto(1);
+        produtoAEncomendar.setQuantidade(1);
+
+        encomendaIn.setProdutos(new EncomendaIn.Produtos());
+        encomendaIn.getProdutos().getProduto().add(produtoAEncomendar);
+
+        addEcnomendas.setEncomendas(new AddEncomendasIn.Encomendas());
+        addEcnomendas.getEncomendas().getEncomenda().add(encomendaIn);
+        AddEncomendasOut addEncomendasOut = port.addEncomendas(addEcnomendas);
+        Assert.assertEquals(1, addEncomendasOut.getCodigo().intValue());
+    }
+
+    @Test
+    @Ignore
+    public void testGetPadeiro() {
+        Utilizador utilizador = new Utilizador();
+        UtilizadorService port = utilizador.getUtilizadorPort();
+
+        authentication(port, "francisco", "francisco");
+
+        ResGetPadeiro resGetPadeiro = port.getUtilizadorPadeiro(41L);
+        assertFalse(resGetPadeiro.getNome().isEmpty());
+    }
 
 }

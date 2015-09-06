@@ -5,6 +5,7 @@ import pt.ipg.mcm.batis.MappedSql;
 import pt.ipg.mcm.errors.Erro;
 import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.xmodel.ResGetCliente;
+import pt.ipg.mcm.xmodel.RetornoSoap;
 import pt.ipg.mcm.xmodel.UserClienteCreationRequest;
 
 import javax.ejb.EJB;
@@ -16,7 +17,7 @@ public class ClienteDao {
     @EJB
     private MappedSql mappedSql;
 
-    public void createUserCliente(UserClienteCreationRequest utilizadorCliente) throws MestradoException {
+    public RetornoSoap createUserCliente(UserClienteCreationRequest utilizadorCliente) throws MestradoException {
         SqlSession session = mappedSql.getSqlSession();
         try {
             int count = session.selectOne("countUtilizadorByLogin", utilizadorCliente.getLogin());
@@ -26,6 +27,7 @@ public class ClienteDao {
             }
 
             session.insert("addCliente", utilizadorCliente);
+            return new RetornoSoap(1, "Registo efectuado com sucesso");
         } finally {
             session.close();
         }

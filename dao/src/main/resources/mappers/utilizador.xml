@@ -16,7 +16,7 @@
 
 
     <select id="getPadeiro" resultType="pt.ipg.mcm.xmodel.ResGetPadeiro">
-        SELECT PADEIRO.NOME,
+        SELECT PADEIRO.NOME
         FROM PADEIRO
         WHERE PADEIRO.ID_PADEIRO = #{id}
     </select>
