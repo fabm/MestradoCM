@@ -1,7 +1,6 @@
 package pt.ipg.mcm;
 
 import client.tests.*;
-import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -13,9 +12,7 @@ import javax.xml.ws.BindingProvider;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 
 public class TesteServices {
@@ -255,6 +252,47 @@ public class TesteServices {
 
         ResGetPadeiro resGetPadeiro = port.getUtilizadorPadeiro(41L);
         assertFalse(resGetPadeiro.getNome().isEmpty());
+    }
+
+    @Test
+    @Ignore
+    public void testAddAndUpdateEncomendas() throws DatatypeConfigurationException, LoginException_Exception {
+        Encomenda encomenda = new Encomenda();
+        EncomendaService port = encomenda.getEncomendaPort();
+        authentication(port, "bruno", "bruno");
+
+
+        EncomendaIn encomendaIn = new EncomendaIn();
+
+
+        final XMLGregorianCalendar dataEntrega = DatatypeFactory.newInstance().newXMLGregorianCalendar();
+        dataEntrega.setDay(25);
+        dataEntrega.setMonth(1);
+        dataEntrega.setYear(2016);
+        dataEntrega.setHour(0);
+        dataEntrega.setMinute(0);
+        dataEntrega.setSecond(0);
+        encomendaIn.setDataEntrega(dataEntrega);
+
+        ProdutoAEncomendar produtoAEncomendar = new ProdutoAEncomendar();
+        produtoAEncomendar.setIdProduto(1);
+        produtoAEncomendar.setQuantidade(1);
+
+        encomendaIn.setProdutos(new EncomendaIn.Produtos());
+        encomendaIn.getProdutos().getProduto().add(produtoAEncomendar);
+
+        AddAndUpdateEncomendasIn addAndUpdateEncomendasIn = new AddAndUpdateEncomendasIn();
+        addAndUpdateEncomendasIn.setEncomendas(new AddAndUpdateEncomendasIn.Encomendas());
+        addAndUpdateEncomendasIn.getEncomendas().getEncomenda().add(encomendaIn);
+
+        addAndUpdateEncomendasIn.setEstadoEncomendas(new AddAndUpdateEncomendasIn.EstadoEncomendas());
+
+        EstadoEncomendaIn estadoEncomendaIn = new EstadoEncomendaIn();
+        estadoEncomendaIn.setEstado(2);
+        estadoEncomendaIn.setIdEncomenda(49);
+        addAndUpdateEncomendasIn.getEstadoEncomendas().getEstadoEncomendas().add(estadoEncomendaIn);
+
+        AddEncomendasOut resAddEncomendasOut = port.addAndUpdateEncomendas(addAndUpdateEncomendasIn);
     }
 
 }

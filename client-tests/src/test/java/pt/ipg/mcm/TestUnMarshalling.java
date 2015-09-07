@@ -1,7 +1,6 @@
 package pt.ipg.mcm;
 
 import client.tests.UserClienteCreationRequest;
-import org.junit.Assert;
 import org.junit.Test;
 
 import javax.xml.bind.*;
@@ -31,8 +30,8 @@ public class TestUnMarshalling {
             data.setHour(0);
             data.setMinute(0);
             data.setSecond(0);
-            QName qName = new QName("root");
 
+            QName qName = new QName("root");
             JAXBElement<XMLGregorianCalendar> root =
                     new JAXBElement<XMLGregorianCalendar>(qName, XMLGregorianCalendar.class, data);
 

@@ -9,7 +9,9 @@ public enum Erro {
   APENAS_UM_FICHEIRO(-5, "Apenas um ficheiro deve ser carregado"),
   SEM_FICHEIROS(-6, "Nenhum ficheiro para fazer upload"),
   PADEIRO_NAO_ENCONTRADO(-7, "Padeiro não Encontrado "),
-  LOGIN_JA_EXISTENTE(-8, "O login {0} não está disponivel");
+  LOGIN_JA_EXISTENTE(-8, "O login {0} não está disponivel"),
+  ESTADO_FINAL_INVALIDO(-9, "Após o estado {0} não é possível definir o estado {1}"),
+  ESTADO_E_INALTERAVEL(-10, "O estado {0} é um estado final");
 
   private final int codigo;
   private final String mensagem;

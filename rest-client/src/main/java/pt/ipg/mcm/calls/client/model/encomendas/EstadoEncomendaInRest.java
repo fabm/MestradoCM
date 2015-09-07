@@ -1,12 +1,6 @@
-package pt.ipg.mcm.xmodel.encomendas;
+package pt.ipg.mcm.calls.client.model.encomendas;
 
-import javax.xml.bind.annotation.*;
-import java.util.Date;
-import java.util.List;
-
-@XmlAccessorType(XmlAccessType.FIELD)
-public class EstadoEncomendaIn {
-
+public class EstadoEncomendaInRest {
     private int estado;
     private long idEncomenda;
 

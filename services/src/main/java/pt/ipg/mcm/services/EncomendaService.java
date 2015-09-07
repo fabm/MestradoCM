@@ -1,6 +1,7 @@
 package pt.ipg.mcm.services;
 
 import pt.ipg.mcm.controller.EncomendaDao;
+import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.services.authorization.Role;
 import pt.ipg.mcm.services.authorization.SecureService;
 import pt.ipg.mcm.xmodel.ResMinhasEncomendas;
@@ -57,11 +58,15 @@ public class EncomendaService extends SecureService {
     }
 
     @WebMethod
-    public AddEncomendasOut addEUpdateEncomendas(@WebParam(name = "addAndUpdateEncomendas") AddAndUpdateEncomendasIn addAndUpdateEncomendasIn) throws LoginException {
+    public AddEncomendasOut addAndUpdateEncomendas(@WebParam(name = "addAndUpdateEncomendas") AddAndUpdateEncomendasIn addAndUpdateEncomendasIn) throws LoginException {
         setWsc(webServiceContext);
         checkAuthorization(Role.CLIENTE);
         String login = getSecurityCommon().getUserPrincipal().getName();
-        return encomendaDao.addAndUpdateEncomendasIn(addAndUpdateEncomendasIn, login);
+        try {
+            return encomendaDao.addAndUpdateEncomendasIn(addAndUpdateEncomendasIn, login);
+        } catch (MestradoException e) {
+            return new AddEncomendasOut(e);
+        }
     }
 
 

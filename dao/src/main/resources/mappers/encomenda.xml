@@ -56,5 +56,15 @@
         WHERE ID_ENCOMENDA = #{id}
     </select>
 
+    <select id="getEncomendaState" resultType="int">
+        SELECT ESTADO FROM ENCOMENDA
+        WHERE ID_ENCOMENDA = #{id}
+    </select>
+
+    <update id="updateEstado">
+        UPDATE ENCOMENDA
+        SET ESTADO = #{estado}
+        where ENCOMENDA.ID_ENCOMENDA = #{idEncomenda}
+    </update>
 
 </mapper>

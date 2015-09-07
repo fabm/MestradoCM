@@ -17,7 +17,7 @@ public class R2SOutEncomendas extends AbstractConversor<AddEncomendasOut,UpdateE
   public UpdateEncomendasRestOut converted() {
     UpdateEncomendasRestOut updateEncomendasRestOut = new UpdateEncomendasRestOut();
     List<EncomendaIdsRest> list = updateEncomendasRestOut.createEncomendaIdseRests();
-    for (EncomendaOut encomendaOut :source.getEncomendaOuts()){
+    for (EncomendaOut encomendaOut :source.getEncomendaOutList()){
       list.add(new Encomenda2EncomendaIdsRest(encomendaOut).converted());
     }
     return updateEncomendasRestOut;

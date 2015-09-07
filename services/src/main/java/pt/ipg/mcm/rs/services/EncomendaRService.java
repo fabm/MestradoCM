@@ -1,14 +1,13 @@
 package pt.ipg.mcm.rs.services;
 
+import pt.ipg.mcm.calls.client.model.encomendas.AddAndUpdateEncomendasInRest;
 import pt.ipg.mcm.calls.client.model.encomendas.GetMinhasEncomendasRest;
-import pt.ipg.mcm.calls.client.model.encomendas.UpdateEncomendasRestIn;
 import pt.ipg.mcm.calls.client.model.encomendas.UpdateEncomendasRestOut;
-import pt.ipg.mcm.rs.conversors.encomenda.R2SOutEncomendas;
-import pt.ipg.mcm.rs.conversors.encomenda.R2SinEncomendas;
-import pt.ipg.mcm.rs.conversors.encomenda.ResMinhasEncomendasDetalhe2GetMinhasEncomendas;
+import pt.ipg.mcm.calls.client.model.encomendas.AddEncomendasInRest;
+import pt.ipg.mcm.rs.conversors.encomenda.*;
 import pt.ipg.mcm.services.EncomendaService;
 import pt.ipg.mcm.xmodel.ResMinhasEncomendasDetalhe;
-import pt.ipg.mcm.xmodel.encomendas.AddEncomendasIn;
+import pt.ipg.mcm.xmodel.encomendas.AddAndUpdateEncomendasIn;
 import pt.ipg.mcm.xmodel.encomendas.AddEncomendasOut;
 
 import javax.inject.Inject;
@@ -28,10 +27,12 @@ public class EncomendaRService {
     @POST
     @Path("/add")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addEncomenda(AddEncomendasIn addEncomendasIn, @Context SecurityContext securityContext) {
+    public Response addEncomenda(AddEncomendasInRest addEncomendasInRest, @Context SecurityContext securityContext) {
         try {
             encomendaService.setRc(securityContext);
-            return Response.ok(encomendaService.addEncomendas(addEncomendasIn)).build();
+            final AddEncomendasInFromRest addEncomendasInFromRest = new AddEncomendasInFromRest(addEncomendasInRest);
+            final AddEncomendasOut addEncomendasOut = encomendaService.addEncomendas(addEncomendasInFromRest.converted());
+            return Response.ok(new AddEncomendasOut2Rest(addEncomendasOut).converted()).build();
         } catch (LoginException e) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
@@ -54,13 +55,13 @@ public class EncomendaRService {
     @POST
     @Path("/update")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response update(@Context SecurityContext securityContext, UpdateEncomendasRestIn updateEncomendasRestIn) {
+    public Response update(@Context SecurityContext securityContext, AddAndUpdateEncomendasInRest addAndUpdateEncomendasInRest) {
         try {
             encomendaService.setRc(securityContext);
-            AddEncomendasIn addEncomendasIn = new R2SinEncomendas(updateEncomendasRestIn).converted();
-            AddEncomendasOut addEncomendasOut = encomendaService.addEncomendas(addEncomendasIn);
-            final UpdateEncomendasRestOut response = new R2SOutEncomendas(addEncomendasOut).converted();
-            return Response.ok(response).build();
+            AddAndUpdateEncomendasIn addAndUpdateEncomendasIn = new AddAndUpdateEncomendasIn();
+            addAndUpdateEncomendasIn.convert(addAndUpdateEncomendasInRest);
+            AddEncomendasOut addEncomendasOut = encomendaService.addAndUpdateEncomendas(addAndUpdateEncomendasIn);
+            return Response.ok(addEncomendasOut.convert()).build();
         } catch (LoginException e) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }

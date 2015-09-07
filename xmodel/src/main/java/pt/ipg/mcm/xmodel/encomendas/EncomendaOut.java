@@ -1,5 +1,7 @@
 package pt.ipg.mcm.xmodel.encomendas;
 
+import pt.ipg.mcm.calls.client.model.encomendas.EncomendaOutRest;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
@@ -28,5 +30,12 @@ public class EncomendaOut {
 
   public void setServerId(long serverId) {
     this.serverId = serverId;
+  }
+
+  public EncomendaOutRest convert() {
+    EncomendaOutRest encomendaOutRest = new EncomendaOutRest();
+    encomendaOutRest.setServerId(serverId);
+    encomendaOutRest.setClientId(clientId);
+    return encomendaOutRest;
   }
 }

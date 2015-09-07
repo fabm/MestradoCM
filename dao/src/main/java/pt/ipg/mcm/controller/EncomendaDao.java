@@ -2,6 +2,8 @@ package pt.ipg.mcm.controller;
 
 import org.apache.ibatis.session.SqlSession;
 import pt.ipg.mcm.batis.MappedSql;
+import pt.ipg.mcm.errors.Erro;
+import pt.ipg.mcm.errors.MestradoException;
 import pt.ipg.mcm.xmodel.EncomendaDetalheXml;
 import pt.ipg.mcm.xmodel.MinhaEncomenda;
 import pt.ipg.mcm.xmodel.ProdutoEncomendadoComPreco;
@@ -12,6 +14,10 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import java.util.HashMap;
 import java.util.List;
+
+import static java.util.Arrays.asList;
+import static pt.ipg.mcm.controller.EncomendaState.*;
+import static pt.ipg.mcm.errors.Erro.ESTADO_FINAL_INVALIDO;
 
 @Stateless
 public class EncomendaDao {
@@ -43,7 +49,7 @@ public class EncomendaDao {
                 produtoAEncomendar.setServerId(encomendaIn.getIdEncomenda());
                 session.insert("addProdutoEncomenda", produtoAEncomendar);
             }
-            addEncomendasOut.getEncomendaOuts().add(new EncomendaOut(encomendaIn.getIdEncomenda()));
+            addEncomendasOut.getEncomendaOutList().add(new EncomendaOut(encomendaIn.getIdEncomenda()));
         }
         return addEncomendasOut;
     }
@@ -80,20 +86,66 @@ public class EncomendaDao {
     }
 
 
-    public AddEncomendasOut addAndUpdateEncomendasIn(AddAndUpdateEncomendasIn addAndUpdateEncomendasIn, String login) {
+    public AddEncomendasOut addAndUpdateEncomendasIn(AddAndUpdateEncomendasIn addAndUpdateEncomendasIn, String login) throws MestradoException {
         SqlSession session = mappedSql.getSqlSession();
         try {
+            for (EstadoEncomendaIn estadoEncomendaIn : addAndUpdateEncomendasIn.getEstadoEncomendasList()) {
+                validateNextState(estadoEncomendaIn.getIdEncomenda(),session,estadoEncomendaIn.getEstado());
+                session.update("updateEstado", estadoEncomendaIn);
+            }
+
             AddEncomendasOut addEncomendasOut = addEncomendas(addAndUpdateEncomendasIn.getEncomendaInList(), login, session);
             addEncomendasOut.setCodigo(1);
             addEncomendasOut.setMensagem("Encomendas inseridas e estados atualizados com sucesso");
 
-            for (EstadoEncomendaIn estadoEncomendaIn : addAndUpdateEncomendasIn.getEstadoEncomendasList()) {
-                session.update("updateEstado", estadoEncomendaIn);
-            }
 
             return addEncomendasOut;
         } finally {
             session.close();
+        }
+    }
+
+    private String getEstado(int estado) {
+        switch (estado) {
+            case AGUARDA_CONFIRMACAO_PADEIRO:
+                return "a aguardar confirmação de um padeiro";
+            case AGUARDA_ENTREGA:
+                return "a aguardar entrega";
+            case CANCELADO_INCOMP_ENTREGA:
+                return "cancelado por incompatibilidade de entraga";
+            case CANCELADO_CLIENTE:
+                return "cancelado pelo cliente";
+            case ENTREGA_CONFIRMADA_PADEIRO:
+                return "entrega confirmada pelo padeiro";
+            case ENTREGA_CONFIRMADA_CLIENTE:
+                return "entrega confirmada pelo cliente";
+            case REJEICAO_ENTREGA:
+                return "rejeição de entrega por parte do cliente";
+
+            default:
+                return null;
+        }
+    }
+
+    private void validateNextState(long idEncomenda, SqlSession session, int nextState) throws MestradoException {
+        int currentState = session.selectOne("getEncomendaState", idEncomenda);
+        List<Integer> estadosValidos;
+        switch (currentState) {
+            case AGUARDA_CONFIRMACAO_PADEIRO:
+                estadosValidos = asList(CANCELADO_CLIENTE, AGUARDA_ENTREGA, CANCELADO_INCOMP_ENTREGA);
+                break;
+            case AGUARDA_ENTREGA:
+                estadosValidos = asList(CANCELADO_INCOMP_ENTREGA, AGUARDA_CONFIRMACAO_PADEIRO);
+                break;
+            case ENTREGA_CONFIRMADA_PADEIRO:
+                estadosValidos = asList(ENTREGA_CONFIRMADA_CLIENTE, REJEICAO_ENTREGA);
+                break;
+            default:
+                throw new MestradoException(Erro.ESTADO_E_INALTERAVEL, getEstado(currentState));
+        }
+
+        if(!estadosValidos.contains(nextState)){
+            throw new MestradoException(ESTADO_FINAL_INVALIDO,getEstado(currentState),getEstado(nextState));
         }
     }
 }

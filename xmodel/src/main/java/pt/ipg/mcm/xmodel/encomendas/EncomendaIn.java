@@ -1,6 +1,10 @@
 package pt.ipg.mcm.xmodel.encomendas;
 
+import pt.ipg.mcm.calls.client.model.encomendas.EncomendaInRest;
+import pt.ipg.mcm.calls.client.model.encomendas.ProdutoEncomendadoRest;
+
 import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -65,5 +69,19 @@ public class EncomendaIn {
 
   public String getEncomendaAssociada() {
     return encomendaAssociada;
+  }
+
+  public EncomendaInRest convert() {
+    EncomendaInRest encomendaInRest = new EncomendaInRest();
+
+    encomendaInRest.setDataEntrega(dataEntrega);
+
+    List<ProdutoEncomendadoRest> produtoEncomendadoRestList = new ArrayList<ProdutoEncomendadoRest>();
+    for(ProdutoAEncomendar produtoAEncomendar:produtoAEncomendarList){
+      produtoEncomendadoRestList.add(produtoAEncomendar.convert());
+    }
+    encomendaInRest.setProdutoEncomendadoRestList(produtoEncomendadoRestList);
+
+    return encomendaInRest;
   }
 }
