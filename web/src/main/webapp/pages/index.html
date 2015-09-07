@@ -264,7 +264,7 @@
                     <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                     </li>
                     <li class="divider"></li>
-                    <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                    <li id="btnLogoutId"><a href=""><i class="fa fa-sign-out fa-fw btnLogout"></i> Logout</a>
                     </li>
                 </ul>
                 <!-- /.dropdown-user -->
@@ -275,6 +275,7 @@
 
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
+
                 <ul class="nav" id="side-menu">
 
                     <li class="sidebar-search">
@@ -292,6 +293,18 @@
                         <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Meu Perfil</a>
                     </li>
                     <li>
+                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Encomendas<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="encomenda.html">Nova</a>
+                            </li>
+                            <li>
+                                <a href="#">Ver </a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li>
                         <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Adicionar Novos<span
                                 class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
@@ -307,19 +320,26 @@
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
+                    <!-- /.nav-second-level -->
+
+
                     <li>
-                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Encomendas<span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Adiministrador<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="encomenda.html">Nova</a>
+                                <a href="novoPadeiro.html">Novo Padeiro</a>
                             </li>
                             <li>
-                                <a href="#">Ver </a>
+                                <a href="#">....</a>
                             </li>
-
+                            <li>
+                                <a href="#">....</a>
+                            </li>
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
+
+
 
 
                 </ul>
@@ -373,6 +393,8 @@
 
 <script src="../js/globalScripts.js"></script>
 <script src="../js/loadTemplates.js"></script>
+<script src="../js/logout.js"></script>
+
 
 
 </body>

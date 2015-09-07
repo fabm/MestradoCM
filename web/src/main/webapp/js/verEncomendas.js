@@ -76,7 +76,7 @@ function listMinhasEncomendas() {
         }
 
 
-        $(tableListProdEncomendados).push(row);
+        $(tableListProdEncomendados).append(row);
         //$(tableListProdEncomendados).html(row);
 
         //dataTableSemPesquisa(tableListProdEncomendados);
@@ -84,7 +84,7 @@ function listMinhasEncomendas() {
        $(tableListProdEncomendados).DataTable({
             bFilter: false,
             bInfo: false
-        }).ajax.reload();
+        }).ajax.reload();                 //api().ajax.reload();             //ajax.reload();
 
 
 
