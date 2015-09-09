@@ -13,6 +13,10 @@ var btnRegistoNovoPadeiro = '#btnRegistoNovoPadeiro';
 
 var divNovoPadeiro = '.divNovoPadeiro';
 
+
+var messageSuccessInsertNovoPadeiro = '.messageSuccessInsertNovoPadeiro';
+var messageErrorInsertNovoPadeiro = '.messageErrorInsertNovoPadeiro';
+
 function novoPadeiroReady() {
 
 
@@ -24,9 +28,7 @@ function novoPadeiroReady() {
 
     });
 
-    $(btnRegistoNovoPadeiro).click(function(){
-        novoPadeiro();
-    });
+    $(btnRegistoNovoPadeiro).click(novoPadeiro);
 
 }
 
@@ -40,18 +42,34 @@ function novoPadeiro() {
     if (camposValidos === true) {
         var soapMsg = '';
 
+        //soapMsg += '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.mcm.ipg.pt/">';
+        //soapMsg += '<soapenv:Header/>';
+        //soapMsg += '<soapenv:Body>';
+        //soapMsg += '<ser:addUtilizadorPadeiro>';
+        //soapMsg += '<req-add-utilizador>';
+        //soapMsg += '<login>' + getVal('#' + txtLoginPadeiro) + '</login>';
+        //soapMsg += '<password>' + getVal('#' + txtPasswordPadeiro) + '</password>';
+        //soapMsg += '<nome>' + getVal('#' + txtNomePadeiro) + '</nome>';
+        //soapMsg += '</req-add-utilizador>';
+        //soapMsg += '</ser:addUtilizadorPadeiro>';
+        //soapMsg += '</soapenv:Body>';
+        //soapMsg += '</soapenv:Envelope>';
+
+
+
         soapMsg += '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.mcm.ipg.pt/">';
         soapMsg += '<soapenv:Header/>';
         soapMsg += '<soapenv:Body>';
-        soapMsg += '<ser:addUtilizadorPadeiro>';
-        soapMsg += '<req-add-utilizador>';
+        soapMsg += '<ser:addPadeiro>';
+        soapMsg += '<reqAddPadeiro>';
         soapMsg += '<login>' + getVal('#' + txtLoginPadeiro) + '</login>';
-        soapMsg += '<password>' + getVal('#' + txtPasswordPadeiro) + '</password>';
+        soapMsg += '<password>' + getVal('#' + txtPasswordPadeiro) +'</password>';
         soapMsg += '<nome>' + getVal('#' + txtNomePadeiro) + '</nome>';
-        soapMsg += '</req-add-utilizador>';
-        soapMsg += '</ser:addUtilizadorPadeiro>';
+        soapMsg += '</reqAddPadeiro>';
+        soapMsg += '</ser:addPadeiro>';
         soapMsg += '</soapenv:Body>';
         soapMsg += '</soapenv:Envelope>';
+
 
         wsUtilizador(soapMsg, succNovoPadeiro, tweak.errorCallBack );
 
@@ -61,7 +79,21 @@ function novoPadeiro() {
 
 
 function succNovoPadeiro(data, status, req){
+    var json = $.xml2json(data);
+    var retorno = json.Body.addPadeiroResponse.response.return.retorno;
 
+    var codeMessage = retorno.code;
+    var message = retorno.mensagem;
+
+    if (codeMessage != "1") {
+        $(messageSuccessInsertNovoPadeiro).text(message);
+        $(divSuccessMessageInsert).show()
+        cleanPadeiroFields();
+        //getAllCategories();
+    } else {
+        $(messageErrorInsertNovoPadeiro).text(message);
+        $(messageErrorInsertNovoPadeiro).show();
+    }
 }
 
 
@@ -75,7 +107,6 @@ function validaCamposNovoPadeiro(login, pass, nome) {
         isValid = false
     } else {
         $(classFTS(txtLoginPadeiro)).removeClass('has-error');
-
     }
 
     if (pass == "" || pass == null) {

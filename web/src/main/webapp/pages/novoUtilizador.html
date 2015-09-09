@@ -30,7 +30,8 @@
     <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <!-- DATA PICK -->
-
+    <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap/latest/css/bootstrap.css"/>
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -75,7 +76,8 @@
                             </div>
 
                             <div class="form-group txtRegistoDataNascimento">
-                                <input class="form-control" data-provide="datepicker" placeholder="Data de Nascimento" name="txtRegistoDataNascimento" id="txtRegistoDataNascimento" type="text">
+                                <!--<input class="form-control" data-provide="datepicker" placeholder="Data de Nascimento" name="txtRegistoDataNascimento" id="txtRegistoDataNascimento" type="text">-->
+                                <input class="dtapickDataNascimento form-control" id="txtRegistoDataNascimento" data-provide="datepicker" >
                             </div>
 
                             <div class="form-group txtRegistoContacto">
@@ -84,6 +86,10 @@
 
                             <div class="form-group txtRegistoLocalidade">
                                 <input class="form-control" placeholder="Localidade" name="txtRegistoLocalidade" id="txtRegistoLocalidade" type="text">
+                            </div>
+
+                            <div class="form-group txtRegistoEmail">
+                                <input class="form-control" placeholder="Email" name="txtRegistoEmail" id="txtRegistoEmail" type="text">
                             </div>
 
                             <div class="form-group txtRegistoUsername">
@@ -122,16 +128,14 @@
 
 
 <!-- Custom Theme JavaScript -->
-
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css"/>
 
 
 
 
 <script src="../dist/js/sb-admin-2.js"></script>
 <script src="../js/jquery.xml2json.js"></script>
-<!--    DATA PICK   -->
-<script type="text/javascript" src="../js/moment.js"></script>
-<script type="text/javascript" src="../js/daterangepicker.js"></script>
 
 
 <script src="../js/globalScripts.js"></script>
