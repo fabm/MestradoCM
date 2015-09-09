@@ -256,6 +256,22 @@ public class TesteServices {
 
     @Test
     @Ignore
+    public void testAddCategoria() {
+        Categoria_Service categoria_service = new Categoria_Service();
+        CategoriaService port = categoria_service.getCategoriaPort();
+
+        authentication(port,"francisco","francisco");
+
+        Categoria cat = new Categoria();
+        cat.setDescricao("teste desc");
+        cat.setNome("teste nome");
+        ResAddCategoria res = port.addCategoria(cat);
+        Assert.assertEquals(1, res.getRetorno().getCodigo().intValue());
+    }
+
+
+    @Test
+    @Ignore
     public void testAddAndUpdateEncomendas() throws DatatypeConfigurationException, LoginException_Exception {
         Encomenda encomenda = new Encomenda();
         EncomendaService port = encomenda.getEncomendaPort();
