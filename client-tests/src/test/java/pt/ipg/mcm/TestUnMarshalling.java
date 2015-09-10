@@ -1,6 +1,5 @@
 package pt.ipg.mcm;
 
-import client.tests.UserClienteCreationRequest;
 import org.junit.Test;
 
 import javax.xml.bind.*;
@@ -18,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 public class TestUnMarshalling {
     @Test
     public void marshellingTestUserClienteCreationRequest() throws JAXBException {
-        JAXBContext context = JAXBContext.newInstance(UserClienteCreationRequest.class);
+        JAXBContext context = JAXBContext.newInstance();
         Marshaller marshaller = context.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         Unmarshaller unmarshaller = context.createUnmarshaller();
