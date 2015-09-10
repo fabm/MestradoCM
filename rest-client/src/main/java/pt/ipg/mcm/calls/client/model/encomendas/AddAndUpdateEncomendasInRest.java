@@ -1,6 +1,5 @@
 package pt.ipg.mcm.calls.client.model.encomendas;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AddAndUpdateEncomendasInRest {

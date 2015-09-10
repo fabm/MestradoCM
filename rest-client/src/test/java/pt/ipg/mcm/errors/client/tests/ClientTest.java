@@ -132,7 +132,7 @@ public class ClientTest {
         List<ProdutoEncomendadoRest> produtoEncomendadoRestList = new ArrayList<>();
         ProdutoEncomendadoRest produtoEncomendadoRest = new ProdutoEncomendadoRest();
         produtoEncomendadoRest.setIdProduto(1);
-        produtoEncomendadoRest.setQuandidade(2);
+        produtoEncomendadoRest.setQuantidade(2);
         produtoEncomendadoRestList.add(produtoEncomendadoRest);
 
         encomendaInRest.setProdutoEncomendadoRestList(produtoEncomendadoRestList);

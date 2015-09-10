@@ -1,15 +1,15 @@
 package pt.ipg.mcm.calls.client.model.encomendas;
 
 public class ProdutoEncomendadoRest {
-  private int quandidade;
+  private int quantidade;
   private long idProduto;
 
-  public int getQuandidade() {
-    return quandidade;
+  public int getQuantidade() {
+    return quantidade;
   }
 
-  public void setQuandidade(int quandidade) {
-    this.quandidade = quandidade;
+  public void setQuantidade(int quantidade) {
+    this.quantidade = quantidade;
   }
 
   public long getIdProduto() {
@@ -31,6 +31,6 @@ public class ProdutoEncomendadoRest {
   }
 
   protected boolean equals(ProdutoEncomendadoRest that){
-    return this.idProduto == that.idProduto && this.quandidade == that.quandidade;
+    return this.idProduto == that.idProduto && this.quantidade == that.quantidade;
   }
 }

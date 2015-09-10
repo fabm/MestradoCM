@@ -1,8 +1,9 @@
 package pt.ipg.mcm.xmodel;
 
+import pt.ipg.mcm.calls.client.model.encomendas.ProdutoEncomendadoRest;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import java.math.BigDecimal;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ProdutoEncomendado {
@@ -27,5 +28,14 @@ public class ProdutoEncomendado {
     this.quantidade = quantidade;
   }
 
+  public ProdutoEncomendadoRest convert(){
+    return convert(new ProdutoEncomendadoRest());
+  }
+
+  protected <T extends ProdutoEncomendadoRest>T convert(T produtoEncomendadoRest) {
+    produtoEncomendadoRest.setIdProduto(idProduto);
+    produtoEncomendadoRest.setQuantidade(quantidade);
+    return produtoEncomendadoRest;
+  }
 
 }

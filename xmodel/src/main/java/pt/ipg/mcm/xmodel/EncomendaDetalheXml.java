@@ -2,6 +2,7 @@ package pt.ipg.mcm.xmodel;
 
 import pt.ipg.mcm.calls.client.DateHelper;
 import pt.ipg.mcm.calls.client.model.encomendas.EncomendaDetalheRest;
+import pt.ipg.mcm.calls.client.model.encomendas.ProdutoEncomendadoComPrecoRest;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -84,6 +85,10 @@ public class EncomendaDetalheXml {
     encomendaDetalheRest.setDataCriacao(new DateHelper(COMPACT).toString(dataCriacao));
     encomendaDetalheRest.setObservacoes(observacoes);
     encomendaDetalheRest.setId(id);
+    List<ProdutoEncomendadoComPrecoRest> produtosEncomendadosRest = encomendaDetalheRest.createProdutosEncomendados();
+    for(ProdutoEncomendadoComPreco produtoEncomendadoComPreco:produtosEncomendados){
+      produtosEncomendadosRest.add(produtoEncomendadoComPreco.convert());
+    }
     return encomendaDetalheRest;
   }
 }

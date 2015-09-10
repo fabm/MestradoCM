@@ -41,6 +41,6 @@ public class AddEncomendasOut extends RetornoSoap {
     }
     addEncomendasOutRest.setEncomendaOutRestList(encomendaOutRestList);
 
-    return null;
+    return addEncomendasOutRest;
   }
 }

@@ -24,10 +24,9 @@ public class EstadoEncomendaIn {
      * 1: A espera de confirmação de um padeiro
      * 2: Aguarda entrega
      * 3: Cancelado por incompatibilidade na data de entrega, ma nova encomenda pode ser criada com referênca à original que foi cancelada
-     * 4: Entrega parcial, o qual fará com que seja criada uma nova encomenda com com parte dos produtos encomendados na encomenda original e associada à encomenda original
-     * 5: Cancelado pelo cliente
-     * 6: Entregua confirmada pelo padeiro
-     * 7: Entrega confirmada pelo cliente
+     * 4: Cancelado pelo cliente
+     * 5: Entregua confirmada pelo padeiro
+     * 6: Entrega confirmada pelo cliente
      *
      * @return
      */
@@ -40,10 +39,9 @@ public class EstadoEncomendaIn {
      * 1: A espera de confirmação de um padeiro
      * 2: Aguarda entrega
      * 3: Cancelado por incompatibilidade na data de entrega, ma nova encomenda pode ser criada com referênca à original que foi cancelada
-     * 4: Entrega parcial, o qual fará com que seja criada uma nova encomenda com com parte dos produtos encomendados na encomenda original e associada à encomenda original
-     * 5: Cancelado pelo cliente
-     * 6: Entregua confirmada pelo padeiro
-     * 7: Entrega confirmada pelo cliente
+     * 4: Cancelado pelo cliente
+     * 5: Entregua confirmada pelo padeiro
+     * 6: Entrega confirmada pelo cliente
      *
      * @param estado
      */

@@ -6,8 +6,6 @@ import pt.ipg.mcm.calls.client.model.encomendas.ProdutoEncomendadoRest;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.util.Date;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ProdutoAEncomendar {
@@ -44,13 +42,13 @@ public class ProdutoAEncomendar {
         ProdutoEncomendadoRest produtoEncomendadoRest = new ProdutoEncomendadoRest();
 
         produtoEncomendadoRest.setIdProduto(idProduto);
-        produtoEncomendadoRest.setQuandidade(quantidade);
+        produtoEncomendadoRest.setQuantidade(quantidade);
 
         return produtoEncomendadoRest;
     }
 
     public void convert(ProdutoEncomendadoRest produtoEncomendadoRest) {
-        quantidade = produtoEncomendadoRest.getQuandidade();
+        quantidade = produtoEncomendadoRest.getQuantidade();
         idProduto = produtoEncomendadoRest.getIdProduto();
     }
 }
