@@ -23,6 +23,31 @@ public class AddAndUpdateEncomendasIn {
     @XmlElementWrapper(name = "estadoEncomendas")
     private List<EstadoEncomendaIn> estadoEncomendasList;
 
+    public static AddAndUpdateEncomendasIn convert(AddAndUpdateEncomendasInRest addAndUpdateEncomendasInRest) {
+        AddAndUpdateEncomendasIn addAndUpdateEncomendasIn = new AddAndUpdateEncomendasIn();
+        addAndUpdateEncomendasIn.estadoEncomendasList = new ArrayList<EstadoEncomendaIn>();
+        for (EstadoEncomendaInRest estadoEncomendaInRest : addAndUpdateEncomendasInRest.getEstadoEncomendaInRestList()) {
+            addAndUpdateEncomendasIn.estadoEncomendasList.add(EstadoEncomendaIn.convert(estadoEncomendaInRest));
+        }
+
+        addAndUpdateEncomendasIn.encomendaInList = new ArrayList<EncomendaIn>();
+        for(EncomendaInRest encomendaInRest:addAndUpdateEncomendasInRest.getEncomendaInRestList()){
+            EncomendaIn encomendaIn = new EncomendaIn();
+            encomendaIn.setDataEntrega(encomendaInRest.getDataEntrega());
+
+            List<ProdutoAEncomendar> produtoAEncomendarList = new ArrayList<ProdutoAEncomendar>();
+            for(ProdutoEncomendadoRest produtoEncomendadoRest :encomendaInRest.getProdutoEncomendadoRestList()){
+                ProdutoAEncomendar produtoAEncomendar = new ProdutoAEncomendar();
+                produtoAEncomendar.convert(produtoEncomendadoRest);
+                produtoAEncomendarList.add(produtoAEncomendar);
+            }
+            encomendaIn.setProdutoAEncomendarList(produtoAEncomendarList);
+
+            addAndUpdateEncomendasIn.encomendaInList.add(encomendaIn);
+        }
+        return addAndUpdateEncomendasIn;
+    }
+
     public List<EncomendaIn> getEncomendaInList() {
         return encomendaInList;
     }
@@ -49,31 +74,5 @@ public class AddAndUpdateEncomendasIn {
         addAndUpdateEncomendasInRest.setEncomendaInRestList(encomendaInRestList);
 
         return addAndUpdateEncomendasInRest;
-    }
-
-    public void convert(AddAndUpdateEncomendasInRest addAndUpdateEncomendasInRest) {
-        estadoEncomendasList = new ArrayList<EstadoEncomendaIn>();
-        for (EstadoEncomendaInRest estadoEncomendaInRest : addAndUpdateEncomendasInRest.getEstadoEncomendaInRestList()) {
-            EstadoEncomendaIn estadoEncomendaIn = new EstadoEncomendaIn();
-            estadoEncomendaIn.setIdEncomenda(estadoEncomendaInRest.getIdEncomenda());
-            estadoEncomendaIn.setEstado(estadoEncomendaInRest.getEstado());
-            estadoEncomendasList.add(estadoEncomendaIn);
-        }
-
-        encomendaInList = new ArrayList<EncomendaIn>();
-        for(EncomendaInRest encomendaInRest:addAndUpdateEncomendasInRest.getEncomendaInRestList()){
-            EncomendaIn encomendaIn = new EncomendaIn();
-            encomendaIn.setDataEntrega(encomendaInRest.getDataEntrega());
-
-            List<ProdutoAEncomendar> produtoAEncomendarList = new ArrayList<ProdutoAEncomendar>();
-            for(ProdutoEncomendadoRest produtoEncomendadoRest :encomendaInRest.getProdutoEncomendadoRestList()){
-                ProdutoAEncomendar produtoAEncomendar = new ProdutoAEncomendar();
-                produtoAEncomendar.convert(produtoEncomendadoRest);
-                produtoAEncomendarList.add(produtoAEncomendar);
-            }
-            encomendaIn.setProdutoAEncomendarList(produtoAEncomendarList);
-
-            encomendaInList.add(encomendaIn);
-        }
     }
 }

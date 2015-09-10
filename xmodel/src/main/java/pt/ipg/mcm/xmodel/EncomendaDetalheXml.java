@@ -1,9 +1,14 @@
 package pt.ipg.mcm.xmodel;
 
+import pt.ipg.mcm.calls.client.DateHelper;
+import pt.ipg.mcm.calls.client.model.encomendas.EncomendaDetalheRest;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.Date;
 import java.util.List;
+
+import static pt.ipg.mcm.calls.client.DateHelper.Format.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EncomendaDetalheXml {
@@ -69,5 +74,16 @@ public class EncomendaDetalheXml {
 
   public void setSync(long sync) {
     this.sync = sync;
+  }
+
+
+  public EncomendaDetalheRest convert() {
+    EncomendaDetalheRest encomendaDetalheRest = new EncomendaDetalheRest();
+    encomendaDetalheRest.setEstado(estado);
+    encomendaDetalheRest.setDataEntrega(new DateHelper(COMPACT).toString(dataEntrega));
+    encomendaDetalheRest.setDataCriacao(new DateHelper(COMPACT).toString(dataCriacao));
+    encomendaDetalheRest.setObservacoes(observacoes);
+    encomendaDetalheRest.setId(id);
+    return encomendaDetalheRest;
   }
 }

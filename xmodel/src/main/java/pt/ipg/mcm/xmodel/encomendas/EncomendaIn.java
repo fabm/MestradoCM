@@ -26,14 +26,26 @@ public class EncomendaIn {
   @XmlElement(name = "produto")
   private List<ProdutoAEncomendar> produtoAEncomendarList;
 
+  public static EncomendaIn convert(EncomendaInRest encomendaInRest) {
+    EncomendaIn encomendaIn = new EncomendaIn();
+    encomendaIn.produtoAEncomendarList = new ArrayList<ProdutoAEncomendar>();
+    for(ProdutoEncomendadoRest produtoEncomendadoRest :encomendaInRest.getProdutoEncomendadoRestList()){
+      ProdutoAEncomendar produtoAEncomendar = new ProdutoAEncomendar();
+      produtoAEncomendar.convert(produtoEncomendadoRest);
+      encomendaIn.produtoAEncomendarList.add(produtoAEncomendar);
+    }
+    encomendaIn.dataEntrega = encomendaInRest.getDataEntrega();
+    return encomendaIn;
+  }
+
   public Date getDataEntrega() {
     return dataEntrega;
   }
 
+
   public void setDataEntrega(Date dataEntrega) {
     this.dataEntrega = dataEntrega;
   }
-
 
   public List<ProdutoAEncomendar> getProdutoAEncomendarList() {
     return produtoAEncomendarList;
@@ -70,7 +82,6 @@ public class EncomendaIn {
   public String getEncomendaAssociada() {
     return encomendaAssociada;
   }
-
   public EncomendaInRest convert() {
     EncomendaInRest encomendaInRest = new EncomendaInRest();
 

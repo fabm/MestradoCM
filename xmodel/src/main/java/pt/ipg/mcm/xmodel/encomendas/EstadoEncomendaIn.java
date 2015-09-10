@@ -1,5 +1,7 @@
 package pt.ipg.mcm.xmodel.encomendas;
 
+import pt.ipg.mcm.calls.client.model.encomendas.EstadoEncomendaInRest;
+
 import javax.xml.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
@@ -9,6 +11,13 @@ public class EstadoEncomendaIn {
 
     private int estado;
     private long idEncomenda;
+
+    public static EstadoEncomendaIn convert(EstadoEncomendaInRest estadoEncomendaInRest) {
+        EstadoEncomendaIn estadoEncomendaIn = new EstadoEncomendaIn();
+        estadoEncomendaIn.idEncomenda = estadoEncomendaInRest.getIdEncomenda();
+        estadoEncomendaIn.estado = estadoEncomendaInRest.getEstado();
+        return estadoEncomendaIn;
+    }
 
     /**
      * Estado atual da encomenda

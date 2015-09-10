@@ -1,10 +1,8 @@
 package pt.ipg.mcm.rs.services;
 
-import pt.ipg.mcm.calls.client.model.encomendas.GetEncomendasRestOut;
 import pt.ipg.mcm.calls.client.model.encomendas.GetMinhasEncomendasRest;
 import pt.ipg.mcm.calls.client.model.encomendas.UpdateEncomendasRestIn;
 import pt.ipg.mcm.calls.client.model.encomendas.UpdateEncomendasRestOut;
-import pt.ipg.mcm.rs.conversors.encomenda.ResMinhasEncomendasDetalhe2GetMinhasEncomendas;
 import pt.ipg.mcm.xmodel.EncomendaDetalheXml;
 import pt.ipg.mcm.xmodel.ProdutoEncomendadoComPreco;
 import pt.ipg.mcm.xmodel.ResMinhasEncomendasDetalhe;
@@ -30,12 +28,6 @@ public class IterfacesTest {
     return Response.ok(request).build();
   }
 
-  @POST
-  @Path("/updateEncomendasRestOut")
-  @Produces(MediaType.APPLICATION_JSON)
-  public Response updateEncomendasOut(UpdateEncomendasRestOut updateEncomendasRestOut) {
-    return Response.ok(updateEncomendasRestOut).build();
-  }
 
   @POST
   @Path("/getEncomendasRestOut")
@@ -69,10 +61,8 @@ public class IterfacesTest {
     ResMinhasEncomendasDetalhe resMinhasEncomendas = new ResMinhasEncomendasDetalhe(encomendaDetalheXmlList);
     encomendaDetalheXmlList.add(encomendaDetalheXml);
 
-    GetMinhasEncomendasRest minhasEncomendasRest = new ResMinhasEncomendasDetalhe2GetMinhasEncomendas(resMinhasEncomendas)
-        .converted();
 
-    return Response.ok(minhasEncomendasRest).build();
+    return Response.ok(resMinhasEncomendas.convert()).build();
   }
 
 }
