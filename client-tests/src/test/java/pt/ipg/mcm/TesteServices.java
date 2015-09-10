@@ -79,6 +79,17 @@ public class TesteServices {
 
     @Test
     @Ignore
+    public void testGetCategoriaDesync() throws LoginException_Exception {
+        Categoria_Service categoria_service = new Categoria_Service();
+        CategoriaService port = categoria_service.getCategoriaPort();
+        authentication(port,"bruno","bruno");
+        ResCategoriasDesync cat = port.getCategoriasDeSync(0);
+        Categoria categoria = cat.getCategorias().getCategoria().get(0);
+        assertNotNull(categoria.getId());
+    }
+
+    @Test
+    @Ignore
     public void testAddUtilizadorCliente() throws LoginException_Exception {
         Cliente cliente = new Cliente();
         ClienteService port = cliente.getClientePort();
