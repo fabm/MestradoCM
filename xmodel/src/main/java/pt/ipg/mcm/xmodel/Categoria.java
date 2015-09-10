@@ -15,7 +15,6 @@ public class Categoria {
   @XmlElement(name = "descricao")
   private String descricao;
 
-  @XmlTransient
   protected Long id;
   @XmlTransient
   private Long versao;
