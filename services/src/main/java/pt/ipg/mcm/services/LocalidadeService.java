@@ -33,6 +33,14 @@ public class LocalidadeService {
   }
 
   @WebMethod
+  public ResGetAllLocalidades getLocalidadesComFiltroAoInicioEPagina(
+          @WebParam(name = "filtro") String filter,
+          @WebParam(name = "pagina") int page) {
+    return localidadeDao.getFiltered(page, filter + "%");
+  }
+
+
+  @WebMethod
   public ResGetAllLocalidades getLocalidadesComPagina(@WebParam(name = "pagina") int page) {
     return localidadeDao.getLocalidadesPaginada(page);
   }

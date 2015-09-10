@@ -188,6 +188,10 @@ public class TesteServices {
         ResGetAllLocalidades localidades = port.getLocalidadesComFiltroEPagina("GUA", 1);
 
         localidades = port.getLocalidadesComPagina(2);
+
+
+        localidades = port.getLocalidadesComFiltroAoInicioEPagina("GUA",1);
+
     }
 
     @Test
@@ -264,7 +268,7 @@ public class TesteServices {
 
         Categoria cat = new Categoria();
         cat.setDescricao("teste desc");
-        cat.setNome("teste nome");
+        cat.setNome("my cat");
         ResAddCategoria res = port.addCategoria(cat);
         Assert.assertEquals(1, res.getRetorno().getCodigo().intValue());
     }

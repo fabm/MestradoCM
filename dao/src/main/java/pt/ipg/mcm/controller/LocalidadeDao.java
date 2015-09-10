@@ -34,7 +34,7 @@ public class LocalidadeDao {
                     new HashMap<String, Object>() {{
                         put("pagina", pagina);
                         put("quantidade", 50);
-                        put("filtro", "%" + filter + "%");
+                        put("filtro", filter);
                     }}
             );
             return new ResGetAllLocalidades(localidades);
